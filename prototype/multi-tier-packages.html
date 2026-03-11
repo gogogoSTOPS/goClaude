@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goSTOPS — Multi-Tier Coliving & Workation Packages Prototype</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            nunito: ['"Nunito Sans"', 'sans-serif'],
+            marker: ['"Permanent Marker"', 'cursive'],
+          },
+          colors: {
+            radicalred: '#FF3366',
+            radicalredDark: '#ED1152',
+            grey900: '#2a2929',
+            grey700: '#464546',
+            grey400: '#828181',
+            grey300: '#969596',
+            grey50: '#EFEFEF',
+            palecream: '#FBF8F4',
+            successgreen: '#008000',
+            bordergray: '#CFCECE',
+          },
+          boxShadow: {
+            'custom-double': 'rgba(14,30,37,0.12) 0px 2px 4px, rgba(14,30,37,0.32) 0px 2px 16px',
+            'card': '0 12px 16px -4px rgba(16,8,10,0.08), 0 4px 6px -2px rgba(16,8,10,0.03)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: 'Nunito Sans', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .proto-section { border-bottom: 2px dashed #EFEFEF; padding: 48px 0; }
+    .proto-section:last-child { border-bottom: none; }
+    input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; background: #EFEFEF; border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #FF3366; border-radius: 50%; cursor: pointer; }
+    .nudge-bar { transition: all 0.3s ease; }
+  </style>
+</head>
+<body class="bg-white text-grey900">
+
+  <!-- Proto Header -->
+  <header class="sticky top-0 z-50 bg-white border-b border-grey50 px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-radicalred rounded-full flex items-center justify-center">
+        <span class="text-white font-bold text-xs">gS</span>
+      </div>
+      <span class="font-bold text-lg text-grey900">Multi-Tier Packages — Design Prototype</span>
+    </div>
+    <nav class="hidden md:flex gap-6 text-sm text-grey400">
+      <a href="#carousel-coliving" class="hover:text-radicalred">Coliving Carousel</a>
+      <a href="#carousel-workation" class="hover:text-radicalred">Workation Carousel</a>
+      <a href="#nudges" class="hover:text-radicalred">Offer Nudges</a>
+      <a href="#room-badges" class="hover:text-radicalred">Room Badges</a>
+      <a href="#booking-widget" class="hover:text-radicalred">Booking Widget</a>
+      <a href="#booking-summary" class="hover:text-radicalred">Booking Summary</a>
+    </nav>
+  </header>
+
+  <main class="max-w-[1440px] mx-auto px-4 sm:px-12 lg:px-28">
+
+    <!-- ============================================================ -->
+    <!-- 1. COLIVING CAROUSEL PAGE — 3 Tier Sections                   -->
+    <!-- ============================================================ -->
+    <section id="carousel-coliving" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 1</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Coliving Carousel Page <span class="text-radicalred">(3 Tiers)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Vertically stacked sections, lowest tier first.</p>
+      </div>
+
+      <!-- Page heading -->
+      <div class="mb-10 md:py-5 space-y-2">
+        <h2 class="text-[23px] md:text-[33px] leading-tight font-bold text-grey700">
+          Colive Comfortably with <span class="text-radicalred">goLIVING</span>
+        </h2>
+      </div>
+
+      <!-- Tier 1: Coliving 5+ -->
+      <div class="mb-12">
+        <div class="mb-4">
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 5+ Days — <span class="font-bold">flexibility</span> meets savings!</p>
+        </div>
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Bangalore HSR</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;8,499</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Delhi</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;6,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Gurgaon</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;7,499</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 2: Coliving 14+ -->
+      <div class="mb-12">
+        <div class="mb-4">
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 14+ Days — <span class="font-bold">settle in</span>, save more!</p>
+        </div>
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">14N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Bangalore HSR</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;14,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">14N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Delhi</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;11,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">14N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Gurgaon</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;12,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 3: Coliving 28+ -->
+      <div>
+        <div class="mb-4">
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 28+ Days — <span class="font-bold">make it home</span>, get the best prices!</p>
+        </div>
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">28N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Bangalore HSR</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;24,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">28N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Delhi</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;19,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">28N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Gurgaon</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;21,999</p>
+                  <p class="text-grey400 text-sm mt-1">/per person</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 2. WORKATION CAROUSEL PAGE — 2 Tier Sections                  -->
+    <!-- ============================================================ -->
+    <section id="carousel-workation" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 2</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Workation Carousel Page <span class="text-radicalred">(2 Tiers)</span>
+        </h2>
+      </div>
+
+      <!-- Page heading -->
+      <div class="mb-10 space-y-2">
+        <h2 class="text-[23px] md:text-[33px] leading-tight font-bold text-grey700">
+          Your Workation <span class="text-radicalred">Your Destination</span>
+        </h2>
+      </div>
+
+      <!-- Tier 1: Workation 3+ -->
+      <div class="mb-12">
+        <div class="mb-4">
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 3 or more nights starting &#8377;1,499/week!</p>
+        </div>
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">3N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Manali</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;1,499</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">3N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Rishikesh</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;1,299</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">3N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Bir</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;1,199</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 2: Workation 5+ -->
+      <div>
+        <div class="mb-4">
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 5 or more nights starting &#8377;999/week!</p>
+        </div>
+        <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Manali</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;999</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Rishikesh</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;899</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+          <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
+            <div class="w-full h-[204px] rounded-lg overflow-hidden relative bg-gray-200">
+              <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-full object-cover" alt="Hostel" />
+              <div class="absolute top-2 right-2 px-2 py-1 rounded-lg backdrop-blur-sm bg-black/40"><span class="text-white font-bold text-base">5N</span></div>
+            </div>
+            <div class="mt-6 flex-1 flex flex-col justify-between">
+              <h4 class="text-grey900 font-bold text-[19px] md:text-[23px] mb-2 line-clamp-1">goSTOPS Bir</h4>
+              <div class="flex justify-between items-end">
+                <div>
+                  <p class="text-grey400 text-sm mb-1">Starting @</p>
+                  <p class="text-grey700 font-bold text-[19px] md:text-[28px]">&#8377;799</p>
+                  <p class="text-grey400 text-sm mt-1">/per week</p>
+                </div>
+                <button class="w-[142px] h-[48px] rounded-full bg-radicalred text-white font-bold text-base">BOOK NOW</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 3. OFFER NUDGES — Interactive Demo                            -->
+    <!-- ============================================================ -->
+    <section id="nudges" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 3</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Offer Nudge Bars <span class="text-radicalred">(Interactive)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Drag the slider to see nudge states change. Updated add_ranges and savings-focused copy.</p>
+      </div>
+
+      <!-- Coliving Hostel Nudges -->
+      <div class="mb-10">
+        <h3 class="text-lg font-bold text-grey700 mb-1">Coliving Hostel — goSTOPS Bangalore HSR</h3>
+        <p class="text-xs text-grey400 mb-4">Base rate: &#8377;799/night &middot; 5+ rate: &#8377;499/night &middot; 14+ rate: &#8377;449/night &middot; 28+ rate: &#8377;399/night</p>
+
+        <div class="flex items-center gap-4 mb-6 bg-grey50/50 rounded-xl p-4">
+          <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Nights selected:</label>
+          <input type="range" id="coliving-slider" min="1" max="35" value="1" class="flex-1" oninput="updateColivingNudge(this.value)" />
+          <span id="coliving-nights" class="text-2xl font-bold text-radicalred w-12 text-center">1</span>
+        </div>
+
+        <!-- Desktop sidebar nudge -->
+        <div class="mb-4">
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Desktop Sidebar</p>
+          <div class="max-w-[380px]">
+            <div id="coliving-nudge-desktop" class="nudge-bar flex px-4 py-3 justify-center items-center gap-[10px] self-stretch rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;">
+              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
+                <span class="text-grey400">Select more nights to unlock offers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile bottom bar nudge -->
+        <div>
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Mobile Bottom Bar</p>
+          <div class="max-w-[420px]">
+            <div id="coliving-nudge-mobile" class="nudge-bar flex px-4 py-2 justify-center items-center gap-[10px] self-stretch rounded-t-[16px]" style="border: 1px solid #EFEFEF; border-bottom: none; background: #FAFAFA;">
+              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
+                <span class="text-grey400">Select more nights to unlock offers</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between px-4 py-3 bg-white border border-grey50 rounded-b-[16px]">
+              <div>
+                <p class="text-xs text-grey400">Starting from</p>
+                <p class="text-lg font-bold text-grey900">&#8377;499 <span class="text-xs text-grey400 font-normal">/night</span></p>
+              </div>
+              <button class="px-6 py-2.5 rounded-xl bg-radicalred text-white font-bold text-sm">BOOK NOW</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workation Hostel Nudges -->
+      <div>
+        <h3 class="text-lg font-bold text-grey700 mb-1">Workation Hostel — goSTOPS Manali</h3>
+        <p class="text-xs text-grey400 mb-4">Base rate: &#8377;899/night &middot; 3+ rate: &#8377;854/night (save &#8377;45) &middot; 5+ rate: &#8377;827/night (save &#8377;72) &middot; Delta: extra &#8377;27</p>
+
+        <div class="flex items-center gap-4 mb-6 bg-grey50/50 rounded-xl p-4">
+          <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Nights selected:</label>
+          <input type="range" id="workation-slider" min="1" max="10" value="1" class="flex-1" oninput="updateWorkationNudge(this.value)" />
+          <span id="workation-nights" class="text-2xl font-bold text-radicalred w-12 text-center">1</span>
+        </div>
+
+        <div class="mb-4">
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Desktop Sidebar</p>
+          <div class="max-w-[380px]">
+            <div id="workation-nudge-desktop" class="nudge-bar flex px-4 py-3 justify-center items-center gap-[10px] self-stretch rounded-2xl" style="border: 1px solid #FFDE93; border-bottom: none; background: linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%); box-shadow: 2px -2px 23px 0 rgba(70,69,70,0.10);">
+              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
+                <span class="flex items-center gap-2">
+                  <svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>
+                  <span class="text-[#A66A02] text-sm font-medium">Add 2 more nights to save ₹45/night</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile bottom bar nudge for workation -->
+        <div>
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Mobile Bottom Bar</p>
+          <div class="max-w-[420px]">
+            <div id="workation-nudge-mobile" class="nudge-bar flex px-4 py-2 justify-center items-center gap-[10px] self-stretch rounded-t-[16px]" style="border: 1px solid #FFDE93; border-bottom: none; background: linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%); box-shadow: 2px -2px 23px 0 rgba(70,69,70,0.10);">
+              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
+                <span class="flex items-center gap-2">
+                  <svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>
+                  <span class="text-[#A66A02] text-sm font-medium">Add 2 more nights to save ₹45/night</span>
+                </span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between px-4 py-3 bg-white border border-grey50 rounded-b-[16px]">
+              <div>
+                <p class="text-xs text-grey400">Starting from</p>
+                <p class="text-lg font-bold text-grey900">&#8377;799 <span class="text-xs text-grey400 font-normal">/night</span></p>
+              </div>
+              <button class="px-6 py-2.5 rounded-xl bg-radicalred text-white font-bold text-sm">BOOK NOW</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 4. ROOM CARD BADGES — Savings-Based                           -->
+    <!-- ============================================================ -->
+    <section id="room-badges" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 4</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Room Card Badges <span class="text-radicalred">(Savings-Based)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Badges now show exact savings. Card layout matches actual NewRoomCard component.</p>
+      </div>
+
+      <div class="flex flex-col gap-8">
+
+        <!-- Room Card — Coliving 14+ unlocked (matches NewRoomCard.jsx layout) -->
+        <div class="rounded-[16px] border border-[#EFEFEF] bg-white shadow-card flex flex-col md:flex-row overflow-hidden">
+          <!-- Image section -->
+          <div class="relative w-full md:w-[35%] xl:w-[280px] md:shrink-0 md:p-2 md:pb-3 md:border-r border-[#EFEFEF] flex flex-col justify-between">
+            <div class="w-full">
+              <div class="relative w-full">
+                <img src="https://gostops.s3.amazonaws.com/media/coliving/coliving-space-header-bangalore-hsr-gurgaon.webp" class="w-full h-[220px] object-cover rounded-t-[1rem] md:rounded-[8px]" alt="Room" />
+                <div class="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-xl bg-white/90 shadow-sm px-2 py-1 text-sm font-semibold text-grey900">1/4</div>
+                <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 rounded-lg bg-[#FFF0F2] px-2 py-1 text-xs text-[#FF0000]">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="#FF0000" stroke-width="1.5"/><path d="M6 3v3.5l2.5 1" stroke="#FF0000" stroke-width="1.5" stroke-linecap="round"/></svg>
+                  Only 3 beds left!
+                </div>
+              </div>
+              <!-- Desktop amenities -->
+              <div class="hidden md:flex flex-wrap gap-2 px-1 mt-3">
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">WiFi</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">AC</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Locker</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Curtains</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Reading Light</span>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center ml-1 pt-3">
+              <button class="text-radicalred text-sm font-bold flex items-center gap-1">
+                Availability calendar
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="#FF3366" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Content section -->
+          <div class="flex flex-col justify-between flex-1 min-w-0 px-2 py-3 md:p-[12px_12px_12px_8px]">
+            <div class="flex flex-col items-start gap-4 self-stretch">
+              <!-- Badge + Title -->
+              <div class="flex flex-col items-start gap-1 self-stretch">
+                <div class="min-h-[22px]">
+                  <div class="inline-flex items-center gap-1 px-2 py-1 rounded-md border-[0.25px] border-[#C6FFC6] bg-gradient-to-r from-[#C7FD8F] via-[#EDFD8F] to-[#EDFD8F] text-[#008000] text-[10px] font-bold">
+                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none"><path d="M6 0.5L7.34 4.59L11.71 4.91L8.32 7.68L9.43 11.91L6 9.61L2.57 11.91L3.68 7.68L0.29 4.91L4.66 4.59L6 0.5Z" fill="#008000"/></svg>
+                    Save &#8377;350/night
+                  </div>
+                </div>
+                <div class="flex justify-between items-start gap-4 self-stretch">
+                  <h3 class="text-base font-bold text-grey900 leading-[22px]">8 Bed Mixed Dorm</h3>
+                  <div class="flex items-center gap-1 text-grey400 shrink-0 text-xs font-medium">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zM2 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#636162" stroke-width="1.2"/></svg>
+                    x 1
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mobile amenities -->
+              <div class="flex flex-wrap gap-2 md:hidden">
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">WiFi</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">AC</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Locker</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Curtains</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Reading Light</span>
+              </div>
+
+              <!-- Variants grid -->
+              <div class="flex flex-row md:flex-col items-stretch self-stretch gap-3 overflow-x-auto lg:overflow-visible scrollbar-hide">
+                <div class="flex flex-col items-start justify-between gap-3 shrink-0 bg-palecream rounded-2xl p-[16px_8px_8px_8px] md:p-[12px_8px_8px_8px] w-[75%] md:w-full">
+                  <span class="text-[#636162] text-sm font-bold px-1">Room Only</span>
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 self-stretch">
+                    <!-- Cheapest variant -->
+                    <div class="relative w-full flex flex-col justify-between gap-2 p-2 flex-1 rounded-xl bg-white border-[0.75px] border-[#89530A]">
+                      <div class="absolute -top-2 left-2 flex px-2 py-[2px] justify-center items-center rounded-full bg-[#FFEFD4] z-10">
+                        <span class="text-[#89530A] text-[9px] font-normal">Cheapest</span>
+                      </div>
+                      <div class="flex justify-between items-start w-full gap-2 mt-1">
+                        <span class="text-[#636162] text-sm font-medium">Free Cancellation</span>
+                        <button class="flex h-7 px-4 py-1 justify-center items-center gap-2 rounded-lg shadow-sm text-sm font-semibold border border-[rgba(255,51,102,0.10)] text-white" style="background: linear-gradient(99deg, #F36 8.96%, #FF1A53 99.91%);">Add</button>
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <span class="text-grey400 text-[9px] line-through">&#8377;799</span>
+                        <div class="flex items-baseline gap-1">
+                          <span class="text-grey700 text-base font-bold">&#8377;449</span>
+                          <span class="text-grey400 text-[11px]">+ 54 taxes /night</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Non-refundable variant -->
+                    <div class="relative w-full flex flex-col justify-between gap-2 p-2 flex-1 rounded-xl bg-white border border-[#EFEFEF]">
+                      <div class="flex justify-between items-start w-full gap-2 mt-1">
+                        <span class="text-[#636162] text-sm font-medium">Non-Refundable</span>
+                        <button class="flex h-7 px-4 py-1 justify-center items-center gap-2 rounded-lg shadow-sm text-sm font-semibold border border-[rgba(255,51,102,0.10)] text-white" style="background: linear-gradient(99deg, #F36 8.96%, #FF1A53 99.91%);">Add</button>
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <span class="text-grey400 text-[9px] line-through">&#8377;799</span>
+                        <div class="flex items-baseline gap-1">
+                          <span class="text-grey700 text-base font-bold">&#8377;425</span>
+                          <span class="text-grey400 text-[11px]">+ 51 taxes /night</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex md:hidden flex-row items-center justify-between w-full mt-4 gap-2">
+              <button class="text-radicalred text-sm font-bold flex items-center gap-1">
+                Availability calendar
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="#FF3366" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Room Card — Workation 5+ unlocked -->
+        <div class="rounded-[16px] border border-[#EFEFEF] bg-white shadow-card flex flex-col md:flex-row overflow-hidden">
+          <div class="relative w-full md:w-[35%] xl:w-[280px] md:shrink-0 md:p-2 md:pb-3 md:border-r border-[#EFEFEF] flex flex-col justify-between">
+            <div class="w-full">
+              <div class="relative w-full">
+                <img src="https://gostops-dev.s3.ap-south-1.amazonaws.com/media/workation/workation-coworking-desk-with-view.webp" class="w-full h-[220px] object-cover rounded-t-[1rem] md:rounded-[8px]" alt="Room" />
+                <div class="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-xl bg-white/90 shadow-sm px-2 py-1 text-sm font-semibold text-grey900">1/3</div>
+              </div>
+              <div class="hidden md:flex flex-wrap gap-2 px-1 mt-3">
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">WiFi</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Mountain View</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Locker</span>
+              </div>
+            </div>
+            <div class="hidden md:flex items-center ml-1 pt-3">
+              <button class="text-radicalred text-sm font-bold flex items-center gap-1">
+                Availability calendar
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="#FF3366" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="flex flex-col justify-between flex-1 min-w-0 px-2 py-3 md:p-[12px_12px_12px_8px]">
+            <div class="flex flex-col items-start gap-4 self-stretch">
+              <div class="flex flex-col items-start gap-1 self-stretch">
+                <div class="min-h-[22px]">
+                  <div class="inline-flex items-center gap-1 px-2 py-1 rounded-md border-[0.25px] border-[#C6FFC6] bg-gradient-to-r from-[#C7FD8F] via-[#EDFD8F] to-[#EDFD8F] text-[#008000] text-[10px] font-bold">
+                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none"><path d="M6 0.5L7.34 4.59L11.71 4.91L8.32 7.68L9.43 11.91L6 9.61L2.57 11.91L3.68 7.68L0.29 4.91L4.66 4.59L6 0.5Z" fill="#008000"/></svg>
+                    Save ₹72/night
+                  </div>
+                </div>
+                <div class="flex justify-between items-start gap-4 self-stretch">
+                  <h3 class="text-base font-bold text-grey900 leading-[22px]">6 Bed Mixed Dorm</h3>
+                  <div class="flex items-center gap-1 text-grey400 shrink-0 text-xs font-medium">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 7a3 3 0 100-6 3 3 0 000 6zM2 13c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#636162" stroke-width="1.2"/></svg>
+                    x 1
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 md:hidden">
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">WiFi</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Mountain View</span>
+                <span class="px-2 py-1 rounded-full bg-[#F5F5F5] text-xs text-grey400">Locker</span>
+              </div>
+              <div class="flex flex-row md:flex-col items-stretch self-stretch gap-3 overflow-x-auto lg:overflow-visible scrollbar-hide">
+                <div class="flex flex-col items-start justify-between gap-3 shrink-0 bg-palecream rounded-2xl p-[16px_8px_8px_8px] md:p-[12px_8px_8px_8px] w-[75%] md:w-full">
+                  <span class="text-[#636162] text-sm font-bold px-1">Room Only</span>
+                  <div class="grid grid-cols-1 lg:grid-cols-2 gap-2 self-stretch">
+                    <div class="relative w-full flex flex-col justify-between gap-2 p-2 flex-1 rounded-xl bg-white border-[0.75px] border-[#89530A]">
+                      <div class="absolute -top-2 left-2 flex px-2 py-[2px] justify-center items-center rounded-full bg-[#FFEFD4] z-10">
+                        <span class="text-[#89530A] text-[9px] font-normal">Cheapest</span>
+                      </div>
+                      <div class="flex justify-between items-start w-full gap-2 mt-1">
+                        <span class="text-[#636162] text-sm font-medium">Free Cancellation</span>
+                        <button class="flex h-7 px-4 py-1 justify-center items-center gap-2 rounded-lg shadow-sm text-sm font-semibold border border-[rgba(255,51,102,0.10)] text-white" style="background: linear-gradient(99deg, #F36 8.96%, #FF1A53 99.91%);">Add</button>
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <span class="text-grey400 text-[9px] line-through">&#8377;899</span>
+                        <div class="flex items-baseline gap-1">
+                          <span class="text-grey700 text-base font-bold">&#8377;827</span>
+                          <span class="text-grey400 text-[11px]">+ 99 taxes /night</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="relative w-full flex flex-col justify-between gap-2 p-2 flex-1 rounded-xl bg-white border border-[#EFEFEF]">
+                      <div class="flex justify-between items-start w-full gap-2 mt-1">
+                        <span class="text-[#636162] text-sm font-medium">Non-Refundable</span>
+                        <button class="flex h-7 px-4 py-1 justify-center items-center gap-2 rounded-lg shadow-sm text-sm font-semibold border border-[rgba(255,51,102,0.10)] text-white" style="background: linear-gradient(99deg, #F36 8.96%, #FF1A53 99.91%);">Add</button>
+                      </div>
+                      <div class="flex flex-col items-start">
+                        <span class="text-grey400 text-[9px] line-through">&#8377;899</span>
+                        <div class="flex items-baseline gap-1">
+                          <span class="text-grey700 text-base font-bold">&#8377;799</span>
+                          <span class="text-grey400 text-[11px]">+ 96 taxes /night</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex md:hidden flex-row items-center justify-between w-full mt-4 gap-2">
+              <button class="text-radicalred text-sm font-bold flex items-center gap-1">
+                Availability calendar
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5L6 7.5L9 4.5" stroke="#FF3366" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 5. BOOKING WIDGET — Updated Tabs                              -->
+    <!-- ============================================================ -->
+    <section id="booking-widget" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 5</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Booking Widget <span class="text-radicalred">(Updated Defaults)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Workation default = 3 nights, Colive default = 5 nights.</p>
+      </div>
+
+      <div class="md:min-w-[704px] max-w-[780px] p-4 bg-white border border-grey50 rounded-xl shadow-custom-double">
+        <div class="h-[51px] border-b border-grey50 flex gap-6">
+          <div class="relative w-[77px] h-[43px] flex flex-col items-center justify-center gap-1 cursor-pointer text-grey400 widget-tab" data-tab="hostels" onclick="setWidgetTab('hostels')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="10" width="7" height="8" rx="1"/><rect x="11" y="10" width="7" height="8" rx="1"/><rect x="2" y="3" width="16" height="5" rx="1"/></svg>
+            <span class="text-sm">Hostels</span>
+          </div>
+          <div class="relative w-[77px] h-[43px] flex flex-col items-center justify-center gap-1 cursor-pointer text-radicalred widget-tab" data-tab="workation" onclick="setWidgetTab('workation')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><rect x="3" y="4" width="14" height="10" rx="2"/><path d="M6 14h8v2H6z"/><path d="M8 16h4v1H8z"/></svg>
+            <span class="text-sm">Workation</span>
+            <div class="absolute bottom-0 left-0 w-full h-[1px] bg-radicalred translate-y-[8px] tab-indicator"></div>
+          </div>
+          <div class="relative w-[77px] h-[43px] flex flex-col items-center justify-center gap-1 cursor-pointer text-grey400 widget-tab" data-tab="colive" onclick="setWidgetTab('colive')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2L2 8h2v8h12V8h2L10 2z"/><rect x="8" y="11" width="4" height="5"/></svg>
+            <span class="text-sm">Colive</span>
+          </div>
+          <div class="relative w-[77px] h-[43px] flex flex-col items-center justify-center gap-1 cursor-pointer text-grey400 widget-tab" data-tab="group" onclick="setWidgetTab('group')">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><circle cx="7" cy="7" r="3"/><circle cx="13" cy="7" r="3"/><path d="M1 16c0-3 3-5 6-5s6 2 6 5"/><path d="M7 16c0-3 3-5 6-5s6 2 6 5"/></svg>
+            <span class="text-sm">Group</span>
+          </div>
+        </div>
+
+        <div class="mt-6 flex flex-col md:flex-row justify-between items-stretch">
+          <div class="flex flex-col w-full md:w-[263px]">
+            <span class="text-xs text-grey400">Where</span>
+            <select class="bg-transparent border-none text-base text-grey700 outline-none w-full mt-1">
+              <option>Select hostel</option>
+              <option>goSTOPS Manali</option>
+              <option>goSTOPS Rishikesh</option>
+              <option>goSTOPS Bir</option>
+            </select>
+          </div>
+          <div class="hidden md:block w-[2px] h-[50px] bg-grey50 mx-6"></div>
+          <div class="md:hidden border-[0.5px] bg-grey50 my-4"></div>
+          <div>
+            <div class="flex gap-4 md:gap-9">
+              <div class="flex flex-col gap-1 w-[96px]">
+                <span class="text-xs text-grey700">Check-in</span>
+                <span id="widget-checkin" class="text-sm font-semibold text-grey900 pt-1">11 Mar 2026</span>
+              </div>
+              <div class="flex flex-col gap-1 w-[96px]">
+                <span class="text-xs text-grey700">Check-out</span>
+                <span id="widget-checkout" class="text-sm font-semibold text-grey900 pt-1">14 Mar 2026</span>
+              </div>
+            </div>
+            <p id="widget-hint" class="text-grey400 text-[10px] mt-2">*Select minimum 3 nights to get 5% extra discount</p>
+          </div>
+          <div class="mt-4 md:mt-0 md:ml-14">
+            <button class="w-full md:w-[113px] h-[48px] md:h-[43px] rounded-xl md:rounded-2xl bg-radicalred text-white font-bold text-base md:text-sm">BOOK NOW</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- 6. BOOKING SUMMARY — Split Discount Lines                     -->
+    <!-- ============================================================ -->
+    <section id="booking-summary" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 6</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Booking Summary <span class="text-radicalred">(Split Discount Lines)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Two separate lines: "goSTOPS Discount" (base) + "Coliving/Workation discount" (package savings).</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Coliving 14+ Booking Summary -->
+        <div class="bg-white border border-grey50 rounded-2xl p-6 shadow-card">
+          <h4 class="font-bold text-lg mb-4 text-grey900">Coliving 14+ — Price Summary</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between text-grey700 text-base">
+              <span>Room charges (14N x &#8377;799)</span>
+              <span>&#8377;11,186</span>
+            </div>
+            <div class="flex justify-between text-base">
+              <div class="flex items-center gap-2">
+                <span class="text-grey700">goSTOPS Discount</span>
+                <span>🔥</span>
+              </div>
+              <span class="text-successgreen flex items-center gap-1">-&#8377;1,400</span>
+            </div>
+            <div class="flex justify-between text-base">
+              <div class="flex items-center gap-2">
+                <span class="text-grey700">Coliving discount</span>
+                <span>🔥</span>
+              </div>
+              <span class="text-successgreen flex items-center gap-1">-&#8377;3,486</span>
+            </div>
+            <div class="flex justify-between text-grey700 text-base">
+              <span>Taxes &amp; fees</span>
+              <span>&#8377;756</span>
+            </div>
+            <div class="border-t border-grey50 pt-3 flex justify-between font-bold text-lg text-grey900">
+              <span>To Pay</span>
+              <span>&#8377;7,056</span>
+            </div>
+          </div>
+          <div class="mt-3 px-3 py-2 rounded-lg bg-gradient-to-r from-[#F8FFD0] to-[#F1FFE2] border border-[#DFFFA9]">
+            <p class="text-successgreen text-sm font-medium text-center">You're saving &#8377;4,886 total!</p>
+          </div>
+        </div>
+
+        <!-- Workation 5+ Booking Summary -->
+        <div class="bg-white border border-grey50 rounded-2xl p-6 shadow-card">
+          <h4 class="font-bold text-lg mb-4 text-grey900">Workation 5+ — Price Summary</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between text-grey700 text-base">
+              <span>Room charges (5N x &#8377;899)</span>
+              <span>&#8377;4,495</span>
+            </div>
+            <div class="flex justify-between text-base">
+              <div class="flex items-center gap-2">
+                <span class="text-grey700">goSTOPS Discount</span>
+                <span>🔥</span>
+              </div>
+              <span class="text-successgreen flex items-center gap-1">-&#8377;500</span>
+            </div>
+            <div class="flex justify-between text-base">
+              <div class="flex items-center gap-2">
+                <span class="text-grey700">Workation discount</span>
+                <span>🔥</span>
+              </div>
+              <span class="text-successgreen flex items-center gap-1">-&#8377;1,000</span>
+            </div>
+            <div class="flex justify-between text-grey700 text-base">
+              <span>Taxes &amp; fees</span>
+              <span>&#8377;359</span>
+            </div>
+            <div class="border-t border-grey50 pt-3 flex justify-between font-bold text-lg text-grey900">
+              <span>To Pay</span>
+              <span>&#8377;3,354</span>
+            </div>
+          </div>
+          <div class="mt-3 px-3 py-2 rounded-lg bg-gradient-to-r from-[#F8FFD0] to-[#F1FFE2] border border-[#DFFFA9]">
+            <p class="text-successgreen text-sm font-medium text-center">You're saving &#8377;1,500 total!</p>
+          </div>
+        </div>
+
+        <!-- Before (Old) -->
+        <div class="bg-white border border-grey50 rounded-2xl p-6 shadow-card opacity-50">
+          <h4 class="font-bold text-lg mb-4 text-grey900">OLD — Single Line (Before)</h4>
+          <div class="space-y-3">
+            <div class="flex justify-between text-grey700 text-base">
+              <span>Room charges</span>
+              <span>&#8377;11,186</span>
+            </div>
+            <div class="flex justify-between text-base">
+              <div class="flex items-center gap-2">
+                <span class="text-grey700">goSTOPS Discount</span>
+                <span>🔥</span>
+              </div>
+              <span class="text-successgreen">-&#8377;4,886</span>
+            </div>
+            <div class="border-t border-grey50 pt-3 flex justify-between font-bold text-lg text-grey900">
+              <span>To Pay</span>
+              <span>&#8377;7,056</span>
+            </div>
+          </div>
+          <div class="mt-2 text-center">
+            <span class="text-xs text-radicalred font-bold bg-radicalred/10 px-3 py-1 rounded-full">CURRENT — NO SPLIT</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="mt-12 border-t border-grey50 py-6 text-center text-sm text-grey400">
+    goSTOPS Multi-Tier Packages — Design Prototype &middot; March 2026
+  </footer>
+
+  <script>
+    // === COLIVING NUDGES ===
+    // Base: 799, 5+: 499 (save 300), 14+: 449 (save 350), 28+: 399 (save 400)
+    const colivingTiers = [
+      { name: 'Coliving 5+', range: { min: 5, max: 13 }, add_range: { min: 3, max: 4 }, save: 300, rate: 499 },
+      { name: 'Coliving 14+', range: { min: 14, max: 27 }, add_range: { min: 7, max: 13 }, save: 350, rate: 449, extra_save: 50 },
+      { name: 'Coliving 28+', range: { min: 28, max: 999 }, add_range: { min: 17, max: 27 }, save: 400, rate: 399, extra_save: 50 },
+    ];
+
+    const orangeStyle = { border: '1px solid #FFDE93', borderBottom: 'none', background: 'linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%)', boxShadow: '2px -2px 23px 0 rgba(70,69,70,0.10)' };
+    const greenStyle = { border: '1px solid #DFFFA9', borderBottom: 'none', background: 'linear-gradient(90deg, #F8FFD0 0%, #F1FFE2 100%)', boxShadow: '2px -2px 23px 0 rgba(70,69,70,0.10)' };
+    const neutralStyle = { border: '1px solid #EFEFEF', borderBottom: 'none', background: '#FAFAFA', boxShadow: 'none' };
+    const sealSvg = '<svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>';
+
+    function updateColivingNudge(nights) {
+      nights = parseInt(nights);
+      document.getElementById('coliving-nights').textContent = nights;
+
+      let nudgeHTML = '';
+      let style = neutralStyle;
+
+      // Find highest unlocked tier
+      let unlockedTier = null;
+      let unlockedIdx = -1;
+      for (let i = colivingTiers.length - 1; i >= 0; i--) {
+        if (nights >= colivingTiers[i].range.min) {
+          unlockedTier = colivingTiers[i];
+          unlockedIdx = i;
+          break;
+        }
+      }
+
+      // Check upsell: if unlocked a tier, check if in add_range of next tier
+      let addTier = null;
+      if (unlockedTier && unlockedIdx < colivingTiers.length - 1) {
+        const next = colivingTiers[unlockedIdx + 1];
+        if (nights >= next.add_range.min && nights <= next.add_range.max) {
+          addTier = next;
+        }
+      }
+
+      // Not unlocked any — check first tier add_range
+      if (!unlockedTier && nights >= colivingTiers[0].add_range.min && nights <= colivingTiers[0].add_range.max) {
+        addTier = colivingTiers[0];
+      }
+
+      if (addTier && unlockedTier) {
+        // Upsell from current tier to next
+        const nightsToAdd = addTier.range.min - nights;
+        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save extra ₹${addTier.extra_save}/night</span></span>`;
+        style = orangeStyle;
+      } else if (addTier && !unlockedTier) {
+        // First tier add
+        const nightsToAdd = addTier.range.min - nights;
+        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save ₹${addTier.save}/night</span></span>`;
+        style = orangeStyle;
+      } else if (unlockedTier) {
+        nudgeHTML = `<span class="text-[#008000] text-sm font-medium">🎉 Yay! You're saving ₹${unlockedTier.save}/night</span>`;
+        style = greenStyle;
+      } else {
+        nudgeHTML = `<span class="text-grey400 text-sm">Select more nights to unlock offers</span>`;
+        style = neutralStyle;
+      }
+
+      ['coliving-nudge-desktop', 'coliving-nudge-mobile'].forEach(id => {
+        const el = document.getElementById(id);
+        el.querySelector('div').innerHTML = nudgeHTML;
+        Object.assign(el.style, style);
+      });
+    }
+
+    // === WORKATION NUDGES ===
+    // Base: 899, 3+: 854 (save 45), 5+: 827 (save 72, extra 27)
+    const workationTiers = [
+      { name: 'Workation 3+', range: { min: 3, max: 4 }, add_range: { min: 1, max: 2 }, save: 45, rate: 854 },
+      { name: 'Workation 5+', range: { min: 5, max: 999 }, add_range: { min: 3, max: 4 }, save: 72, rate: 827, extra_save: 27 },
+    ];
+
+    function updateWorkationNudge(nights) {
+      nights = parseInt(nights);
+      document.getElementById('workation-nights').textContent = nights;
+
+      let nudgeHTML = '';
+      let style = orangeStyle;
+
+      // Find highest unlocked
+      let unlockedTier = null;
+      let unlockedIdx = -1;
+      for (let i = workationTiers.length - 1; i >= 0; i--) {
+        if (nights >= workationTiers[i].range.min) {
+          unlockedTier = workationTiers[i];
+          unlockedIdx = i;
+          break;
+        }
+      }
+
+      // Check upsell
+      let addTier = null;
+      if (unlockedTier && unlockedIdx < workationTiers.length - 1) {
+        const next = workationTiers[unlockedIdx + 1];
+        if (nights >= next.add_range.min && nights <= next.add_range.max) {
+          addTier = next;
+        }
+      }
+      if (!unlockedTier && nights >= workationTiers[0].add_range.min && nights <= workationTiers[0].add_range.max) {
+        addTier = workationTiers[0];
+      }
+
+      if (addTier && unlockedTier) {
+        const nightsToAdd = addTier.range.min - nights;
+        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save extra ₹${addTier.extra_save}/night</span></span>`;
+        style = orangeStyle;
+      } else if (addTier && !unlockedTier) {
+        const nightsToAdd = addTier.range.min - nights;
+        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save ₹${addTier.save}/night</span></span>`;
+        style = orangeStyle;
+      } else if (unlockedTier) {
+        nudgeHTML = `<span class="text-[#008000] text-sm font-medium">🎉 Yay! You're saving ₹${unlockedTier.save}/night</span>`;
+        style = greenStyle;
+      }
+
+      ['workation-nudge-desktop', 'workation-nudge-mobile'].forEach(id => {
+        const el = document.getElementById(id);
+        el.querySelector('div').innerHTML = nudgeHTML;
+        Object.assign(el.style, style);
+      });
+    }
+
+    // === BOOKING WIDGET ===
+    const tabDefaults = {
+      hostels: { nights: 1, hint: '', checkin: '11 Mar 2026', checkout: '12 Mar 2026' },
+      workation: { nights: 3, hint: '*Select minimum 3 nights to get 5% extra discount', checkin: '11 Mar 2026', checkout: '14 Mar 2026' },
+      colive: { nights: 5, hint: '*Select minimum 5 nights to unlock special prices', checkin: '11 Mar 2026', checkout: '16 Mar 2026' },
+      group: { nights: 1, hint: '*Groups of 4+ unlock exclusive discounts', checkin: '11 Mar 2026', checkout: '12 Mar 2026' },
+    };
+
+    function setWidgetTab(tab) {
+      document.querySelectorAll('.widget-tab').forEach(el => {
+        const isActive = el.dataset.tab === tab;
+        el.classList.toggle('text-radicalred', isActive);
+        el.classList.toggle('text-grey400', !isActive);
+        const indicator = el.querySelector('.tab-indicator');
+        if (indicator) indicator.remove();
+        if (isActive) {
+          const div = document.createElement('div');
+          div.className = 'absolute bottom-0 left-0 w-full h-[1px] bg-radicalred translate-y-[8px] tab-indicator';
+          el.appendChild(div);
+        }
+      });
+      const config = tabDefaults[tab];
+      document.getElementById('widget-checkin').textContent = config.checkin;
+      document.getElementById('widget-checkout').textContent = config.checkout;
+      document.getElementById('widget-hint').textContent = config.hint;
+      document.getElementById('widget-hint').style.display = config.hint ? 'block' : 'none';
+    }
+
+    // Init
+    setWidgetTab('workation');
+  </script>
+
+</body>
+</html>
