@@ -43,6 +43,23 @@
     input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; background: #EFEFEF; border-radius: 3px; outline: none; }
     input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 20px; background: #FF3366; border-radius: 50%; cursor: pointer; }
     .nudge-bar { transition: all 0.3s ease; }
+    .pop { animation: pop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes pop { 0%{transform:scale(0.7)} 100%{transform:scale(1)} }
+    .pulse { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(212,136,12,0.35)} 50%{box-shadow:0 0 0 5px rgba(212,136,12,0)} }
+    .ms-circle {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; border-width: 2px; border-style: solid;
+      background: white; flex-shrink: 0;
+    }
+    .ms-circle .ms-label { font-size: 8px; font-weight: 800; line-height: 1; }
+    .ms-badge {
+      position: absolute; bottom: -2px; right: -2px;
+      width: 12px; height: 12px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid white;
+    }
   </style>
 </head>
 <body class="bg-white text-grey900">
@@ -60,6 +77,7 @@
       <a href="#carousel-workation" class="hover:text-radicalred">Workation Carousel</a>
       <a href="#nudges" class="hover:text-radicalred">Offer Nudges</a>
       <a href="#room-badges" class="hover:text-radicalred">Room Badges</a>
+      <a href="#group-nudge" class="hover:text-radicalred">Group Nudge</a>
       <a href="#booking-widget" class="hover:text-radicalred">Booking Widget</a>
       <a href="#booking-summary" class="hover:text-radicalred">Booking Summary</a>
     </nav>
@@ -90,6 +108,7 @@
       <div class="mb-12">
         <div class="mb-4">
           <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 5+ Days — <span class="font-bold">flexibility</span> meets savings!</p>
+          <p class="text-sm font-bold text-successgreen mt-1">Save extra upto Rs. 300/night</p>
         </div>
         <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
           <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
@@ -150,6 +169,7 @@
       <div class="mb-12">
         <div class="mb-4">
           <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 14+ Days — <span class="font-bold">settle in</span>, save more!</p>
+          <p class="text-sm font-bold text-successgreen mt-1">Save extra upto Rs. 350/night</p>
         </div>
         <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
           <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
@@ -210,6 +230,7 @@
       <div>
         <div class="mb-4">
           <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Stay for 28+ Days — <span class="font-bold">make it home</span>, get the best prices!</p>
+          <p class="text-sm font-bold text-successgreen mt-1">Save extra upto Rs. 400/night</p>
         </div>
         <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
           <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
@@ -288,7 +309,8 @@
       <!-- Tier 1: Workation 3+ -->
       <div class="mb-12">
         <div class="mb-4">
-          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 3 or more nights starting &#8377;1,499/week!</p>
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 3+ nights — <span class="font-bold">explore more</span>, spend less!</p>
+          <p class="text-sm font-bold text-successgreen mt-1">Save extra upto Rs. 45/night</p>
         </div>
         <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
           <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
@@ -348,7 +370,8 @@
       <!-- Tier 2: Workation 5+ -->
       <div>
         <div class="mb-4">
-          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 5 or more nights starting &#8377;999/week!</p>
+          <p class="text-[16px] md:text-[19px] font-semibold text-grey400">Live for 5+ nights — <span class="font-bold">stay longer</span>, save bigger!</p>
+          <p class="text-sm font-bold text-successgreen mt-1">Save extra upto Rs. 72/night</p>
         </div>
         <div class="flex gap-5 overflow-x-auto scrollbar-hide pb-4">
           <div class="min-w-[296px] p-3 rounded-[24px] border border-bordergray flex flex-col">
@@ -432,12 +455,8 @@
         <!-- Desktop sidebar nudge -->
         <div class="mb-4">
           <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Desktop Sidebar</p>
-          <div class="max-w-[380px]">
-            <div id="coliving-nudge-desktop" class="nudge-bar flex px-4 py-3 justify-center items-center gap-[10px] self-stretch rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;">
-              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
-                <span class="text-grey400">Select more nights to unlock offers</span>
-              </div>
-            </div>
+          <div class="max-w-[420px]">
+            <div id="coliving-nudge-desktop" class="nudge-bar flex items-center gap-1.5 px-3 py-2 rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;"></div>
           </div>
         </div>
 
@@ -445,11 +464,7 @@
         <div>
           <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Mobile Bottom Bar</p>
           <div class="max-w-[420px]">
-            <div id="coliving-nudge-mobile" class="nudge-bar flex px-4 py-2 justify-center items-center gap-[10px] self-stretch rounded-t-[16px]" style="border: 1px solid #EFEFEF; border-bottom: none; background: #FAFAFA;">
-              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
-                <span class="text-grey400">Select more nights to unlock offers</span>
-              </div>
-            </div>
+            <div id="coliving-nudge-mobile" class="nudge-bar flex items-center gap-1.5 px-3 py-1.5 rounded-t-[16px]" style="border: 1px solid #EFEFEF; border-bottom: none; background: #FAFAFA;"></div>
             <div class="flex items-center justify-between px-4 py-3 bg-white border border-grey50 rounded-b-[16px]">
               <div>
                 <p class="text-xs text-grey400">Starting from</p>
@@ -474,15 +489,8 @@
 
         <div class="mb-4">
           <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Desktop Sidebar</p>
-          <div class="max-w-[380px]">
-            <div id="workation-nudge-desktop" class="nudge-bar flex px-4 py-3 justify-center items-center gap-[10px] self-stretch rounded-2xl" style="border: 1px solid #FFDE93; border-bottom: none; background: linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%); box-shadow: 2px -2px 23px 0 rgba(70,69,70,0.10);">
-              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
-                <span class="flex items-center gap-2">
-                  <svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>
-                  <span class="text-[#A66A02] text-sm font-medium">Add 2 more nights to save ₹45/night</span>
-                </span>
-              </div>
-            </div>
+          <div class="max-w-[420px]">
+            <div id="workation-nudge-desktop" class="nudge-bar flex items-center gap-1.5 px-3 py-2 rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;"></div>
           </div>
         </div>
 
@@ -490,14 +498,7 @@
         <div>
           <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Mobile Bottom Bar</p>
           <div class="max-w-[420px]">
-            <div id="workation-nudge-mobile" class="nudge-bar flex px-4 py-2 justify-center items-center gap-[10px] self-stretch rounded-t-[16px]" style="border: 1px solid #FFDE93; border-bottom: none; background: linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%); box-shadow: 2px -2px 23px 0 rgba(70,69,70,0.10);">
-              <div class="text-sm leading-[19px] text-grey700 font-medium text-center">
-                <span class="flex items-center gap-2">
-                  <svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>
-                  <span class="text-[#A66A02] text-sm font-medium">Add 2 more nights to save ₹45/night</span>
-                </span>
-              </div>
-            </div>
+            <div id="workation-nudge-mobile" class="nudge-bar flex items-center gap-1.5 px-3 py-1.5 rounded-t-[16px]" style="border: 1px solid #EFEFEF; border-bottom: none; background: #FAFAFA;"></div>
             <div class="flex items-center justify-between px-4 py-3 bg-white border border-grey50 rounded-b-[16px]">
               <div>
                 <p class="text-xs text-grey400">Starting from</p>
@@ -511,15 +512,117 @@
     </section>
 
     <!-- ============================================================ -->
+    <!-- 3b. GROUP NUDGE INTERACTION — Cart-Aware Priority              -->
+    <!-- ============================================================ -->
+    <section id="group-nudge" class="proto-section">
+      <div class="mb-6">
+        <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 3b</span>
+        <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
+          Group Nudge Interaction <span class="text-radicalred">(Cart-Aware Priority)</span>
+        </h2>
+        <p class="text-grey400 text-base mt-1">Shows how nudges switch between workation/coliving and group based on cart state. 0 beds = date-based nudge, 2+ beds (within group day_range) = group nudge.</p>
+      </div>
+
+      <!-- Priority Waterfall Rules -->
+      <div class="mb-8 bg-grey50/50 rounded-xl p-5">
+        <h4 class="text-sm font-bold text-grey700 mb-3">Cart-Aware Priority Waterfall</h4>
+        <ol class="text-xs text-grey400 space-y-1.5 list-decimal list-inside">
+          <li><strong class="text-grey700">Cart empty (0 beds)</strong> &rarr; Show workation/coliving nudge (date-based)</li>
+          <li><strong class="text-grey700">Cart has 2+ beds AND group-eligible AND nights within day_range (1-3)</strong> &rarr; Switch to group nudge (bed-based)</li>
+          <li><strong class="text-grey700">Cart has 2+ beds but NOT group-eligible</strong> &rarr; Continue showing workation/coliving nudge</li>
+          <li><strong class="text-grey700">Cart has 1 bed</strong> &rarr; Continue showing workation/coliving nudge (single bed ≠ group)</li>
+        </ol>
+        <p class="text-[10px] text-grey300 mt-3">Group discount applies <strong>on top of</strong> workation/coliving pricing — it's a coupon-based discount, not a replacement. The nudge switch is purely about which message to show.</p>
+      </div>
+
+      <!-- Workation + Group Hostel -->
+      <div class="mb-10">
+        <h3 class="text-lg font-bold text-grey700 mb-1">Workation + Group Hostel — goSTOPS Manali</h3>
+        <p class="text-xs text-grey400 mb-4">Workation: 3+ save &#8377;45/N, 5+ save &#8377;72/N &middot; Group: 7+ beds = 10% off (coupon GROUP10) &middot; Group day_range: 1-3 nights</p>
+
+        <div class="flex flex-col sm:flex-row items-stretch gap-4 mb-6">
+          <div class="flex items-center gap-4 bg-grey50/50 rounded-xl p-4 flex-1">
+            <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Nights:</label>
+            <input type="range" id="wg-nights-slider" min="1" max="10" value="3" class="flex-1" oninput="updateGroupDemo('wg')" />
+            <span id="wg-nights-val" class="text-2xl font-bold text-radicalred w-12 text-center">3</span>
+          </div>
+          <div class="flex items-center gap-4 bg-grey50/50 rounded-xl p-4 flex-1">
+            <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Beds in cart:</label>
+            <input type="range" id="wg-beds-slider" min="0" max="12" value="0" class="flex-1" oninput="updateGroupDemo('wg')" />
+            <span id="wg-beds-val" class="text-2xl font-bold text-radicalred w-12 text-center">0</span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Active Nudge <span id="wg-nudge-source" class="text-radicalred normal-case">(workation)</span></p>
+          <div class="max-w-[420px]">
+            <div id="wg-nudge-bar" class="nudge-bar flex items-center gap-1.5 px-3 py-2 rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;"></div>
+          </div>
+        </div>
+
+        <!-- State table -->
+        <div class="mt-4 bg-white border border-grey50 rounded-xl overflow-hidden">
+          <table class="w-full text-xs">
+            <thead><tr class="bg-grey50/50 text-grey400 text-left"><th class="px-3 py-2">Cart State</th><th class="px-3 py-2">Nudge Shown</th></tr></thead>
+            <tbody class="text-grey700">
+              <tr class="border-t border-grey50"><td class="px-3 py-2">0 beds</td><td class="px-3 py-2"><span class="text-successgreen">Green workation:</span> "🎉 Saving &#8377;45/N"</td></tr>
+              <tr class="border-t border-grey50"><td class="px-3 py-2">1 bed added</td><td class="px-3 py-2"><span class="text-successgreen">Green workation:</span> "🎉 Saving &#8377;45/N"</td></tr>
+              <tr class="border-t border-grey50 bg-[#FFF8E8]"><td class="px-3 py-2">2 beds added (in group add_range)</td><td class="px-3 py-2"><span class="text-[#A66A02]">Orange group:</span> "Add X more beds and get 10% offer"</td></tr>
+              <tr class="border-t border-grey50 bg-[#F0FFF0]"><td class="px-3 py-2">7+ beds added (in group range)</td><td class="px-3 py-2"><span class="text-successgreen">Green group:</span> "🎉 Yay! Group discount unlocked | Use 'GROUP10'"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Coliving + Group Hostel -->
+      <div>
+        <h3 class="text-lg font-bold text-grey700 mb-1">Coliving + Group Hostel — goSTOPS Bangalore HSR</h3>
+        <p class="text-xs text-grey400 mb-4">Coliving: 5+ save &#8377;300/N, 14+ save &#8377;350/N, 28+ save &#8377;400/N &middot; Group: 7+ beds = 10% off (coupon GROUP10) &middot; Group day_range: 1-3 nights</p>
+
+        <div class="flex flex-col sm:flex-row items-stretch gap-4 mb-6">
+          <div class="flex items-center gap-4 bg-grey50/50 rounded-xl p-4 flex-1">
+            <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Nights:</label>
+            <input type="range" id="cg-nights-slider" min="1" max="35" value="2" class="flex-1" oninput="updateGroupDemo('cg')" />
+            <span id="cg-nights-val" class="text-2xl font-bold text-radicalred w-12 text-center">2</span>
+          </div>
+          <div class="flex items-center gap-4 bg-grey50/50 rounded-xl p-4 flex-1">
+            <label class="text-sm font-semibold text-grey700 whitespace-nowrap">Beds in cart:</label>
+            <input type="range" id="cg-beds-slider" min="0" max="12" value="0" class="flex-1" oninput="updateGroupDemo('cg')" />
+            <span id="cg-beds-val" class="text-2xl font-bold text-radicalred w-12 text-center">0</span>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <p class="text-xs font-bold text-grey400 uppercase tracking-wider mb-2">Active Nudge <span id="cg-nudge-source" class="text-radicalred normal-case">(coliving)</span></p>
+          <div class="max-w-[420px]">
+            <div id="cg-nudge-bar" class="nudge-bar flex items-center gap-1.5 px-3 py-2 rounded-2xl" style="border: 1px solid #EFEFEF; background: #FAFAFA;"></div>
+          </div>
+        </div>
+
+        <!-- State table -->
+        <div class="mt-4 bg-white border border-grey50 rounded-xl overflow-hidden">
+          <table class="w-full text-xs">
+            <thead><tr class="bg-grey50/50 text-grey400 text-left"><th class="px-3 py-2">Cart State</th><th class="px-3 py-2">Nudge Shown</th></tr></thead>
+            <tbody class="text-grey700">
+              <tr class="border-t border-grey50"><td class="px-3 py-2">0 beds (2 nights)</td><td class="px-3 py-2"><span class="text-grey400">Neutral coliving:</span> "Add nights to unlock savings"</td></tr>
+              <tr class="border-t border-grey50 bg-[#FFF8E8]"><td class="px-3 py-2">2 beds added (nights within day_range)</td><td class="px-3 py-2"><span class="text-[#A66A02]">Orange group:</span> "Add X more beds and get 10% offer"</td></tr>
+              <tr class="border-t border-grey50 bg-[#F0FFF0]"><td class="px-3 py-2">7+ beds added</td><td class="px-3 py-2"><span class="text-successgreen">Green group:</span> "🎉 Yay! Group discount unlocked | Use 'GROUP10'"</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ -->
     <!-- 4. ROOM CARD BADGES — Savings-Based                           -->
     <!-- ============================================================ -->
     <section id="room-badges" class="proto-section">
       <div class="mb-6">
         <span class="inline-block px-3 py-1 bg-radicalred/10 text-radicalred text-xs font-bold rounded-full mb-3">SECTION 4</span>
         <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
-          Room Card Badges <span class="text-radicalred">(Savings-Based)</span>
+          Room Card Badges <span class="text-radicalred">(Tier Applied)</span>
         </h2>
-        <p class="text-grey400 text-base mt-1">Badges now show exact savings. Card layout matches actual NewRoomCard component.</p>
+        <p class="text-grey400 text-base mt-1">Badges show which tier is applied (e.g. "WORKATION3 APPLIED"). Card layout matches actual NewRoomCard component.</p>
       </div>
 
       <div class="flex flex-col gap-8">
@@ -562,7 +665,7 @@
                 <div class="min-h-[22px]">
                   <div class="inline-flex items-center gap-1 px-2 py-1 rounded-md border-[0.25px] border-[#C6FFC6] bg-gradient-to-r from-[#C7FD8F] via-[#EDFD8F] to-[#EDFD8F] text-[#008000] text-[10px] font-bold">
                     <svg width="12" height="13" viewBox="0 0 12 13" fill="none"><path d="M6 0.5L7.34 4.59L11.71 4.91L8.32 7.68L9.43 11.91L6 9.61L2.57 11.91L3.68 7.68L0.29 4.91L4.66 4.59L6 0.5Z" fill="#008000"/></svg>
-                    Save &#8377;350/night
+                    COLIVING14 APPLIED
                   </div>
                 </div>
                 <div class="flex justify-between items-start gap-4 self-stretch">
@@ -660,7 +763,7 @@
                 <div class="min-h-[22px]">
                   <div class="inline-flex items-center gap-1 px-2 py-1 rounded-md border-[0.25px] border-[#C6FFC6] bg-gradient-to-r from-[#C7FD8F] via-[#EDFD8F] to-[#EDFD8F] text-[#008000] text-[10px] font-bold">
                     <svg width="12" height="13" viewBox="0 0 12 13" fill="none"><path d="M6 0.5L7.34 4.59L11.71 4.91L8.32 7.68L9.43 11.91L6 9.61L2.57 11.91L3.68 7.68L0.29 4.91L4.66 4.59L6 0.5Z" fill="#008000"/></svg>
-                    Save ₹72/night
+                    WORKATION5 APPLIED
                   </div>
                 </div>
                 <div class="flex justify-between items-start gap-4 self-stretch">
@@ -799,7 +902,7 @@
         <h2 class="text-[28px] md:text-[33px] leading-tight font-bold text-grey700">
           Booking Summary <span class="text-radicalred">(Split Discount Lines)</span>
         </h2>
-        <p class="text-grey400 text-base mt-1">Two separate lines: "goSTOPS Discount" (base) + "Coliving/Workation discount" (package savings).</p>
+        <p class="text-grey400 text-base mt-1">Two separate lines: "Direct booking discount" (base) + "Coliving/Workation discount" (package savings).</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -808,20 +911,18 @@
           <h4 class="font-bold text-lg mb-4 text-grey900">Coliving 14+ — Price Summary</h4>
           <div class="space-y-3">
             <div class="flex justify-between text-grey700 text-base">
-              <span>Room charges (14N x &#8377;799)</span>
+              <span>Original price (14N x &#8377;799)</span>
               <span>&#8377;11,186</span>
             </div>
             <div class="flex justify-between text-base">
               <div class="flex items-center gap-2">
-                <span class="text-grey700">goSTOPS Discount</span>
-                <span>🔥</span>
+                <span class="text-grey700">Direct booking discount</span>
               </div>
               <span class="text-successgreen flex items-center gap-1">-&#8377;1,400</span>
             </div>
             <div class="flex justify-between text-base">
               <div class="flex items-center gap-2">
-                <span class="text-grey700">Coliving discount</span>
-                <span>🔥</span>
+                <span class="text-grey700">COLIVING14 discount</span>
               </div>
               <span class="text-successgreen flex items-center gap-1">-&#8377;3,486</span>
             </div>
@@ -844,20 +945,18 @@
           <h4 class="font-bold text-lg mb-4 text-grey900">Workation 5+ — Price Summary</h4>
           <div class="space-y-3">
             <div class="flex justify-between text-grey700 text-base">
-              <span>Room charges (5N x &#8377;899)</span>
+              <span>Original price (5N x &#8377;899)</span>
               <span>&#8377;4,495</span>
             </div>
             <div class="flex justify-between text-base">
               <div class="flex items-center gap-2">
-                <span class="text-grey700">goSTOPS Discount</span>
-                <span>🔥</span>
+                <span class="text-grey700">Direct booking discount</span>
               </div>
               <span class="text-successgreen flex items-center gap-1">-&#8377;500</span>
             </div>
             <div class="flex justify-between text-base">
               <div class="flex items-center gap-2">
-                <span class="text-grey700">Workation discount</span>
-                <span>🔥</span>
+                <span class="text-grey700">WORKATION5 discount</span>
               </div>
               <span class="text-successgreen flex items-center gap-1">-&#8377;1,000</span>
             </div>
@@ -909,132 +1008,116 @@
   </footer>
 
   <script>
+    // === SHARED NUDGE ASSETS ===
+    const tickBadge = `<div class="ms-badge bg-[#4CAF50]"><svg width="7" height="7" viewBox="0 0 12 12"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    const lockBadgeOrange = `<div class="ms-badge bg-[#D4880C]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>`;
+    const lockBadgeGrey = `<div class="ms-badge bg-[#D0D0D0]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>`;
+
+    const orangeBase = { border: '1px solid #FFDE93', background: 'linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%)', boxShadow: '2px -2px 16px 0 rgba(70,69,70,0.08)' };
+    const greenBase = { border: '1px solid #DFFFA9', background: 'linear-gradient(90deg, #F8FFD0 0%, #F1FFE2 100%)', boxShadow: '2px -2px 16px 0 rgba(70,69,70,0.08)' };
+    const neutralBase = { border: '1px solid #EFEFEF', background: '#FAFAFA', boxShadow: 'none' };
+
+    function getStyleForEl(base, isMobile) {
+      const s = { ...base };
+      s.borderBottom = isMobile ? 'none' : s.border;
+      return s;
+    }
+
+    function getState(tiers, n) {
+      let ui = -1;
+      for (let i = tiers.length - 1; i >= 0; i--) { if (n >= tiers[i].min) { ui = i; break; } }
+      let ai = -1;
+      if (ui >= 0 && ui < tiers.length - 1) { const x = tiers[ui + 1]; if (n >= x.add_min && n <= x.add_max) ai = ui + 1; }
+      if (ui < 0 && n >= tiers[0].add_min && n <= tiers[0].add_max) ai = 0;
+      return { ui, ai };
+    }
+
+    function renderCircles(tiers, state) {
+      let h = '';
+      tiers.forEach((t, i) => {
+        const unlocked = i <= state.ui;
+        const isNext = i === state.ai;
+        if (unlocked) {
+          h += `<div class="ms-circle border-[#4CAF50] bg-[#F0FFF0] pop"><span class="ms-label text-[#2E7D32]">${t.label}</span>${tickBadge}</div>`;
+        } else if (isNext) {
+          h += `<div class="ms-circle border-[#D4880C] bg-[#FFF8E8] pulse"><span class="ms-label text-[#D4880C]">${t.label}</span>${lockBadgeOrange}</div>`;
+        } else {
+          h += `<div class="ms-circle border-[#D0D0D0] bg-[#F8F8F8]"><span class="ms-label text-[#aaa]">${t.label}</span>${lockBadgeGrey}</div>`;
+        }
+      });
+      return h;
+    }
+
+    function renderNudgeText(tiers, n, state) {
+      let h = '<div class="flex items-center gap-1 ml-1">';
+      if (state.ai >= 0 && state.ui >= 0) {
+        const na = tiers[state.ai].min - n;
+        h += `<span class="text-[11px] font-semibold text-[#A66A02]">Add ${na}N to save extra ₹${tiers[state.ai].xsave}/N</span>`;
+      } else if (state.ai >= 0) {
+        const na = tiers[state.ai].min - n;
+        h += `<span class="text-[11px] font-semibold text-[#A66A02]">Add ${na}N to save ₹${tiers[state.ai].save}/N</span>`;
+      } else if (state.ui >= 0) {
+        const best = state.ui === tiers.length - 1;
+        h += `<span class="text-[11px] font-semibold text-[#008000]">🎉 Saving ₹${tiers[state.ui].save}/N${best ? ' · best!' : ''}</span>`;
+      } else {
+        h += `<span class="text-[11px] text-grey400">Add nights to unlock savings</span>`;
+      }
+      h += '</div>';
+      return h;
+    }
+
+    function getNudgeStyle(state, isMobile) {
+      if (state.ui >= 0 && state.ai < 0) return getStyleForEl(greenBase, isMobile);
+      if (state.ai >= 0) return getStyleForEl(orangeBase, isMobile);
+      return getStyleForEl(neutralBase, isMobile);
+    }
+
     // === COLIVING NUDGES ===
     // Base: 799, 5+: 499 (save 300), 14+: 449 (save 350), 28+: 399 (save 400)
     const colivingTiers = [
-      { name: 'Coliving 5+', range: { min: 5, max: 13 }, add_range: { min: 3, max: 4 }, save: 300, rate: 499 },
-      { name: 'Coliving 14+', range: { min: 14, max: 27 }, add_range: { min: 7, max: 13 }, save: 350, rate: 449, extra_save: 50 },
-      { name: 'Coliving 28+', range: { min: 28, max: 999 }, add_range: { min: 17, max: 27 }, save: 400, rate: 399, extra_save: 50 },
+      { label: '5N', min: 5, add_min: 3, add_max: 4, save: 300, xsave: null },
+      { label: '14N', min: 14, add_min: 7, add_max: 13, save: 350, xsave: 50 },
+      { label: '28N', min: 28, add_min: 17, add_max: 27, save: 400, xsave: 50 },
     ];
-
-    const orangeStyle = { border: '1px solid #FFDE93', borderBottom: 'none', background: 'linear-gradient(93deg, #FFF0CF 0.47%, #FFF5E0 99.77%)', boxShadow: '2px -2px 23px 0 rgba(70,69,70,0.10)' };
-    const greenStyle = { border: '1px solid #DFFFA9', borderBottom: 'none', background: 'linear-gradient(90deg, #F8FFD0 0%, #F1FFE2 100%)', boxShadow: '2px -2px 23px 0 rgba(70,69,70,0.10)' };
-    const neutralStyle = { border: '1px solid #EFEFEF', borderBottom: 'none', background: '#FAFAFA', boxShadow: 'none' };
-    const sealSvg = '<svg width="16" height="17" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>';
 
     function updateColivingNudge(nights) {
       nights = parseInt(nights);
       document.getElementById('coliving-nights').textContent = nights;
-
-      let nudgeHTML = '';
-      let style = neutralStyle;
-
-      // Find highest unlocked tier
-      let unlockedTier = null;
-      let unlockedIdx = -1;
-      for (let i = colivingTiers.length - 1; i >= 0; i--) {
-        if (nights >= colivingTiers[i].range.min) {
-          unlockedTier = colivingTiers[i];
-          unlockedIdx = i;
-          break;
-        }
-      }
-
-      // Check upsell: if unlocked a tier, check if in add_range of next tier
-      let addTier = null;
-      if (unlockedTier && unlockedIdx < colivingTiers.length - 1) {
-        const next = colivingTiers[unlockedIdx + 1];
-        if (nights >= next.add_range.min && nights <= next.add_range.max) {
-          addTier = next;
-        }
-      }
-
-      // Not unlocked any — check first tier add_range
-      if (!unlockedTier && nights >= colivingTiers[0].add_range.min && nights <= colivingTiers[0].add_range.max) {
-        addTier = colivingTiers[0];
-      }
-
-      if (addTier && unlockedTier) {
-        // Upsell from current tier to next
-        const nightsToAdd = addTier.range.min - nights;
-        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save extra ₹${addTier.extra_save}/night</span></span>`;
-        style = orangeStyle;
-      } else if (addTier && !unlockedTier) {
-        // First tier add
-        const nightsToAdd = addTier.range.min - nights;
-        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save ₹${addTier.save}/night</span></span>`;
-        style = orangeStyle;
-      } else if (unlockedTier) {
-        nudgeHTML = `<span class="text-[#008000] text-sm font-medium">🎉 Yay! You're saving ₹${unlockedTier.save}/night</span>`;
-        style = greenStyle;
-      } else {
-        nudgeHTML = `<span class="text-grey400 text-sm">Select more nights to unlock offers</span>`;
-        style = neutralStyle;
-      }
+      const state = getState(colivingTiers, nights);
+      const html = renderCircles(colivingTiers, state) + renderNudgeText(colivingTiers, nights, state);
 
       ['coliving-nudge-desktop', 'coliving-nudge-mobile'].forEach(id => {
         const el = document.getElementById(id);
-        el.querySelector('div').innerHTML = nudgeHTML;
-        Object.assign(el.style, style);
+        const isMobile = id.includes('mobile');
+        el.innerHTML = html;
+        Object.assign(el.style, getNudgeStyle(state, isMobile));
       });
     }
 
     // === WORKATION NUDGES ===
     // Base: 899, 3+: 854 (save 45), 5+: 827 (save 72, extra 27)
     const workationTiers = [
-      { name: 'Workation 3+', range: { min: 3, max: 4 }, add_range: { min: 1, max: 2 }, save: 45, rate: 854 },
-      { name: 'Workation 5+', range: { min: 5, max: 999 }, add_range: { min: 3, max: 4 }, save: 72, rate: 827, extra_save: 27 },
+      { label: '3N', min: 3, add_min: 1, add_max: 2, save: 45, xsave: null },
+      { label: '5N', min: 5, add_min: 4, add_max: 4, save: 72, xsave: 27 },
     ];
 
     function updateWorkationNudge(nights) {
       nights = parseInt(nights);
       document.getElementById('workation-nights').textContent = nights;
-
-      let nudgeHTML = '';
-      let style = orangeStyle;
-
-      // Find highest unlocked
-      let unlockedTier = null;
-      let unlockedIdx = -1;
-      for (let i = workationTiers.length - 1; i >= 0; i--) {
-        if (nights >= workationTiers[i].range.min) {
-          unlockedTier = workationTiers[i];
-          unlockedIdx = i;
-          break;
-        }
-      }
-
-      // Check upsell
-      let addTier = null;
-      if (unlockedTier && unlockedIdx < workationTiers.length - 1) {
-        const next = workationTiers[unlockedIdx + 1];
-        if (nights >= next.add_range.min && nights <= next.add_range.max) {
-          addTier = next;
-        }
-      }
-      if (!unlockedTier && nights >= workationTiers[0].add_range.min && nights <= workationTiers[0].add_range.max) {
-        addTier = workationTiers[0];
-      }
-
-      if (addTier && unlockedTier) {
-        const nightsToAdd = addTier.range.min - nights;
-        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save extra ₹${addTier.extra_save}/night</span></span>`;
-        style = orangeStyle;
-      } else if (addTier && !unlockedTier) {
-        const nightsToAdd = addTier.range.min - nights;
-        nudgeHTML = `<span class="flex items-center gap-2">${sealSvg}<span class="text-[#A66A02] text-sm font-medium">Add ${nightsToAdd} more night${nightsToAdd > 1 ? 's' : ''} to save ₹${addTier.save}/night</span></span>`;
-        style = orangeStyle;
-      } else if (unlockedTier) {
-        nudgeHTML = `<span class="text-[#008000] text-sm font-medium">🎉 Yay! You're saving ₹${unlockedTier.save}/night</span>`;
-        style = greenStyle;
-      }
+      const state = getState(workationTiers, nights);
+      const html = renderCircles(workationTiers, state) + renderNudgeText(workationTiers, nights, state);
 
       ['workation-nudge-desktop', 'workation-nudge-mobile'].forEach(id => {
         const el = document.getElementById(id);
-        el.querySelector('div').innerHTML = nudgeHTML;
-        Object.assign(el.style, style);
+        const isMobile = id.includes('mobile');
+        el.innerHTML = html;
+        Object.assign(el.style, getNudgeStyle(state, isMobile));
       });
     }
+
+    // Initial render
+    updateColivingNudge(1);
+    updateWorkationNudge(1);
 
     // === BOOKING WIDGET ===
     const tabDefaults = {
@@ -1066,6 +1149,83 @@
 
     // Init
     setWidgetTab('workation');
+
+    // === GROUP NUDGE INTERACTION ===
+    const groupConfig = {
+      day_range: { min: 1, max: 3 },
+      bed_tiers: [
+        { label: '7+', add_min: 2, add_max: 6, min: 7, coupon: 'GROUP10', discount: 10 },
+      ],
+      big_group_threshold: 13,
+    };
+
+    const groupDemos = {
+      wg: { tiers: workationTiers, type: 'workation', groupEligible: true },
+      cg: { tiers: colivingTiers, type: 'coliving', groupEligible: true },
+    };
+
+    function renderGroupNudge(beds, nights) {
+      const bt = groupConfig.bed_tiers[0];
+      // Big group fallback
+      if (beds > groupConfig.big_group_threshold) {
+        return {
+          html: `<div class="flex items-center gap-1.5 ml-1"><span class="text-[11px] font-semibold text-[#A66A02]">Big group? We'll make it special — <u>Contact us</u></span></div>`,
+          style: orangeBase,
+        };
+      }
+      // In range (unlocked)
+      if (beds >= bt.min) {
+        return {
+          html: `<div class="flex items-center gap-1 ml-1"><span class="text-[11px] font-semibold text-[#008000]">🎉 Yay! Group discount unlocked | Use '${bt.coupon}'</span></div>`,
+          style: greenBase,
+        };
+      }
+      // In add_range
+      if (beds >= bt.add_min && beds <= bt.add_max) {
+        const needed = bt.min - beds;
+        return {
+          html: `<div class="flex items-center gap-1 ml-1"><span class="text-[11px] font-semibold text-[#A66A02]">Add ${needed} more bed${needed > 1 ? 's' : ''} and get ${bt.discount}% offer</span></div>`,
+          style: orangeBase,
+        };
+      }
+      return null;
+    }
+
+    function updateGroupDemo(prefix) {
+      const nights = parseInt(document.getElementById(`${prefix}-nights-slider`).value);
+      const beds = parseInt(document.getElementById(`${prefix}-beds-slider`).value);
+      document.getElementById(`${prefix}-nights-val`).textContent = nights;
+      document.getElementById(`${prefix}-beds-val`).textContent = beds;
+
+      const demo = groupDemos[prefix];
+      const bar = document.getElementById(`${prefix}-nudge-bar`);
+      const sourceLabel = document.getElementById(`${prefix}-nudge-source`);
+
+      // Cart-aware priority waterfall
+      const nightsInGroupRange = nights >= groupConfig.day_range.min && nights <= groupConfig.day_range.max;
+      const useGroup = demo.groupEligible && beds >= 2 && nightsInGroupRange;
+
+      if (useGroup) {
+        // Show group nudge
+        sourceLabel.textContent = '(group)';
+        const groupResult = renderGroupNudge(beds, nights);
+        if (groupResult) {
+          bar.innerHTML = groupResult.html;
+          Object.assign(bar.style, getStyleForEl(groupResult.style, false));
+        }
+      } else {
+        // Show workation/coliving nudge
+        sourceLabel.textContent = `(${demo.type})`;
+        const state = getState(demo.tiers, nights);
+        const html = renderCircles(demo.tiers, state) + renderNudgeText(demo.tiers, nights, state);
+        bar.innerHTML = html;
+        Object.assign(bar.style, getNudgeStyle(state, false));
+      }
+    }
+
+    // Init group demos
+    updateGroupDemo('wg');
+    updateGroupDemo('cg');
   </script>
 
 </body>
