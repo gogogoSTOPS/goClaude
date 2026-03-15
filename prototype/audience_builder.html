@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Audience Builder</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; font-size: 14px; color: #111; padding: 20px; background: #fff; }
+h2 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 20px; }
+label { font-size: 12px; color: #555; display: block; margin-bottom: 4px; }
+select { font-size: 13px; border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px; background: #fff; }
+input[type=range] { width: 120px; }
+button { font-size: 13px; padding: 7px 16px; border-radius: 6px; border: 1px solid #534AB7; background: #534AB7; color: #fff; cursor: pointer; }
+button:hover { background: #3d3690; }
+button.secondary { background: #fff; color: #534AB7; }
+button.secondary:hover { background: #f0effe; }
+#status { font-size: 12px; color: #666; margin-bottom: 12px; min-height: 18px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; font-size: 11px; font-weight: 600; color: #666; padding: 6px 10px; border-bottom: 1px solid #eee; background: #fafafa; }
+td { padding: 7px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.bar-wrap { width: 80px; background: #eee; border-radius: 3px; height: 8px; display: inline-block; vertical-align: middle; }
+.bar { height: 8px; border-radius: 3px; background: #534AB7; }
+.pill { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #eeedfe; color: #534AB7; font-weight: 500; }
+.pill.strong { background: #eaf3de; color: #3B6D11; }
+.pill.weak { background: #faeeda; color: #BA7517; }
+#users-section { margin-top: 24px; }
+#user-table-wrap { max-height: 320px; overflow-y: auto; border: 1px solid #eee; border-radius: 6px; }
+</style>
+</head>
+<body>
+<h2>Audience builder — by target city</h2>
+
+<div class="row">
+  <div>
+    <label>Target city</label>
+    <select id="target">
+      <option value="">Select a city…</option>
+    </select>
+  </div>
+  <div>
+    <label>Min probability: <span id="prob-val">5%</span></label>
+    <input type="range" id="min-prob" min="1" max="40" step="1" value="5">
+  </div>
+</div>
+
+<div id="status"></div>
+<div id="origins-section" style="display:none">
+  <table id="origins-table">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="select-all" checked></th>
+        <th>Origin city</th>
+        <th>Went to target</th>
+        <th>Total travellers</th>
+        <th>Transition probability</th>
+        <th>Signal</th>
+      </tr>
+    </thead>
+    <tbody id="origins-body"></tbody>
+  </table>
+  <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+    <button id="btn-export-origins" class="secondary">Export origin list (CSV)</button>
+    <span id="selected-count" style="font-size:12px;color:#666;"></span>
+  </div>
+</div>
+
+<script>
+const TRANSITIONS = [
+  ["Goa","Alibaug",192,3977,4.8],["Mumbai","Alibaug",67,1449,4.6],["Udaipur","Alibaug",30,1485,2],["Coorg","Alibaug",21,1176,1.8],["Varanasi","Alibaug",27,1566,1.7],["Ooty","Alibaug",24,1613,1.5],["Kasol","Alibaug",23,1623,1.4],["New Delhi","Alibaug",37,2782,1.3],["Jaipur","Alibaug",21,1628,1.3],["Bengaluru","Alibaug",36,2741,1.3],["Rishikesh","Alibaug",69,6668,1],["Mussoorie","Alibaug",48,5457,0.9],["Nainital","Alibaug",22,3097,0.7],
+  ["Kochi","Alleppey",130,428,30.4],["Pondicherry","Alleppey",36,857,4.2],["Ooty","Alleppey",55,1613,3.4],["Bengaluru","Alleppey",73,2741,2.7],["Coorg","Alleppey",30,1176,2.6],["Goa","Alleppey",71,3977,1.8],["Udaipur","Alleppey",20,1485,1.3],["Rishikesh","Alleppey",23,6668,0.3],
+  ["Mukteshwar","Almora",71,1229,5.8],["Nainital","Almora",112,3097,3.6],["Rishikesh","Almora",31,6668,0.5],["Mussoorie","Almora",30,5457,0.5],
+  ["McLeod Ganj","Amritsar",105,1402,7.5],["Srinagar","Amritsar",67,935,7.2],["Jaipur","Amritsar",79,1628,4.9],["Kasol","Amritsar",75,1623,4.6],["New Delhi","Amritsar",119,2782,4.3],["Bir","Amritsar",61,1457,4.2],["Varanasi","Amritsar",64,1566,4.1],["Udaipur","Amritsar",51,1485,3.4],["Mussoorie","Amritsar",167,5457,3.1],["Mumbai","Amritsar",45,1449,3.1],["Gurugram","Amritsar",57,1901,3],["Bengaluru","Amritsar",83,2741,3],["Rishikesh","Amritsar",184,6668,2.8],["Goa","Amritsar",113,3977,2.8],["Mukteshwar","Amritsar",31,1229,2.5],["Nainital","Amritsar",74,3097,2.4],["Coorg","Amritsar",23,1176,2],["Ooty","Amritsar",23,1613,1.4],
+  ["Coorg","Bengaluru",289,1176,24.6],["Pondicherry","Bengaluru",185,857,21.6],["Ooty","Bengaluru",281,1613,17.4],["Kochi","Bengaluru",70,428,16.4],["Alleppey","Bengaluru",81,533,15.2],["Goa","Bengaluru",585,3977,14.7],["Mumbai","Bengaluru",206,1449,14.2],["New Delhi","Bengaluru",303,2782,10.9],["Gurugram","Bengaluru",146,1901,7.7],["Alibaug","Bengaluru",42,637,6.6],["Jaipur","Bengaluru",104,1628,6.4],["Amritsar","Bengaluru",89,1422,6.3],["Varanasi","Bengaluru",93,1566,5.9],["Almora","Bengaluru",23,466,4.9],["Kasol","Bengaluru",76,1623,4.7],["Srinagar","Bengaluru",43,935,4.6],["Udaipur","Bengaluru",59,1485,4],["Bir","Bengaluru",51,1457,3.5],["McLeod Ganj","Bengaluru",38,1402,2.7],["Rishikesh","Bengaluru",151,6668,2.3],["Nainital","Bengaluru",67,3097,2.2],["Mussoorie","Bengaluru",93,5457,1.7],
+  ["McLeod Ganj","Bir",315,1402,22.5],["Kasol","Bir",104,1623,6.4],["Srinagar","Bir",37,935,4],["Gurugram","Bir",66,1901,3.5],["Rishikesh","Bir",214,6668,3.2],["Amritsar","Bir",43,1422,3],["Mussoorie","Bir",156,5457,2.9],["Varanasi","Bir",42,1566,2.7],["Udaipur","Bir",38,1485,2.6],["Mukteshwar","Bir",32,1229,2.6],["New Delhi","Bir",63,2782,2.3],["Nainital","Bir",58,3097,1.9],["Goa","Bir",70,3977,1.8],["Mumbai","Bir",21,1449,1.4],["Bengaluru","Bir",33,2741,1.2],["Jaipur","Bir",20,1628,1.2],
+  ["Ooty","Coorg",229,1613,14.2],["Bengaluru","Coorg",227,2741,8.3],["Pondicherry","Coorg",53,857,6.2],["Alleppey","Coorg",25,533,4.7],["Goa","Coorg",159,3977,4],["Alibaug","Coorg",24,637,3.8],["Srinagar","Coorg",24,935,2.6],["Mumbai","Coorg",26,1449,1.8],["Varanasi","Coorg",23,1566,1.5],["New Delhi","Coorg",36,2782,1.3],["Rishikesh","Coorg",53,6668,0.8],["Mussoorie","Coorg",44,5457,0.8],["Nainital","Coorg",20,3097,0.6],
+  ["Mussoorie","Dehradun",245,5457,4.5],["Rishikesh","Dehradun",210,6668,3.1],["Mukteshwar","Dehradun",32,1229,2.6],["Nainital","Dehradun",56,3097,1.8],["Gurugram","Dehradun",26,1901,1.4],["Jaipur","Dehradun",21,1628,1.3],["New Delhi","Dehradun",23,2782,0.8],["Goa","Dehradun",28,3977,0.7],
+  ["Alibaug","Goa",166,637,26.1],["Mumbai","Goa",282,1449,19.5],["Bengaluru","Goa",523,2741,19.1],["Ooty","Goa",249,1613,15.4],["Pondicherry","Goa",124,857,14.5],["Coorg","Goa",152,1176,12.9],["Alleppey","Goa",55,533,10.3],["Udaipur","Goa",147,1485,9.9],["Varanasi","Goa",143,1566,9.1],["Srinagar","Goa",82,935,8.8],["Kochi","Goa",37,428,8.6],["Kasol","Goa",132,1623,8.1],["Gurugram","Goa",147,1901,7.7],["New Delhi","Goa",194,2782,7],["Amritsar","Goa",100,1422,7],["Jaipur","Goa",107,1628,6.6],["Mussoorie","Goa",336,5457,6.2],["Rishikesh","Goa",415,6668,6.2],["Bir","Goa",73,1457,5],["Nainital","Goa",142,3097,4.6],["McLeod Ganj","Goa",62,1402,4.4],["Dehradun","Goa",37,1077,3.4],["Mukteshwar","Goa",39,1229,3.2],
+  ["New Delhi","Gurugram",451,2782,16.2],["Jaipur","Gurugram",121,1628,7.4],["Kasol","Gurugram",92,1623,5.7],["Varanasi","Gurugram",83,1566,5.3],["Amritsar","Gurugram",74,1422,5.2],["Bir","Gurugram",75,1457,5.1],["Rishikesh","Gurugram",337,6668,5.1],["Srinagar","Gurugram",46,935,4.9],["Bengaluru","Gurugram",135,2741,4.9],["Udaipur","Gurugram",72,1485,4.8],["Mumbai","Gurugram",70,1449,4.8],["Mussoorie","Gurugram",243,5457,4.5],["Mukteshwar","Gurugram",50,1229,4.1],["Goa","Gurugram",160,3977,4],["Dehradun","Gurugram",42,1077,3.9],["Nainital","Gurugram",111,3097,3.6],["McLeod Ganj","Gurugram",46,1402,3.3],["Pondicherry","Gurugram",24,857,2.8],["Ooty","Gurugram",33,1613,2],
+  ["Udaipur","Jaipur",266,1485,17.9],["Gurugram","Jaipur",131,1901,6.9],["New Delhi","Jaipur",185,2782,6.6],["Amritsar","Jaipur",89,1422,6.3],["Mumbai","Jaipur",73,1449,5],["Alibaug","Jaipur",29,637,4.6],["Varanasi","Jaipur",71,1566,4.5],["Goa","Jaipur",161,3977,4],["Bengaluru","Jaipur",109,2741,4],["Mussoorie","Jaipur",198,5457,3.6],["Bir","Jaipur",51,1457,3.5],["Srinagar","Jaipur",31,935,3.3],["Kasol","Jaipur",53,1623,3.3],["Nainital","Jaipur",100,3097,3.2],["McLeod Ganj","Jaipur",43,1402,3.1],["Rishikesh","Jaipur",208,6668,3.1],["Dehradun","Jaipur",24,1077,2.2],["Mukteshwar","Jaipur",22,1229,1.8],["Ooty","Jaipur",26,1613,1.6],
+  ["Manali","Kasol",33,158,20.9],["McLeod Ganj","Kasol",144,1402,10.3],["Bir","Kasol",138,1457,9.5],["Amritsar","Kasol",74,1422,5.2],["Mussoorie","Kasol",284,5457,5.2],["Goa","Kasol",203,3977,5.1],["Rishikesh","Kasol",313,6668,4.7],["Udaipur","Kasol",64,1485,4.3],["Srinagar","Kasol",39,935,4.2],["Gurugram","Kasol",76,1901,4],["Varanasi","Kasol",60,1566,3.8],["Mukteshwar","Kasol",46,1229,3.7],["Nainital","Kasol",114,3097,3.7],["Jaipur","Kasol",55,1628,3.4],["Dehradun","Kasol",33,1077,3.1],["New Delhi","Kasol",86,2782,3.1],["Ooty","Kasol",41,1613,2.5],["Bengaluru","Kasol",53,2741,1.9],["Mumbai","Kasol",25,1449,1.7],
+  ["Alleppey","Kochi",97,533,18.2],["Bengaluru","Kochi",77,2741,2.8],["Ooty","Kochi",42,1613,2.6],["Pondicherry","Kochi",21,857,2.5],["Coorg","Kochi",20,1176,1.7],["Mumbai","Kochi",23,1449,1.6],["Goa","Kochi",49,3977,1.2],["New Delhi","Kochi",23,2782,0.8],
+  ["Kasol","Manali",28,1623,1.7],
+  ["Bir","McLeod Ganj",281,1457,19.3],["Amritsar","McLeod Ganj",107,1422,7.5],["Kasol","McLeod Ganj",115,1623,7.1],["Mussoorie","McLeod Ganj",252,5457,4.6],["Udaipur","McLeod Ganj",66,1485,4.4],["Nainital","McLeod Ganj",105,3097,3.4],["Rishikesh","McLeod Ganj",215,6668,3.2],["Srinagar","McLeod Ganj",30,935,3.2],["Jaipur","McLeod Ganj",46,1628,2.8],["Goa","McLeod Ganj",103,3977,2.6],["Gurugram","McLeod Ganj",48,1901,2.5],["Mukteshwar","McLeod Ganj",26,1229,2.1],["Varanasi","McLeod Ganj",32,1566,2],["Mumbai","McLeod Ganj",28,1449,1.9],["New Delhi","McLeod Ganj",51,2782,1.8],["Bengaluru","McLeod Ganj",38,2741,1.4],
+  ["Almora","Mukteshwar",98,466,21],["Nainital","Mukteshwar",570,3097,18.4],["Dehradun","Mukteshwar",35,1077,3.2],["Mussoorie","Mukteshwar",171,5457,3.1],["Kasol","Mukteshwar",43,1623,2.6],["Rishikesh","Mukteshwar",175,6668,2.6],["Gurugram","Mukteshwar",41,1901,2.2],["Bir","Mukteshwar",31,1457,2.1],["McLeod Ganj","Mukteshwar",28,1402,2],["Varanasi","Mukteshwar",29,1566,1.9],["Udaipur","Mukteshwar",20,1485,1.3],["New Delhi","Mukteshwar",30,2782,1.1],["Goa","Mukteshwar",27,3977,0.7],
+  ["Alibaug","Mumbai",41,637,6.4],["Goa","Mumbai",241,3977,6.1],["Bengaluru","Mumbai",148,2741,5.4],["New Delhi","Mumbai",135,2782,4.9],["Jaipur","Mumbai",50,1628,3.1],["Varanasi","Mumbai",45,1566,2.9],["Udaipur","Mumbai",40,1485,2.7],["Srinagar","Mumbai",25,935,2.7],["Ooty","Mumbai",30,1613,1.9],["Amritsar","Mumbai",25,1422,1.8],["Coorg","Mumbai",20,1176,1.7],["Kasol","Mumbai",24,1623,1.5],["Gurugram","Mumbai",28,1901,1.5],["Mussoorie","Mumbai",66,5457,1.2],["Rishikesh","Mumbai",74,6668,1.1],["Nainital","Mumbai",31,3097,1],
+  ["Dehradun","Mussoorie",472,1077,43.8],["Rishikesh","Mussoorie",2333,6668,35],["Nainital","Mussoorie",446,3097,14.4],["Mukteshwar","Mussoorie",165,1229,13.4],["McLeod Ganj","Mussoorie",164,1402,11.7],["Kasol","Mussoorie",186,1623,11.5],["Almora","Mussoorie",49,466,10.5],["Bir","Mussoorie",131,1457,9],["Udaipur","Mussoorie",131,1485,8.8],["Amritsar","Mussoorie",123,1422,8.6],["Jaipur","Mussoorie",140,1628,8.6],["Gurugram","Mussoorie",148,1901,7.8],["Varanasi","Mussoorie",118,1566,7.5],["Alibaug","Mussoorie",48,637,7.5],["Srinagar","Mussoorie",68,935,7.3],["Goa","Mussoorie",287,3977,7.2],["New Delhi","Mussoorie",170,2782,6.1],["Coorg","Mussoorie",53,1176,4.5],["Mumbai","Mussoorie",53,1449,3.7],["Ooty","Mussoorie",54,1613,3.3],["Bengaluru","Mussoorie",81,2741,3],["Pondicherry","Mussoorie",26,857,3],
+  ["Mukteshwar","Nainital",393,1229,32],["Almora","Nainital",70,466,15],["Mussoorie","Nainital",448,5457,8.2],["Rishikesh","Nainital",507,6668,7.6],["Varanasi","Nainital",112,1566,7.2],["Amritsar","Nainital",65,1422,4.6],["Kasol","Nainital",71,1623,4.4],["Gurugram","Nainital",78,1901,4.1],["New Delhi","Nainital",115,2782,4.1],["Udaipur","Nainital",59,1485,4],["Bir","Nainital",56,1457,3.8],["McLeod Ganj","Nainital",52,1402,3.7],["Dehradun","Nainital",36,1077,3.3],["Jaipur","Nainital",54,1628,3.3],["Srinagar","Nainital",30,935,3.2],["Goa","Nainital",114,3977,2.9],["Ooty","Nainital",27,1613,1.7],["Mumbai","Nainital",23,1449,1.6],["Bengaluru","Nainital",37,2741,1.3],
+  ["Gurugram","New Delhi",362,1901,19],["Manali","New Delhi",23,158,14.6],["Srinagar","New Delhi",117,935,12.5],["Mumbai","New Delhi",162,1449,11.2],["Bengaluru","New Delhi",298,2741,10.9],["Amritsar","New Delhi",145,1422,10.2],["Varanasi","New Delhi",160,1566,10.2],["Jaipur","New Delhi",150,1628,9.2],["Kasol","New Delhi",116,1623,7.1],["Rishikesh","New Delhi",417,6668,6.3],["Goa","New Delhi",221,3977,5.6],["Udaipur","New Delhi",80,1485,5.4],["Alibaug","New Delhi",33,637,5.2],["Bir","New Delhi",73,1457,5],["Nainital","New Delhi",151,3097,4.9],["Ooty","New Delhi",77,1613,4.8],["Pondicherry","New Delhi",39,857,4.6],["McLeod Ganj","New Delhi",64,1402,4.6],["Alleppey","New Delhi",20,533,3.8],["Mussoorie","New Delhi",200,5457,3.7],["Coorg","New Delhi",34,1176,2.9],["Mukteshwar","New Delhi",36,1229,2.9],["Dehradun","New Delhi",30,1077,2.8],
+  ["Coorg","Ooty",224,1176,19],["Pondicherry","Ooty",94,857,11],["Bengaluru","Ooty",235,2741,8.6],["Alleppey","Ooty",42,533,7.9],["Goa","Ooty",199,3977,5],["Kochi","Ooty",20,428,4.7],["Srinagar","Ooty",26,935,2.8],["Varanasi","Ooty",30,1566,1.9],["Udaipur","Ooty",24,1485,1.6],["Kasol","Ooty",25,1623,1.5],["Mumbai","Ooty",20,1449,1.4],["New Delhi","Ooty",32,2782,1.2],["Rishikesh","Ooty",77,6668,1.2],["Nainital","Ooty",27,3097,0.9],["Mussoorie","Ooty",41,5457,0.8],
+  ["Ooty","Pondicherry",180,1613,11.2],["Coorg","Pondicherry",89,1176,7.6],["Bengaluru","Pondicherry",171,2741,6.2],["Alleppey","Pondicherry",28,533,5.3],["Kochi","Pondicherry",22,428,5.1],["Goa","Pondicherry",125,3977,3.1],["Varanasi","Pondicherry",40,1566,2.6],["Srinagar","Pondicherry",22,935,2.4],["Mumbai","Pondicherry",25,1449,1.7],["Kasol","Pondicherry",22,1623,1.4],["Amritsar","Pondicherry",20,1422,1.4],["New Delhi","Pondicherry",33,2782,1.2],["Rishikesh","Pondicherry",61,6668,0.9],["Mussoorie","Pondicherry",26,5457,0.5],
+  ["Mussoorie","Rishikesh",1975,5457,36.2],["Dehradun","Rishikesh",212,1077,19.7],["Nainital","Rishikesh",593,3097,19.1],["Almora","Rishikesh",81,466,17.4],["Bir","Rishikesh",227,1457,15.6],["Varanasi","Rishikesh",241,1566,15.4],["Kasol","Rishikesh",244,1623,15],["Gurugram","Rishikesh",268,1901,14.1],["Mukteshwar","Rishikesh",160,1229,13],["New Delhi","Rishikesh",345,2782,12.4],["Udaipur","Rishikesh",169,1485,11.4],["McLeod Ganj","Rishikesh",160,1402,11.4],["Srinagar","Rishikesh",104,935,11.1],["Jaipur","Rishikesh",178,1628,10.9],["Amritsar","Rishikesh",133,1422,9.4],["Goa","Rishikesh",349,3977,8.8],["Alibaug","Rishikesh",55,637,8.6],["Mumbai","Rishikesh",107,1449,7.4],["Pondicherry","Rishikesh",46,857,5.4],["Ooty","Rishikesh",83,1613,5.1],["Coorg","Rishikesh",58,1176,4.9],["Bengaluru","Rishikesh",129,2741,4.7],["Alleppey","Rishikesh",20,533,3.8],
+  ["Amritsar","Srinagar",72,1422,5.1],["New Delhi","Srinagar",67,2782,2.4],["Kasol","Srinagar",35,1623,2.2],["Mumbai","Srinagar",28,1449,1.9],["Jaipur","Srinagar",31,1628,1.9],["Udaipur","Srinagar",28,1485,1.9],["Goa","Srinagar",70,3977,1.8],["Bir","Srinagar",26,1457,1.8],["Ooty","Srinagar",26,1613,1.6],["Varanasi","Srinagar",23,1566,1.5],["Nainital","Srinagar",44,3097,1.4],["Gurugram","Srinagar",27,1901,1.4],["Bengaluru","Srinagar",35,2741,1.3],["Mussoorie","Srinagar",72,5457,1.3],["Rishikesh","Srinagar",83,6668,1.2],
+  ["Jaipur","Udaipur",288,1628,17.7],["Alibaug","Udaipur",42,637,6.6],["Goa","Udaipur",254,3977,6.4],["Varanasi","Udaipur",82,1566,5.2],["Amritsar","Udaipur",71,1422,5],["Mumbai","Udaipur",70,1449,4.8],["McLeod Ganj","Udaipur",63,1402,4.5],["Gurugram","Udaipur",80,1901,4.2],["Kasol","Udaipur",64,1485,4.3],["Mussoorie","Udaipur",204,5457,3.7],["Rishikesh","Udaipur",245,6668,3.7],["Pondicherry","Udaipur",30,857,3.5],["Srinagar","Udaipur",30,935,3.2],["New Delhi","Udaipur",87,2782,3.1],["Ooty","Udaipur",46,1613,2.9],["Bir","Udaipur",41,1457,2.8],["Nainital","Udaipur",88,3097,2.8],["Bengaluru","Udaipur",71,2741,2.6],["Dehradun","Udaipur",22,1077,2],["Mukteshwar","Udaipur",24,1229,2],
+  ["New Delhi","Varanasi",152,2782,5.5],["Srinagar","Varanasi",47,935,5],["Udaipur","Varanasi",70,1485,4.7],["Jaipur","Varanasi",77,1628,4.7],["Goa","Varanasi",186,3977,4.7],["Gurugram","Varanasi",87,1901,4.6],["Amritsar","Varanasi",64,1422,4.5],["Alibaug","Varanasi",26,637,4.1],["Pondicherry","Varanasi",33,857,3.9],["Nainital","Varanasi",121,3097,3.9],["Rishikesh","Varanasi",245,6668,3.7],["Mumbai","Varanasi",51,1449,3.5],["Bengaluru","Varanasi",97,2741,3.5],["Bir","Varanasi",46,1457,3.2],["Kasol","Varanasi",49,1623,3],["Ooty","Varanasi",42,1613,2.6],["Coorg","Varanasi",29,1176,2.5],["Mussoorie","Varanasi",120,5457,2.2],["McLeod Ganj","Varanasi",30,1402,2.1],["Mukteshwar","Varanasi",24,1229,2]
+];
+
+// build lookup: target -> [{from, went, total, prob}]
+const byTarget = {};
+TRANSITIONS.forEach(([from, to, went, total, prob]) => {
+  if (!byTarget[to]) byTarget[to] = [];
+  byTarget[to].push({from, went, total, prob});
+});
+
+const cities = [...new Set(TRANSITIONS.map(r => r[1]))].sort();
+const targetEl = document.getElementById('target');
+cities.forEach(c => {
+  const o = document.createElement('option'); o.value = c; o.textContent = c;
+  targetEl.appendChild(o);
+});
+
+const minProbEl = document.getElementById('min-prob');
+const probValEl = document.getElementById('prob-val');
+minProbEl.addEventListener('input', () => { probValEl.textContent = minProbEl.value + '%'; renderOrigins(); });
+targetEl.addEventListener('change', renderOrigins);
+document.getElementById('select-all').addEventListener('change', function() {
+  document.querySelectorAll('.origin-check').forEach(c => c.checked = this.checked);
+  updateCount();
+});
+
+function updateCount() {
+  const n = document.querySelectorAll('.origin-check:checked').length;
+  document.getElementById('selected-count').textContent = n ? `${n} origins selected` : '';
+}
+
+function renderOrigins() {
+  const target = targetEl.value;
+  const minProb = +minProbEl.value;
+  const statusEl = document.getElementById('status');
+  const section = document.getElementById('origins-section');
+
+  if (!target) { section.style.display = 'none'; statusEl.textContent = ''; return; }
+
+  const rows = (byTarget[target] || [])
+    .filter(r => r.prob >= minProb)
+    .sort((a, b) => b.prob - a.prob);
+
+  if (!rows.length) {
+    statusEl.textContent = `No origin cities with ≥${minProb}% probability for ${target}. Try lowering the threshold.`;
+    section.style.display = 'none';
+    return;
+  }
+
+  statusEl.textContent = `${rows.length} origin cities → ${target} with ≥${minProb}% transition probability`;
+  const maxProb = rows[0].prob;
+  const tbody = document.getElementById('origins-body');
+  tbody.innerHTML = rows.map(r => {
+    const signal = r.prob >= 15 ? 'strong' : r.prob >= 7 ? '' : 'weak';
+    const label = r.prob >= 15 ? 'Strong' : r.prob >= 7 ? 'Medium' : 'Weak';
+    return `<tr>
+      <td><input type="checkbox" class="origin-check" value="${r.from}" checked onchange="updateCount()"></td>
+      <td><strong>${r.from}</strong></td>
+      <td>${r.went.toLocaleString()}</td>
+      <td>${r.total.toLocaleString()}</td>
+      <td>
+        <span class="bar-wrap"><span class="bar" style="width:${Math.round((r.prob/maxProb)*100)}%"></span></span>
+        <span style="margin-left:6px;font-weight:600;">${r.prob}%</span>
+      </td>
+      <td><span class="pill ${signal}">${label}</span></td>
+    </tr>`;
+  }).join('');
+
+  section.style.display = 'block';
+  updateCount();
+}
+
+document.getElementById('btn-export-origins').addEventListener('click', () => {
+  const target = targetEl.value;
+  if (!target) return;
+  const checked = [...document.querySelectorAll('.origin-check:checked')].map(c => c.value);
+  const rows = (byTarget[target] || []).filter(r => checked.includes(r.from)).sort((a,b) => b.prob - a.prob);
+  const header = 'Origin City,Went to Target,Total Travellers,Transition Probability %';
+  const lines = rows.map(r => `"${r.from}",${r.went},${r.total},${r.prob}`);
+  const csv = [header, ...lines].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = `audience_origins_${target.replace(/\s/g,'_')}.csv`;
+  a.click();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>goSTOPS — Progressive Nudge Bar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { nunito: ['"Nunito Sans"', 'sans-serif'] },
+          colors: {
+            radicalred: '#FF3366',
+            grey900: '#2a2929',
+            grey700: '#464546',
+            grey400: '#828181',
+            grey50: '#EFEFEF',
+            successgreen: '#008000',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: 'Nunito Sans', sans-serif; background: #f8f8f8; }
+    .phone-frame {
+      width: 375px; height: auto;
+      border: 2px solid #ddd; border-radius: 24px;
+      background: #fff; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .phone-frame .status-bar {
+      height: 40px; background: #fff; display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700; color: #333;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    input[type="range"] { -webkit-appearance: none; appearance: none; height: 6px; background: #EFEFEF; border-radius: 3px; outline: none; }
+    input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; background: #FF3366; border-radius: 50%; cursor: pointer; }
+    .pop { animation: pop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes pop { 0%{transform:scale(0.7)} 100%{transform:scale(1)} }
+    .pulse { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(212,136,12,0.35)} 50%{box-shadow:0 0 0 5px rgba(212,136,12,0)} }
+    .ntrans { transition: all 0.25s ease; }
+    .ms-circle {
+      width: 26px; height: 26px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; border-width: 2px; border-style: solid;
+      background: white; flex-shrink: 0;
+    }
+    .ms-circle .ms-label { font-size: 8px; font-weight: 800; line-height: 1; }
+    .ms-badge {
+      position: absolute; bottom: -2px; right: -2px;
+      width: 12px; height: 12px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 1.5px solid white;
+    }
+  </style>
+</head>
+<body class="text-grey900">
+
+  <header class="sticky top-0 z-50 bg-white border-b border-grey50 px-6 py-3 flex items-center gap-3">
+    <div class="w-7 h-7 bg-radicalred rounded-full flex items-center justify-center">
+      <span class="text-white font-bold text-[10px]">gS</span>
+    </div>
+    <span class="font-bold text-grey900">Progressive Nudge Bar — Milestone Circles</span>
+  </header>
+
+  <main class="max-w-[900px] mx-auto px-4 py-6">
+
+    <!-- Controls -->
+    <div class="bg-white rounded-2xl shadow-sm border border-grey50 p-5 mb-8">
+      <div class="grid md:grid-cols-2 gap-6">
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-grey700">Coliving</span>
+            <span class="text-xs text-grey400">base ₹799/N</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-grey400">1</span>
+            <input type="range" id="sl-coliving" min="1" max="35" value="1" class="flex-1" oninput="update('coliving',this.value)" />
+            <span class="text-xs text-grey400">35</span>
+          </div>
+          <div class="text-center"><span class="text-radicalred font-bold" id="dn-coliving">1</span><span class="text-grey400 text-xs"> nights</span></div>
+        </div>
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold text-grey700">Workation</span>
+            <span class="text-xs text-grey400">base ₹899/N</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs text-grey400">1</span>
+            <input type="range" id="sl-workation" min="1" max="10" value="1" class="flex-1" oninput="update('workation',this.value)" />
+            <span class="text-xs text-grey400">10</span>
+          </div>
+          <div class="text-center"><span class="text-radicalred font-bold" id="dn-workation">1</span><span class="text-grey400 text-xs"> nights</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Coliving -->
+      <div>
+        <div class="text-[10px] font-bold text-grey400 uppercase mb-2">Coliving (3 tiers: 5N · 14N · 28N)</div>
+        <div class="phone-frame">
+          <div class="status-bar">goSTOPS — Rishikesh</div>
+          <div class="px-4 py-3 space-y-2"><div class="h-3 bg-grey50 rounded w-3/4"></div><div class="h-3 bg-grey50 rounded w-1/2"></div><div class="h-8 bg-grey50 rounded w-full"></div><div class="h-3 bg-grey50 rounded w-2/3"></div></div>
+          <div>
+            <div id="bar-coliving" class="ntrans flex items-center gap-1.5 px-3 py-1.5 rounded-t-2xl" style="border:1px solid #EFEFEF;border-bottom:none;background:#FAFAFA;"></div>
+            <div class="flex items-center justify-between border-t border-grey50 bg-white px-4 py-2.5">
+              <div><div class="text-grey400 text-[10px]">Starting from</div><span class="text-successgreen text-lg font-bold">₹499</span><span class="text-grey400 text-[10px]">/N</span></div>
+              <button class="bg-radicalred text-white text-xs font-bold px-4 py-2 rounded-xl">Select Room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workation -->
+      <div>
+        <div class="text-[10px] font-bold text-grey400 uppercase mb-2">Workation (2 tiers: 3N · 5N)</div>
+        <div class="phone-frame">
+          <div class="status-bar">goSTOPS — Goa</div>
+          <div class="px-4 py-3 space-y-2"><div class="h-3 bg-grey50 rounded w-3/4"></div><div class="h-3 bg-grey50 rounded w-1/2"></div><div class="h-8 bg-grey50 rounded w-full"></div><div class="h-3 bg-grey50 rounded w-2/3"></div></div>
+          <div>
+            <div id="bar-workation" class="ntrans flex items-center gap-1.5 px-3 py-1.5 rounded-t-2xl" style="border:1px solid #EFEFEF;border-bottom:none;background:#FAFAFA;"></div>
+            <div class="flex items-center justify-between border-t border-grey50 bg-white px-4 py-2.5">
+              <div><div class="text-grey400 text-[10px]">Starting from</div><span class="text-successgreen text-lg font-bold">₹827</span><span class="text-grey400 text-[10px]">/N</span></div>
+              <button class="bg-radicalred text-white text-xs font-bold px-4 py-2 rounded-xl">Select Room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- State reference -->
+    <div class="mt-8 bg-white rounded-2xl border border-grey50 p-5">
+      <h3 class="text-xs font-bold text-grey400 uppercase tracking-wider mb-3">Circle States Reference</h3>
+      <div class="flex items-center gap-6 flex-wrap">
+        <div class="flex items-center gap-2">
+          <div class="ms-circle border-[#4CAF50] bg-[#F0FFF0] pop">
+            <span class="ms-label text-[#2E7D32]">5N</span>
+            <div class="ms-badge bg-[#4CAF50]"><svg width="7" height="7" viewBox="0 0 12 12"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <span class="text-xs text-grey700">Unlocked</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="ms-circle border-[#D4880C] bg-[#FFF8E8] pulse">
+            <span class="ms-label text-[#D4880C]">14N</span>
+            <div class="ms-badge bg-[#D4880C]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>
+          </div>
+          <span class="text-xs text-grey700">Next (pulse)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="ms-circle border-[#D0D0D0] bg-[#F8F8F8]">
+            <span class="ms-label text-[#aaa]">28N</span>
+            <div class="ms-badge bg-[#D0D0D0]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>
+          </div>
+          <span class="text-xs text-grey700">Locked</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const CL = [
+      { label:'5N', min:5, add_min:3, add_max:4, save:300, xsave:null },
+      { label:'14N', min:14, add_min:7, add_max:13, save:350, xsave:50 },
+      { label:'28N', min:28, add_min:17, add_max:27, save:400, xsave:50 },
+    ];
+    const WK = [
+      { label:'3N', min:3, add_min:1, add_max:2, save:45, xsave:null },
+      { label:'5N', min:5, add_min:4, add_max:4, save:72, xsave:27 },
+    ];
+    const T = t => t === 'coliving' ? CL : WK;
+
+    const seal = `<svg width="12" height="12" viewBox="0 0 16 17" fill="none"><path d="M8 1.5L9.79 6.12L14.76 6.52L10.89 9.88L12.18 14.74L8 12.14L3.82 14.74L5.11 9.88L1.24 6.52L6.21 6.12L8 1.5Z" fill="#D4880C"/></svg>`;
+    const tickBadge = `<div class="ms-badge bg-[#4CAF50]"><svg width="7" height="7" viewBox="0 0 12 12"><path d="M2 6L5 9L10 3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    const lockBadgeOrange = `<div class="ms-badge bg-[#D4880C]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>`;
+    const lockBadgeGrey = `<div class="ms-badge bg-[#D0D0D0]"><svg width="6" height="6" viewBox="0 0 24 24" fill="none"><path d="M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zm-3 0V7a4 4 0 00-8 0v4" stroke="white" stroke-width="3" stroke-linecap="round"/></svg></div>`;
+
+    function getState(tiers, n) {
+      let ui = -1;
+      for (let i = tiers.length-1; i >= 0; i--) { if (n >= tiers[i].min) { ui = i; break; } }
+      let ai = -1;
+      if (ui >= 0 && ui < tiers.length-1) { const x = tiers[ui+1]; if (n >= x.add_min && n <= x.add_max) ai = ui+1; }
+      if (ui < 0 && n >= tiers[0].add_min && n <= tiers[0].add_max) ai = 0;
+      return { ui, ai };
+    }
+
+    function render(type, n) {
+      const tiers = T(type), s = getState(tiers, n), el = document.getElementById(`bar-${type}`);
+      let h = '';
+
+      // Circles
+      tiers.forEach((t, i) => {
+        const unlocked = i <= s.ui;
+        const isNext = i === s.ai;
+
+        if (unlocked) {
+          h += `<div class="ms-circle border-[#4CAF50] bg-[#F0FFF0] pop">
+            <span class="ms-label text-[#2E7D32]">${t.label}</span>
+            ${tickBadge}
+          </div>`;
+        } else if (isNext) {
+          h += `<div class="ms-circle border-[#D4880C] bg-[#FFF8E8] pulse">
+            <span class="ms-label text-[#D4880C]">${t.label}</span>
+            ${lockBadgeOrange}
+          </div>`;
+        } else {
+          h += `<div class="ms-circle border-[#D0D0D0] bg-[#F8F8F8]">
+            <span class="ms-label text-[#aaa]">${t.label}</span>
+            ${lockBadgeGrey}
+          </div>`;
+        }
+      });
+
+      // Text — single line
+      h += '<div class="flex items-center gap-1 ml-1">';
+      if (s.ai >= 0 && s.ui >= 0) {
+        const na = tiers[s.ai].min - n;
+        h += `<span class="text-[11px] font-semibold text-[#A66A02]"> Add ${na}N to save extra ₹${tiers[s.ai].xsave}/N</span>`;
+      } else if (s.ai >= 0) {
+        const na = tiers[s.ai].min - n;
+        h += `<span class="text-[11px] font-semibold text-[#A66A02]"> Add ${na}N to save ₹${tiers[s.ai].save}/N</span>`;
+      } else if (s.ui >= 0) {
+        const best = s.ui === tiers.length-1;
+        h += `<span class="text-[11px] font-semibold text-[#008000]">🎉 Saving ₹${tiers[s.ui].save}/N${best?' · best!':''}</span>`;
+      } else {
+        h += `<span class="text-[11px] text-grey400">Add nights to unlock savings</span>`;
+      }
+      h += '</div>';
+
+      el.innerHTML = h;
+
+      // Bar style
+      if (s.ui >= 0 && s.ai < 0) {
+        Object.assign(el.style, { border:'1px solid #DFFFA9', borderBottom:'none', background:'linear-gradient(90deg,#F8FFD0,#F1FFE2)', boxShadow:'2px -2px 16px 0 rgba(70,69,70,0.08)' });
+      } else if (s.ai >= 0) {
+        Object.assign(el.style, { border:'1px solid #FFDE93', borderBottom:'none', background:'linear-gradient(93deg,#FFF0CF 0%,#FFF5E0 100%)', boxShadow:'2px -2px 16px 0 rgba(70,69,70,0.08)' });
+      } else {
+        Object.assign(el.style, { border:'1px solid #EFEFEF', borderBottom:'none', background:'#FAFAFA', boxShadow:'none' });
+      }
+    }
+
+    function update(type, n) {
+      n = parseInt(n);
+      document.getElementById(`dn-${type}`).textContent = n;
+      render(type, n);
+    }
+
+    update('coliving', 1);
+    update('workation', 1);
+  </script>
+</body>
+</html>

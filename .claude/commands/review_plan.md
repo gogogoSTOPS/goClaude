@@ -1,6 +1,6 @@
 ---
 description: Run adversarial review loop on a plan — reviewer finds issues, iterator fixes them, user controls each cycle
-model: opus
+model: sonnet
 ---
 
 # Review Plan (Maker-Checker)
@@ -48,12 +48,21 @@ Once the reviewer returns, present the results to the user:
 ```
 ## Review Complete (Round N)
 
-[Paste the reviewer's full structured output]
+### Summary
+[2-3 sentence overall assessment from the reviewer]
 
----
+### BLOCKING Issues ([X] total)
+For each blocking issue, one line: `BLOCKING-N: [title] ([Category])`
+Then 1-2 sentences on the risk and suggested fix.
 
-**Summary**: [X] blocking issues, [Y] non-blocking issues found.
+### NON-BLOCKING Issues ([Y] total)
+For each: `NON-BLOCKING-N: [title] — [one-sentence description]`
+
+### Verified Correct
+[The reviewer's "Verified Correct" section verbatim — proves real investigation happened]
 ```
+
+**Do NOT paste the full reviewer output** — the detailed codebase evidence sections are for the iterator, not for this context. If the user asks for the full review, tell them the reviewer agent has completed and offer to re-run or show raw output.
 
 If there are **no blocking issues**:
 ```
@@ -71,17 +80,24 @@ If there ARE blocking issues, spawn a `plan-iterator` agent:
 Task(
   subagent_type: "plan-iterator",
   prompt: """
-  Fix the blocking issues in the implementation plan.
+  Fix the issues in the implementation plan.
 
   Plan file: [PLAN_PATH]
 
-  Review findings:
-  [PASTE FULL REVIEW OUTPUT]
+  Issues to fix (condensed — research each one yourself, don't rely on this summary):
 
-  Read the plan, independently research the codebase to verify each issue, then update the plan file to address all blocking issues. Return your iteration summary.
+  BLOCKING:
+  [For each blocking issue: "BLOCKING-N: [title] — [suggested fix from reviewer, 1-2 sentences]"]
+
+  NON-BLOCKING:
+  [For each non-blocking issue: "NON-BLOCKING-N: [title] — [suggestion, 1 sentence]"]
+
+  Read the plan, research the codebase to understand each issue independently, then update the plan file. Return your iteration summary.
   """
 )
 ```
+
+**Do NOT paste the full reviewer output** — the iterator re-researches each issue from the codebase anyway. The condensed issue list gives it enough direction without injecting all the evidence tokens.
 
 ## Step 4: User Checkpoint
 
@@ -98,7 +114,7 @@ AskUserQuestion options:
 - **Accept the plan** — "The plan is ready for implementation"
 - **Create handoff** — "Save current state and continue in a new session"
 
-After round 3, add to the description of "Create handoff": "(recommended — this is round 3, fresh context may help)"
+After round 2, add to the description of "Create handoff": "(recommended — this is round 2, fresh context may help)"
 
 ### If user chooses "Continue reviewing":
 - Go back to Step 1 with a fresh reviewer agent
@@ -125,7 +141,7 @@ Next steps:
 
 2. **Fresh context per agent**: Each reviewer and iterator gets a fresh context. This is the whole point — independent verification without shared biases.
 
-3. **Faithfully relay outputs**: Present agent outputs in full. Don't summarize or editorialize. The user needs to see the raw findings.
+3. **Present findings concisely**: Show the user a structured summary of issues, not the full agent output. The detailed codebase evidence stays in the subagent — it's not needed in this context and would bloat subsequent rounds.
 
 4. **User controls the loop**: Never auto-proceed to another round. Always checkpoint with the user.
 
