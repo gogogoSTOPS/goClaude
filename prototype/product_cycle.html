@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Cycle Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f5f3ef; --bg2:#ffffff; --bg3:#eeece7; --bg4:#e8e5de;
+  --text:#1c1a17; --text2:#6b6860; --text3:#9e9b95;
+  --border:#e0dcd4; --border2:#ccc8be;
+  --purple:#5046c8; --purple-bg:#eeeeff; --purple-bd:#c5c0f5; --purple-t:#2d2780;
+  --teal:#0c7a5e; --teal-bg:#e3f5ef; --teal-bd:#8fd6c0; --teal-t:#074d3b;
+  --coral:#c24b28; --coral-bg:#faeee9; --coral-bd:#f0a88e; --coral-t:#7d2e14;
+  --amber:#b06d0a; --amber-bg:#fdf0d8; --amber-bd:#f0c06a; --amber-t:#6b4006;
+  --gray:#5c5a55; --gray-bg:#f0ede7; --gray-bd:#c5c1b8; --gray-t:#3a3834;
+  --green-bg:#e8f5ec; --green-bd:#7fcf9a; --green-t:#1a5c30;
+  --t0:#c8380a; --t0-bg:#fff0eb; --t0-bd:#ffb89a;
+  --t1:#7a5800; --t1-bg:#fffaeb; --t1-bd:#ffd066;
+  --t2:#0c5e8a; --t2-bg:#eaf4ff; --t2-bd:#7ac4f0;
+  --t3:#4a1e8c; --t3-bg:#f3eeff; --t3-bd:#c4a0f5;
+  --r:10px; --rs:6px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#181815; --bg2:#222220; --bg3:#2a2a27; --bg4:#323230;
+  --text:#e8e4dc; --text2:#948f86; --text3:#5c5952;
+  --border:#333330; --border2:#444440;
+  --purple-bg:#1e1a40; --purple-bd:#3d3680; --purple-t:#a8a0f0;
+  --teal-bg:#0d2820; --teal-bd:#1a5e48; --teal-t:#6dcfb0;
+  --coral-bg:#2a1208; --coral-bd:#7a3018; --coral-t:#f0a080;
+  --amber-bg:#241800; --amber-bd:#6b4006; --amber-t:#f0c06a;
+  --gray-bg:#222220; --gray-bd:#444440; --gray-t:#b0ada6;
+  --green-bg:#0d2015; --green-bd:#1a5c30; --green-t:#6dcf90;
+  --t0-bg:#2a0e04; --t0-bd:#7a2808; --t0:#ff8060;
+  --t1-bg:#1e1600; --t1-bd:#5c3e00; --t1:#ffc840;
+  --t2-bg:#041828; --t2-bd:#0c4466; --t2:#60b8f0;
+  --t3-bg:#140c28; --t3-bd:#3a1878; --t3:#c090f8;
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+a{color:inherit}
+.page{max-width:960px;margin:0 auto;padding:32px 24px 80px}
+
+/* ── WHY THIS ── */
+.why-banner{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:24px 28px;margin-bottom:10px;
+  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;
+}
+.why-banner h1{font-size:20px;font-weight:600;letter-spacing:-.3px;margin-bottom:6px}
+.why-banner .sub{font-size:13px;color:var(--text2);line-height:1.7;max-width:540px}
+.why-banner .sub strong{color:var(--text);font-weight:500}
+.parallel-pill{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);
+  padding:12px 16px;font-size:12px;color:var(--text2);white-space:nowrap;
+}
+.parallel-pill .track{display:flex;flex-direction:column;gap:3px}
+.track-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.track-row{display:flex;align-items:center;gap:7px;font-size:12px}
+@media(max-width:640px){.why-banner{grid-template-columns:1fr}.parallel-pill{display:none}}
+
+/* ── REFS ── */
+.refs{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:18px 24px;margin-bottom:24px;
+}
+.refs-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:12px}
+.refs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:640px){.refs-grid{grid-template-columns:1fr 1fr}}
+.ref-card{background:var(--bg3);border-radius:var(--rs);padding:10px 12px;border:1px solid var(--border)}
+.ref-card .rn{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.ref-card .ra{font-size:11px;color:var(--text3);margin-bottom:5px;font-family:'DM Mono',monospace}
+.ref-card .rb{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* ── DIAGRAM ── */
+.diagram-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px 16px 16px;margin-bottom:4px;overflow-x:auto}
+.diagram-hint{font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;text-align:center;margin-bottom:16px;letter-spacing:.04em}
+.node-group{cursor:pointer}
+.node-group rect{transition:filter .15s}
+.node-group:hover rect{filter:brightness(.93)}
+.node-group.selected rect{stroke-width:2.5 !important}
+
+/* ── DETAIL ── */
+.detail-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-top:4px}
+.detail-empty{padding:36px;text-align:center;color:var(--text3);font-size:13px;font-family:'DM Mono',monospace}
+.detail-content{display:none}
+.detail-content.visible{display:block;animation:fu .18s ease}
+@keyframes fu{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* detail header */
+.dh{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.dh h2{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.dh p{font-size:13px;color:var(--text2);margin-top:3px;max-width:520px}
+.db{padding:20px 24px}
+
+/* badges + pills */
+.badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:20px;margin-bottom:7px;font-family:'DM Mono',monospace}
+.b-purple{background:var(--purple-bg);color:var(--purple-t)}
+.b-teal  {background:var(--teal-bg);  color:var(--teal-t)}
+.b-coral {background:var(--coral-bg); color:var(--coral-t)}
+.b-amber {background:var(--amber-bg); color:var(--amber-t)}
+.b-gray  {background:var(--gray-bg);  color:var(--gray-t)}
+.b-green {background:var(--green-bg); color:var(--green-t)}
+.timebox{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);padding:4px 10px;border:1px solid var(--border);border-radius:20px;flex-shrink:0;margin-top:2px}
+
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.pill{font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500}
+.p-purple{background:var(--purple-bg);color:var(--purple-t)}
+.p-teal  {background:var(--teal-bg);  color:var(--teal-t)}
+.p-coral {background:var(--coral-bg); color:var(--coral-t)}
+.p-amber {background:var(--amber-bg); color:var(--amber-t)}
+.p-gray  {background:var(--gray-bg);  color:var(--gray-t)}
+
+/* grid + cards */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:600px){.g2,.g3{grid-template-columns:1fr}}
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px}
+.card.full{grid-column:1/-1}
+.card h4{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;font-family:'DM Mono',monospace}
+.card ul{padding-left:15px}.card li{font-size:13px;margin-bottom:4px}
+.card p{font-size:13px;color:var(--text2)}
+hr{border:none;border-top:1px solid var(--border);margin:10px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:6px 8px;font-weight:500;color:var(--text3);border-bottom:1px solid var(--border);font-size:10px;text-transform:uppercase;letter-spacing:.06em;font-family:'DM Mono',monospace}
+td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td:first-child{font-weight:500;white-space:nowrap;padding-right:14px}
+
+/* steps */
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:9px}
+.step{display:flex;gap:10px;align-items:flex-start}
+.step::before{counter-increment:s;content:counter(s);min-width:20px;height:20px;border-radius:50%;background:var(--bg4);color:var(--text2);font-size:11px;font-weight:600;font-family:'DM Mono',monospace;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.step p{font-size:13px;line-height:1.6}
+
+/* callout cards */
+.gate{border:1.5px solid var(--amber-bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:12px;background:var(--amber-bg)}
+.gate h4{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--amber-t);margin-bottom:7px;font-family:'DM Mono',monospace}
+.gate p{font-size:13px;line-height:1.6}
+.alert{border:1.5px solid var(--coral-bd);border-radius:var(--rs);padding:14px 16px;margin-bottom:12px;background:var(--coral-bg)}
+.alert h4{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--coral-t);margin-bottom:7px;font-family:'DM Mono',monospace}
+.alert p{font-size:13px;line-height:1.6}
+
+/* template grid */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.tcell{background:var(--bg2);border-radius:var(--rs);padding:10px 12px;border:1px solid var(--border)}
+.tcell .tl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace}
+.tcell .td{font-size:12px;color:var(--text2)}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+@media(max-width:600px){.board{grid-template-columns:1fr 1fr}}
+.bcol{background:var(--bg2);border-radius:var(--rs);padding:11px 13px;border:1px solid var(--border)}
+.bcol .bt{font-size:12px;font-weight:600;margin-bottom:4px}
+.bcol .bd{font-size:12px;color:var(--text3)}
+
+/* outcomes */
+.outcomes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+@media(max-width:600px){.outcomes{grid-template-columns:1fr}}
+.oc{background:var(--bg2);border-radius:var(--rs);padding:11px 13px;border:1px solid var(--border);border-left:3px solid}
+.oc .ot{font-size:12px;font-weight:600;margin-bottom:3px}
+.oc .od{font-size:12px;color:var(--text3)}
+
+/* tier table */
+.tier-table-wrap{overflow-x:auto;margin-top:10px}
+.tier-table{width:100%;border-collapse:collapse;font-size:12px;font-family:'DM Mono',monospace}
+.tier-table th{padding:7px 10px;text-align:left;border-bottom:2px solid var(--border);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);white-space:nowrap}
+.tier-table td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:top;white-space:nowrap;font-family:'DM Mono',monospace;font-size:11px;font-weight:normal}
+.tier-table tr:last-child td{border-bottom:none}
+.tier-table td:first-child{font-weight:500;font-family:'DM Sans',sans-serif;font-size:12px;white-space:nowrap}
+.t0-pill{background:var(--t0-bg);color:var(--t0);border-radius:4px;padding:1px 6px;border:1px solid var(--t0-bd)}
+.t1-pill{background:var(--t1-bg);color:var(--t1);border-radius:4px;padding:1px 6px;border:1px solid var(--t1-bd)}
+.t2-pill{background:var(--t2-bg);color:var(--t2);border-radius:4px;padding:1px 6px;border:1px solid var(--t2-bd)}
+.t3-pill{background:var(--t3-bg);color:var(--t3);border-radius:4px;padding:1px 6px;border:1px solid var(--t3-bd)}
+
+/* inline tier badge */
+.tier-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- WHY THIS -->
+<div class="why-banner">
+  <div>
+    <h1>Product Cycle</h1>
+    <p class="sub" style="margin-top:8px">
+      How the best product companies build — <strong>Basecamp</strong> ships in fixed-appetite cycles with hard commitment gates. <strong>Google, Duolingo, and Spotify</strong> run continuous discovery in parallel with delivery, never letting the build track starve the learning track. <strong>Teams like Intercom and Linear</strong> treat every problem as a hypothesis before it becomes a task.<br><br>
+      This framework synthesises those practices into one process. Same skeleton for a 30-minute bug fix and a 4-week feature — the depth of each stage scales with the work, not the ceremony.
+    </p>
+  </div>
+  <div>
+    <div class="parallel-pill">
+      <div class="track">
+        <div class="track-row"><div class="track-dot" style="background:var(--purple)"></div><span style="font-weight:500;color:var(--text)">Discovery</span></div>
+        <div style="font-size:11px;color:var(--text3);padding-left:17px;margin-top:1px">runs continuously</div>
+      </div>
+      <div style="font-size:18px;color:var(--border2);margin:0 4px">⇅</div>
+      <div class="track">
+        <div class="track-row"><div class="track-dot" style="background:var(--teal)"></div><span style="font-weight:500;color:var(--text)">Build</span></div>
+        <div style="font-size:11px;color:var(--text3);padding-left:17px;margin-top:1px">runs in parallel</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px;font-family:'DM Mono',monospace">two tracks · one team</div>
+  </div>
+</div>
+
+<!-- REFERENCES -->
+<div class="refs">
+  <div class="refs-label">Built on top of</div>
+  <div class="refs-grid">
+    <div class="ref-card">
+      <div class="rn">Shape Up</div>
+      <div class="ra">Ryan Singer · Basecamp</div>
+      <div class="rb">Betting table, fixed appetite, cool-down, "discard not backlog"</div>
+    </div>
+    <div class="ref-card">
+      <div class="rn">Continuous Discovery</div>
+      <div class="ra">Teresa Torres</div>
+      <div class="rb">Opportunity Solution Tree, weekly discovery cadence, outcome-driven research</div>
+    </div>
+    <div class="ref-card">
+      <div class="rn">GIST Framework</div>
+      <div class="ra">Itamar Gilad · ex-Google</div>
+      <div class="rb">Goals → Ideas as hypotheses, ICE scoring, no-roadmap prioritisation</div>
+    </div>
+    <div class="ref-card">
+      <div class="rn">Dual-Track Agile</div>
+      <div class="ra">Jeff Patton</div>
+      <div class="rb">Discovery and delivery as parallel, always-running tracks feeding one another</div>
+    </div>
+  </div>
+</div>
+
+<!-- DIAGRAM -->
+<div class="diagram-wrap">
+  <div class="diagram-hint">click any stage to expand ↓ &nbsp;·&nbsp; discovery and build run in parallel</div>
+  <svg id="diagram" width="100%" viewBox="0 0 860 420" style="min-width:660px;display:block">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#9e9b95" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#b06d0a" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arr-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="#0c7a5e" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+    </defs>
+
+    <!-- Discovery track -->
+    <rect x="14" y="14" width="830" height="148" rx="10" fill="none" stroke="#e0dcd4" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="28" y="31" font-size="9" fill="#9e9b95" font-family="DM Mono,monospace" letter-spacing=".06em">DISCOVERY — runs continuously · max 3 problems in parallel</text>
+
+    <!-- Build track -->
+    <rect x="14" y="184" width="830" height="218" rx="10" fill="none" stroke="#e0dcd4" stroke-width="1" stroke-dasharray="5 4"/>
+    <text x="28" y="201" font-size="9" fill="#9e9b95" font-family="DM Mono,monospace" letter-spacing=".06em">BUILD — runs in parallel with discovery · per committed pitch</text>
+
+    <!-- S1 Define -->
+    <g class="node-group" id="n-s1" onclick="sel('s1')">
+      <rect x="28" y="46" width="104" height="54" rx="8" fill="#eeeeff" stroke="#c5c0f5" stroke-width="1"/>
+      <text x="80" y="67" text-anchor="middle" font-size="12" font-weight="600" fill="#2d2780" font-family="DM Sans,sans-serif">1 · Define</text>
+      <text x="80" y="86" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">5 min – 2 hrs</text>
+    </g>
+    <!-- S2 Research -->
+    <g class="node-group" id="n-s2" onclick="sel('s2')">
+      <rect x="148" y="46" width="104" height="54" rx="8" fill="#eeeeff" stroke="#c5c0f5" stroke-width="1"/>
+      <text x="200" y="67" text-anchor="middle" font-size="12" font-weight="600" fill="#2d2780" font-family="DM Sans,sans-serif">2 · Research</text>
+      <text x="200" y="86" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">5 min – 5 days</text>
+    </g>
+    <!-- Soft sync -->
+    <g class="node-group" id="n-sync1" onclick="sel('sync1')">
+      <rect x="268" y="46" width="104" height="54" rx="8" fill="#faeee9" stroke="#f0a88e" stroke-width="1"/>
+      <text x="320" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#7d2e14" font-family="DM Sans,sans-serif">Soft sync</text>
+      <text x="320" y="80" text-anchor="middle" font-size="9" fill="#c24b28" font-family="DM Mono,monospace">biz touchpoint</text>
+      <text x="320" y="93" text-anchor="middle" font-size="9" fill="#c24b28" font-family="DM Mono,monospace">5 min – 2 hrs</text>
+    </g>
+    <!-- S3 Shape -->
+    <g class="node-group" id="n-s3" onclick="sel('s3')">
+      <rect x="388" y="46" width="104" height="54" rx="8" fill="#eeeeff" stroke="#c5c0f5" stroke-width="1"/>
+      <text x="440" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#2d2780" font-family="DM Sans,sans-serif">3 · Shape</text>
+      <text x="440" y="80" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">breadboard +</text>
+      <text x="440" y="93" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">rough timeline</text>
+    </g>
+    <!-- Betting -->
+    <g class="node-group" id="n-bet" onclick="sel('bet')">
+      <rect x="508" y="46" width="104" height="54" rx="8" fill="#fdf0d8" stroke="#f0c06a" stroke-width="1.5"/>
+      <text x="560" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#6b4006" font-family="DM Sans,sans-serif">Betting table</text>
+      <text x="560" y="80" text-anchor="middle" font-size="9" fill="#b06d0a" font-family="DM Mono,monospace">commit gate</text>
+      <text x="560" y="93" text-anchor="middle" font-size="9" fill="#b06d0a" font-family="DM Mono,monospace">skip – 1 hr</text>
+    </g>
+    <!-- S4 Scope lock (discovery) -->
+    <g class="node-group" id="n-s4" onclick="sel('s4')">
+      <rect x="628" y="46" width="104" height="54" rx="8" fill="#eeeeff" stroke="#c5c0f5" stroke-width="1"/>
+      <text x="680" y="64" text-anchor="middle" font-size="12" font-weight="600" fill="#2d2780" font-family="DM Sans,sans-serif">4 · Scope lock</text>
+      <text x="680" y="80" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">hi-fi design +</text>
+      <text x="680" y="93" text-anchor="middle" font-size="9" fill="#5046c8" font-family="DM Mono,monospace">1 day – 2 wks</text>
+    </g>
+    <!-- Timeline handoff (discovery) -->
+    <g class="node-group" id="n-sync2" onclick="sel('sync2')">
+      <rect x="748" y="46" width="96" height="54" rx="8" fill="#faeee9" stroke="#f0a88e" stroke-width="1"/>
+      <text x="796" y="64" text-anchor="middle" font-size="11" font-weight="600" fill="#7d2e14" font-family="DM Sans,sans-serif">Timeline</text>
+      <text x="796" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#7d2e14" font-family="DM Sans,sans-serif">handoff</text>
+      <text x="796" y="93" text-anchor="middle" font-size="9" fill="#c24b28" font-family="DM Mono,monospace">async</text>
+    </g>
+
+    <!-- Discovery arrows -->
+    <line x1="132" y1="73" x2="146" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="252" y1="73" x2="266" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="372" y1="73" x2="386" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="492" y1="73" x2="506" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="612" y1="73" x2="626" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="732" y1="73" x2="746" y2="73" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+    <!-- S5 Build -->
+    <g class="node-group" id="n-s5" onclick="sel('s5')">
+      <rect x="28" y="214" width="200" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
+      <text x="128" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">5 · Build &amp; release</text>
+      <text x="128" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">30 min – 3–4 weeks</text>
+    </g>
+    <!-- S6 Measure -->
+    <g class="node-group" id="n-s6" onclick="sel('s6')">
+      <rect x="248" y="214" width="200" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
+      <text x="348" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">6 · Measure impact</text>
+      <text x="348" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">immediate – 3 months</text>
+    </g>
+    <!-- Cool-down -->
+    <g class="node-group" id="n-cd" onclick="sel('cd')">
+      <rect x="468" y="214" width="200" height="54" rx="8" fill="#f0ede7" stroke="#c5c1b8" stroke-width="1"/>
+      <text x="568" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#3a3834" font-family="DM Sans,sans-serif">Cool-down</text>
+      <text x="568" y="254" text-anchor="middle" font-size="9" fill="#5c5a55" font-family="DM Mono,monospace">2–3 days (scales w/ cycle)</text>
+    </g>
+
+    <!-- Build arrows -->
+    <line x1="228" y1="241" x2="246" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="448" y1="241" x2="466" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+
+    <!-- Cool-down → back to betting -->
+    <path d="M568 268 L568 310 L560 310 L560 342 L560 380 L80 380 L80 100" fill="none" stroke="#c5c1b8" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+    <text x="310" y="376" text-anchor="middle" font-size="9" fill="#9e9b95" font-family="DM Mono,monospace">next cycle → betting table</text>
+
+    <!-- Betting → S5 drop -->
+    <path d="M560 100 L560 170 L128 170 L128 214" fill="none" stroke="#b06d0a" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr-amber)"/>
+    <text x="344" y="166" text-anchor="middle" font-size="9" fill="#b06d0a" font-family="DM Mono,monospace">committed pitch → build</text>
+
+    <!-- S6 loop back to S1 (if not solved) -->
+    <path d="M348 268 L348 330 L700 330 L700 380 L80 380 L80 100" fill="none" stroke="#0c7a5e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-teal)" opacity="0.6"/>
+
+    <!-- Tier legend -->
+    <rect x="14" y="290" width="430" height="108" rx="8" fill="none" stroke="#e0dcd4" stroke-width="1"/>
+    <text x="28" y="307" font-size="9" fill="#9e9b95" font-family="DM Mono,monospace" letter-spacing=".06em">TIER — classified at intake</text>
+    <!-- T0 -->
+    <rect x="28" y="316" width="88" height="68" rx="6" fill="#fff0eb" stroke="#ffb89a" stroke-width="1"/>
+    <text x="72" y="334" text-anchor="middle" font-size="10" font-weight="600" fill="#c8380a" font-family="DM Mono,monospace">T0 · Hotfix</text>
+    <text x="72" y="350" text-anchor="middle" font-size="9" fill="#c8380a" font-family="DM Mono,monospace">hours – 2 days</text>
+    <text x="72" y="366" text-anchor="middle" font-size="9" fill="#c8380a" font-family="DM Mono,monospace">skip betting</text>
+    <text x="72" y="379" text-anchor="middle" font-size="9" fill="#c8380a" font-family="DM Mono,monospace">async only</text>
+    <!-- T1 -->
+    <rect x="126" y="316" width="88" height="68" rx="6" fill="#fffaeb" stroke="#ffd066" stroke-width="1"/>
+    <text x="170" y="334" text-anchor="middle" font-size="10" font-weight="600" fill="#7a5800" font-family="DM Mono,monospace">T1 · Small</text>
+    <text x="170" y="350" text-anchor="middle" font-size="9" fill="#7a5800" font-family="DM Mono,monospace">3 – 7 days</text>
+    <text x="170" y="366" text-anchor="middle" font-size="9" fill="#7a5800" font-family="DM Mono,monospace">15 min betting</text>
+    <text x="170" y="379" text-anchor="middle" font-size="9" fill="#7a5800" font-family="DM Mono,monospace">async ok</text>
+    <!-- T2 -->
+    <rect x="224" y="316" width="88" height="68" rx="6" fill="#eaf4ff" stroke="#7ac4f0" stroke-width="1"/>
+    <text x="268" y="334" text-anchor="middle" font-size="10" font-weight="600" fill="#0c5e8a" font-family="DM Mono,monospace">T2 · Feature</text>
+    <text x="268" y="350" text-anchor="middle" font-size="9" fill="#0c5e8a" font-family="DM Mono,monospace">1 – 3 weeks</text>
+    <text x="268" y="366" text-anchor="middle" font-size="9" fill="#0c5e8a" font-family="DM Mono,monospace">30 min betting</text>
+    <text x="268" y="379" text-anchor="middle" font-size="9" fill="#0c5e8a" font-family="DM Mono,monospace">1 day research</text>
+    <!-- T3 -->
+    <rect x="322" y="316" width="108" height="68" rx="6" fill="#f3eeff" stroke="#c4a0f5" stroke-width="1"/>
+    <text x="376" y="334" text-anchor="middle" font-size="10" font-weight="600" fill="#4a1e8c" font-family="DM Mono,monospace">T3 · Complex</text>
+    <text x="376" y="350" text-anchor="middle" font-size="9" fill="#4a1e8c" font-family="DM Mono,monospace">3 – 12 weeks</text>
+    <text x="376" y="366" text-anchor="middle" font-size="9" fill="#4a1e8c" font-family="DM Mono,monospace">1 hr betting</text>
+    <text x="376" y="379" text-anchor="middle" font-size="9" fill="#4a1e8c" font-family="DM Mono,monospace">full research</text>
+  </svg>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail-panel" id="detail-panel">
+  <div class="detail-empty" id="det-empty">← click a stage above to see details</div>
+
+  <!-- S1 -->
+  <div class="detail-content" id="d-s1">
+    <div class="dh">
+      <div><div><span class="badge b-purple">Stage 1</span></div><h2>Define</h2><p>Business brings a problem, not a solution. PM translates it into a crisp problem statement + measurable outcome.</p></div>
+      <span class="timebox">⏱ 5 min – 2 hrs</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th><th>Output</th></tr>
+          <tr><td><span class="t0-pill">T0 Hotfix</span></td><td>PM writes ticket solo</td><td>5 min</td><td>Bug report with repro + expected behaviour</td></tr>
+          <tr><td><span class="t1-pill">T1 Small</span></td><td>PM + eng async</td><td>30 min</td><td>Problem note, KPI implied</td></tr>
+          <tr><td><span class="t2-pill">T2 Feature</span></td><td>PM + 1 eng sync</td><td>1 hr</td><td>Problem statement card</td></tr>
+          <tr><td><span class="t3-pill">T3 Complex</span></td><td>PM + stakeholder + eng session</td><td>2 hrs</td><td>Full problem statement card + GIST goal mapping</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <h4>Who is involved</h4>
+          <div class="pills"><span class="pill p-purple">PM — lead</span><span class="pill p-purple">Business stakeholder (T2/T3)</span><span class="pill p-purple">1 senior engineer</span></div>
+          <hr><p style="font-size:12px">Design + full dev team not involved yet.</p>
+        </div>
+        <div class="card">
+          <h4>Accountability</h4>
+          <table><tr><td>PM</td><td>Drives intake, writes problem statement</td></tr><tr><td>Stakeholder</td><td>Provides context, signs off on framing (T2/T3)</td></tr><tr><td>Senior eng</td><td>Flags constraints, prevents solution-first thinking</td></tr></table>
+        </div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Input</h4><ul><li>Raw business request or bug report</li><li>User complaints / support tickets</li><li>Strategic OKR it maps to (T2/T3)</li></ul></div>
+        <div class="card"><h4>Output + Artifacts</h4><ul><li><strong>Problem statement card</strong> — scales from 2 lines to 1 page</li><li><strong>Success KPI</strong> — what "fixed" or "solved" looks like</li><li><strong>GIST goal mapping</strong> — T2/T3 only</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>Problem statement card template (T2/T3)</h4>
+        <div class="tgrid">
+          <div class="tcell"><div class="tl">Who</div><div class="td">Which user segment or function is affected</div></div>
+          <div class="tcell"><div class="tl">Pain</div><div class="td">Specific friction — what breaks, what's slow</div></div>
+          <div class="tcell"><div class="tl">Impact</div><div class="td">Frequency, severity, revenue / retention effect</div></div>
+          <div class="tcell"><div class="tl">Success KPI</div><div class="td">Metric + target + timeframe</div></div>
+          <div class="tcell"><div class="tl">Strategic goal</div><div class="td">Which OKR / GIST goal this maps to</div></div>
+          <div class="tcell"><div class="tl">Out of scope</div><div class="td">What won't be solved here — write it down</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2 -->
+  <div class="detail-content" id="d-s2">
+    <div class="dh">
+      <div><div><span class="badge b-purple">Stage 2</span></div><h2>Research</h2><p>Validate the problem is real. Generate solution hypotheses. Score them. Pick the best 1–2 to shape.</p></div>
+      <span class="timebox">⏱ 5 min – 5 days</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Method</th><th>Duration</th><th>Output</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>Reproduce + confirm root cause</td><td>5–30 min</td><td>Confirmed bug + root cause note</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Analytics pull + PM judgment</td><td>1–2 hrs</td><td>Data snapshot + go/no-go</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Existing data + competitor scan</td><td>1 day</td><td>Research summary + ICE scores (no user interviews)</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>3–5 user interviews + quant data + OST</td><td>5 days</td><td>Full OST + ICE scorecard + research summary</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Input</h4><ul><li>Problem statement from Stage 1</li><li>Analytics / usage data</li><li>User interviews — T3 only (3–5)</li><li>Competitor context — T2/T3</li></ul></div>
+        <div class="card"><h4>Output + Artifacts</h4><ul><li><strong>OST</strong> — T3 only</li><li><strong>ICE scorecard</strong> — T2/T3</li><li><strong>Research summary</strong> — 1 page (T2/T3)</li><li><strong>Go / No-go</strong> — all tiers</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>ICE scoring (T2/T3)</h4>
+        <table style="margin-top:8px">
+          <tr><th>Hypothesis</th><th>Impact</th><th>Confidence</th><th>Ease</th><th>Score</th></tr>
+          <tr><td>Hypothesis A</td><td>8</td><td>7</td><td>5</td><td><strong>280</strong></td></tr>
+          <tr><td>Hypothesis B</td><td>6</td><td>9</td><td>8</td><td><strong>432 ✓</strong></td></tr>
+          <tr><td style="color:var(--text3)">Hypothesis C</td><td style="color:var(--text3)">4</td><td style="color:var(--text3)">5</td><td style="color:var(--text3)">9</td><td style="color:var(--text3)">180</td></tr>
+        </table>
+        <p style="font-size:11px;color:var(--text3);margin-top:8px;font-family:'DM Mono',monospace">Impact = moves the KPI · Confidence = evidence quality · Ease = value vs effort</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soft sync -->
+  <div class="detail-content" id="d-sync1">
+    <div class="dh">
+      <div><div><span class="badge b-coral">Business Touchpoint</span></div><h2>Soft sync with business</h2><p>Business sees research findings before PM spends time shaping. Prevents misdirected shaping effort.</p></div>
+      <span class="timebox">⏱ 5 min – 2 hrs</span>
+    </div>
+    <div class="db">
+      <div class="alert"><h4>What this is — and isn't</h4><p><strong>Is:</strong> Direction check. "Here's what we learned. Here's where we're heading. Does this match what you need?"<br><br><strong>Is not:</strong> Scope negotiation or solution review. Business can redirect problem framing. They cannot dictate the solution.</p></div>
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>Skip — PM + eng own it</td><td>—</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Slack message with summary + thumbs up/down</td><td>5 min</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Async doc / Loom — stakeholder comments</td><td>30 min</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Sync meeting if misaligned after async share</td><td>Up to 2 hrs</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Output</h4><ul><li><strong>Direction confirmed note</strong> — 2–3 sentences in research doc</li><li><strong>Revised problem framing</strong> — if stakeholder redirects</li><li>Significant redirect → loop back to Stage 2</li></ul></div>
+        <div class="card"><h4>Rule</h4><p style="font-size:13px">Business can say <em>"you've misframed the problem."</em><br><br>Business cannot say <em>"build it this way."</em><br><br>Solution direction stays with PM + eng.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S3 Shape -->
+  <div class="detail-content" id="d-s3">
+    <div class="dh">
+      <div><div><span class="badge b-purple">Stage 3</span></div><h2>Shape</h2><p>Breadboard the solution + set a rough timeline. Concrete enough to bet on, abstract enough for the team to solve creatively. <strong>No high-fidelity design yet</strong> — that's Stage 4.</p></div>
+      <span class="timebox">⏱ 30 min – 3 days</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th><th>Output</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>PM + eng agree on fix approach in chat</td><td>30 min</td><td>Approach note + rough time estimate</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>PM + eng 1:1, fat-marker sketch optional</td><td>30–60 min</td><td>Approach + appetite ("half day" / "2 days")</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>PM + designer + eng, breadboard required</td><td>1 day</td><td>Shaped pitch doc + breadboard + appetite</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>PM + designer + eng, full pitch doc</td><td>2–3 days</td><td>Full shaped pitch + breadboards + no-go list + rough timeline</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Input</h4><ul><li>Research summary + top ICE hypothesis</li><li>Direction-confirmed note from soft sync</li><li>OST (T3)</li></ul></div>
+        <div class="card"><h4>Output + Artifacts</h4><ul><li><strong>Shaped pitch</strong> — problem + solution direction</li><li><strong>Breadboard sketches</strong> — fat marker, no pixels</li><li><strong>Appetite + rough timeline</strong> — "this is worth ~2 weeks"</li><li><strong>No-go list</strong> — T2/T3</li></ul></div>
+      </div>
+      <div class="gate" style="margin-bottom:12px">
+        <h4>Shaping vs scope lock — the line</h4>
+        <p><strong>Shaping (here):</strong> What are we building at a rough level? What flows exist? What's explicitly out? Rough timeline agreed.<br><br><strong>Scope lock (Stage 4):</strong> High-fidelity designs, full task breakdown, committed end date. Happens after betting table commits the pitch.</p>
+      </div>
+      <div class="card full">
+        <h4>Shaped pitch template (T2/T3)</h4>
+        <div class="tgrid">
+          <div class="tcell"><div class="tl">Problem</div><div class="td">1–2 sentences from problem card</div></div>
+          <div class="tcell"><div class="tl">Appetite</div><div class="td">Time budget — "small (2w)" or "big (4w)"</div></div>
+          <div class="tcell"><div class="tl">Solution</div><div class="td">Breadboard + key user flow narrative</div></div>
+          <div class="tcell"><div class="tl">Rabbit holes</div><div class="td">What looks tempting but must be avoided</div></div>
+          <div class="tcell"><div class="tl">No-gos</div><div class="td">Explicitly out of scope for this cycle</div></div>
+          <div class="tcell"><div class="tl">Rough timeline</div><div class="td">Estimated range — locked in Stage 4, not here</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Betting -->
+  <div class="detail-content" id="d-bet">
+    <div class="dh">
+      <div><div><span class="badge b-amber">Commit Gate</span></div><h2>Betting table</h2><p>The only place where work is committed. Pitches are accepted, deferred, or discarded. No changes after this gate.</p></div>
+      <span class="timebox">⏱ skip – 1 hr</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th><th>No-go trigger</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>Skip — PM + eng lead approve async</td><td>—</td><td>If fix takes &gt;4× estimate → reclassify to T1</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Async Bet / Kill — PM + eng lead</td><td>15 min</td><td>If scope &gt;2× estimate → stop and re-pitch</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>30 min sync — PM + eng lead + design lead</td><td>30 min</td><td>If design reveals 2× scope → back to shaping</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Full betting table — all deciders</td><td>1 hr</td><td>Defined explicitly in pitch — reviewed at week 3 scope check</td></tr>
+        </table></div>
+      </div>
+      <div class="gate"><h4>Commitment rule</h4><p>Once committed: scope locked. Team gets full cycle uninterrupted. Reprioritization → next cycle's betting table only.</p></div>
+      <div class="gate"><h4>Discard, don't backlog</h4><p>Pitches not selected are archived. If a problem is real, someone re-pitches it. Problems that die here weren't important enough or weren't shaped well enough — both are useful signals.</p></div>
+      <div class="card full">
+        <h4>Full betting table flow (T3 · 1 hr)</h4>
+        <div class="steps" style="margin-top:8px">
+          <div class="step"><p><strong>Capacity check (10 min)</strong> — Eng lead presents available person-weeks.</p></div>
+          <div class="step"><p><strong>Pitch presentations (30 min)</strong> — Each PM presents in 10 min. No Q&A during presentation.</p></div>
+          <div class="step"><p><strong>Deliberation (15 min)</strong> — Deciders discuss without pitch authors.</p></div>
+          <div class="step"><p><strong>Decisions (5 min)</strong> — <strong>Bet</strong> / <strong>Hold</strong> / <strong>Kill</strong>.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4 -->
+  <div class="detail-content" id="d-s4">
+    <div class="dh">
+      <div><div><span class="badge b-purple">Stage 4</span></div><h2>Scope lock</h2><p>High-fidelity designs + full task breakdown + committed end date. Happens <em>after</em> the betting table commits the pitch. This is where breadboards become real designs.</p></div>
+      <span class="timebox">⏱ 1 day – 2 weeks</span>
+    </div>
+    <div class="db">
+      <div class="gate"><h4>The ±10% rule</h4><p>Minor scope adjustments during build are OK without returning to betting. Anything beyond ±10%, or any change to the core problem, requires a new pitch next cycle.</p></div>
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Design</th><th>Scoping</th><th>Duration</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>No design needed</td><td>Eng breaks into tasks in &lt;30 min</td><td>Covered in shaping</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Annotated wireframe or spec note</td><td>1–2 tasks mapped</td><td>Half–1 day</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Hi-fi screens + edge cases</td><td>Full task board, deps flagged</td><td>1–3 days</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Complete design system-level designs</td><td>Full task board + dep map + risk log</td><td>Up to 2 weeks</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Input</h4><ul><li>Committed pitch from betting table</li><li>Breadboards from Stage 3</li><li>Appetite + rough timeline</li><li>Open questions from pitch</li></ul></div>
+        <div class="card"><h4>Output + Artifacts</h4><ul><li><strong>High-fidelity designs</strong> — all screens + edge cases</li><li><strong>Scope map</strong> — tasks in Linear, each ≤1 day</li><li><strong>Dependency map</strong> — what blocks what</li><li><strong>Committed end date</strong> — locked here</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>Process (T2/T3)</h4>
+        <div class="steps" style="margin-top:8px">
+          <div class="step"><p><strong>Kickoff (2 hrs)</strong> — PM walks team through pitch. All clarifying questions asked now — not during build.</p></div>
+          <div class="step"><p><strong>Designer produces hi-fi</strong> — Breadboards → full screens. Edge cases, empty states, error states. Reviewed by eng for feasibility before finalising.</p></div>
+          <div class="step"><p><strong>Eng decomposes scope</strong> — All tasks mapped. Each ≤1 day. Dependencies flagged explicitly.</p></div>
+          <div class="step"><p><strong>Eng lead commits date</strong> — Confirms delivery within appetite. If not: cut scope, not extend timeline.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline handoff -->
+  <div class="detail-content" id="d-sync2">
+    <div class="dh">
+      <div><div><span class="badge b-coral">Business Touchpoint</span></div><h2>Timeline handoff</h2><p>Committed date shared with business after Stage 4. Anything before this is a guess, not a commitment.</p></div>
+      <span class="timebox">⏱ 5 min async – 30 min</span>
+    </div>
+    <div class="db">
+      <div class="alert"><h4>Core principle</h4><p>Only commit a date after eng lead has signed off on decomposed scope. If business asks earlier, give a range at betting table: <strong>"2–4 week cycle. Committed date within 3 days of cycle start."</strong></p></div>
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>"Fixed, deploying now" Slack message</td><td>1 min</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Async Slack: date + 1 line scope summary</td><td>5 min</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Async message using template below</td><td>10 min</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Message + optional 30 min if negotiation needed</td><td>Up to 30 min</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Share</h4><ul><li>✓ Committed end date</li><li>✓ Scope summary (in / out)</li><li>✓ Next change-request window (betting table date)</li></ul></div>
+        <div class="card"><h4>Don't share</h4><ul><li>✗ Gantt chart or task detail</li><li>✗ Engineer assignments</li><li>✗ Intermediate milestones</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>T2/T3 message template</h4>
+        <div style="background:var(--bg);border-radius:var(--rs);padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text2);border:1px solid var(--border);font-style:italic">
+          "Scoping complete for [problem]. We commit to shipping by [date]. In scope: [2–3 sentences]. Out of scope this cycle: [key no-gos]. Change requests go to next betting table on [date]."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5 -->
+  <div class="detail-content" id="d-s5">
+    <div class="dh">
+      <div><div><span class="badge b-teal">Stage 5</span></div><h2>Build &amp; release</h2><p>Team executes against committed scope. No new priorities enter. PM shields the team; stakeholders receive updates, not give direction.</p></div>
+      <span class="timebox">⏱ 30 min – 3–4 weeks</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Process</th><th>Duration</th><th>Review</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>Fix → test locally → deploy</td><td>30 min – 2 days</td><td>Eng lead async sign-off</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Dev → PR review → deploy</td><td>2–5 days</td><td>Code review + smoke test</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Full board flow below</td><td>1–2 weeks</td><td>QA + designer sign-off</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Full board flow + weekly check-ins</td><td>3–4 weeks</td><td>QA + designer + PM sign-off</td></tr>
+        </table></div>
+      </div>
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Board states (T2/T3)</h4>
+        <div class="board">
+          <div class="bcol"><div class="bt">In dev</div><div class="bd">WIP: max 2 tasks per engineer.</div></div>
+          <div class="bcol"><div class="bt">In review</div><div class="bd">Code review + QA. Target: 24 hr max.</div></div>
+          <div class="bcol"><div class="bt">Ready to release</div><div class="bd">Staged + approved. Max 48 hr here.</div></div>
+          <div class="bcol"><div class="bt">Released</div><div class="bd">In production. KPI tracking on. → Stage 6.</div></div>
+        </div>
+      </div>
+      <div class="card full">
+        <h4>Rhythm (T2/T3)</h4>
+        <div class="steps" style="margin-top:8px">
+          <div class="step"><p><strong>Monday async update</strong> — What shipped, in progress, blockers. PM acts on blockers same day.</p></div>
+          <div class="step"><p><strong>Week 3 scope check</strong> — Behind? Cut scope, not extend timeline. PM + eng lead in 30 min.</p></div>
+          <div class="step"><p><strong>No mid-cycle reprioritization</strong> — New requests logged for next betting table.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6 -->
+  <div class="detail-content" id="d-s6">
+    <div class="dh">
+      <div><div><span class="badge b-teal">Stage 6</span></div><h2>Measure impact</h2><p>Did we move the KPI? Closes the loop. Verdict determines whether Stage 1 is re-entered or the problem is solved.</p></div>
+      <span class="timebox">⏱ immediate – 3 months</span>
+    </div>
+    <div class="db">
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Method</th><th>Window</th><th>Output</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>Confirm bug no longer reproducible</td><td>Immediate</td><td>Verified + closed</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Check target metric moved</td><td>1 week</td><td>1-line result note</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Metrics vs baseline + user feedback</td><td>2–4 weeks</td><td>Impact summary + verdict</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Full quant + qual analysis, segmented</td><td>1–3 months (runs in parallel)</td><td>Impact report + learning log</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Input</h4><ul><li>KPI from Stage 1</li><li>Pre-release baseline</li><li>Post-release data</li><li>User feedback / support volume</li></ul></div>
+        <div class="card"><h4>Output</h4><ul><li><strong>Verdict</strong> — Solved / Partial / Not solved</li><li><strong>Impact report</strong> — T2/T3</li><li><strong>Loop-back brief</strong> — if not solved</li><li><strong>Learning log</strong> — T2/T3</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>Decision outcomes</h4>
+        <div class="outcomes">
+          <div class="oc" style="border-left-color:#1D9E75"><div class="ot">Solved</div><div class="od">KPI hit target. Problem retired. Capacity freed.</div></div>
+          <div class="oc" style="border-left-color:#EF9F27"><div class="ot">Partially solved</div><div class="od">KPI moved. Loop back with tighter framing.</div></div>
+          <div class="oc" style="border-left-color:#E24B4A"><div class="ot">Not solved</div><div class="od">No signal. Return to S1 — revisit problem definition.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cool-down -->
+  <div class="detail-content" id="d-cd">
+    <div class="dh">
+      <div><div><span class="badge b-gray">Post-Build Buffer</span></div><h2>Cool-down</h2><p>After Stage 6, before the next betting table. Scales with cycle length — roughly 15–20% of cycle duration.</p></div>
+      <span class="timebox">⏱ 2–3 days (T2) · 1 week (T3)</span>
+    </div>
+    <div class="db">
+      <div class="g2">
+        <div class="card">
+          <h4>Valid work</h4>
+          <ul><li>Bug fixes cut from the cycle</li><li>Technical debt paydown</li><li>Refactoring + performance</li><li>Exploration + prototyping</li><li>Documentation + tooling</li></ul>
+        </div>
+        <div class="card">
+          <h4>Not for</h4>
+          <ul><li>Features that didn't get bet on</li><li>Urgent stakeholder requests</li><li>Unscoped mini-sprints</li></ul>
+          <hr><p style="font-size:12px">PM responsibility: protect this time.</p>
+        </div>
+      </div>
+      <div class="card full">
+        <h4>Parallel: Preparing the next betting table</h4>
+        <div class="steps" style="margin-top:8px">
+          <div class="step"><p>PM reviews Stage 6 impact reports from current cycle</p></div>
+          <div class="step"><p>Confirms which shaped pitches (Stage 3 outputs) are ready to bet</p></div>
+          <div class="step"><p>Business alignment — stakeholders present new problems, informal triage</p></div>
+          <div class="step"><p>Betting table runs on last day of cool-down — team exits with next cycle committed</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /detail-panel -->
+
+<!-- CYCLE COMBOS -->
+<div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+  <div style="padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap">
+    <div>
+      <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-family:'DM Mono',monospace;background:var(--amber-bg);color:var(--amber-t)">Betting table · Capacity Planner</div>
+      <h2 style="font-size:18px;font-weight:600;letter-spacing:-.3px">Cycle combos</h2>
+      <p style="font-size:13px;color:var(--text2);margin-top:3px;max-width:500px">25 build-day budget per cycle. Pick 1 of 4 combos at the betting table, then layer T0s on top from the pre-approved queue.</p>
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:11px;font-family:'DM Mono',monospace;color:var(--text3);padding:4px 10px;border:1px solid var(--border);border-radius:20px">⏱ 25 days · 2 teams</span>
+  </div>
+  <div style="padding:18px 22px">
+
+    <!-- Ref row -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace">T3 build</div>
+        <div style="font-size:15px;font-weight:600">15–20d</div>
+        <div style="font-size:11px;color:var(--text3)">disc: 12d</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace">T2 build</div>
+        <div style="font-size:15px;font-weight:600">5–10d</div>
+        <div style="font-size:11px;color:var(--text3)">disc: 4d</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace">T1 build</div>
+        <div style="font-size:15px;font-weight:600">2–5d</div>
+        <div style="font-size:11px;color:var(--text3)">disc: 1d</div>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:10px;text-align:center">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:3px;font-family:'DM Mono',monospace">T0 build</div>
+        <div style="font-size:15px;font-weight:600">0.5–2d</div>
+        <div style="font-size:11px;color:var(--text3)">no disc.</div>
+      </div>
+    </div>
+
+    <!-- Combos grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+
+      <!-- Combo 1 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600">Combo 1 — anchor</span>
+          <span style="font-size:11px;font-family:'DM Mono',monospace;background:var(--bg4);color:var(--text2);padding:2px 8px;border-radius:10px">1T3 + 1T2 = 25d</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">BE / Web</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t3-pill">T3</span> Complex feature</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">15d · T3 track locked</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">Flutter</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">10d · 5d gap after</div>
+          </div>
+        </div>
+        <div style="background:var(--t3-bg);border:1px solid var(--t3-bd);border-radius:var(--rs);padding:9px 12px;margin-bottom:8px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:4px">Discovery in parallel</div>
+          <div style="font-size:12px;color:var(--text2)">PM1 starts next T3 on day 1 (disc: 12d). PM2 runs 2× T2 (disc: 8d). Must start immediately — tight ratio.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px">T0 buffer</div>
+          <div style="font-size:12px;color:var(--text2)"><strong>1–2 T0s max</strong> — Flutter track only, after T2 closes. T3 track untouchable for entire cycle.</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Who: Junior Flutter, Junior BE (while waiting for integration)</div>
+        </div>
+      </div>
+
+      <!-- Combo 2 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600">Combo 2 — default</span>
+          <span style="font-size:11px;font-family:'DM Mono',monospace;background:var(--bg4);color:var(--text2);padding:2px 8px;border-radius:10px">2T2 + 2T1 = 24–25d</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">BE / Web</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature A</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t1-pill">T1</span> Follow-on</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">10d + 5d</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">Flutter</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature B</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t1-pill">T1</span> Follow-on</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">10d + 5d</div>
+          </div>
+        </div>
+        <div style="background:var(--t2-bg);border:1px solid var(--t2-bd);border-radius:var(--rs);padding:9px 12px;margin-bottom:8px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);font-family:'DM Mono',monospace;margin-bottom:4px">Discovery in parallel</div>
+          <div style="font-size:12px;color:var(--text2)">Both PM+designer pairs run 2× T2 each. Discovery done in ~8d. Next cycle fully prepped with 17d to spare. Most slack.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px">T0 buffer</div>
+          <div style="font-size:12px;color:var(--text2)"><strong>2–3 T0s</strong> — pulled as T1s close. Gaps appear predictably around day 10–12.</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Who: Junior Flutter, Junior BE, BE lead (fast-close queue)</div>
+        </div>
+      </div>
+
+      <!-- Combo 3 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600">Combo 3 — big T3 + smalls</span>
+          <span style="font-size:11px;font-family:'DM Mono',monospace;background:var(--bg4);color:var(--text2);padding:2px 8px;border-radius:10px">1T3 + 3T1 = 21–25d</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">BE / Web</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t3-pill">T3</span> Complex feature</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">20d · locked</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">Flutter</div>
+            <div style="font-size:12px;margin-bottom:2px"><span class="t1-pill">T1</span> Small A · 5d</div>
+            <div style="font-size:12px;margin-bottom:2px"><span class="t1-pill">T1</span> Small B · 5d</div>
+            <div style="font-size:12px"><span class="t1-pill">T1</span> Small C · 5d</div>
+          </div>
+        </div>
+        <div style="background:var(--t3-bg);border:1px solid var(--t3-bd);border-radius:var(--rs);padding:9px 12px;margin-bottom:8px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);font-family:'DM Mono',monospace;margin-bottom:4px">Discovery in parallel</div>
+          <div style="font-size:12px;color:var(--text2)">PM1 must start next T3 on day 1 (disc: 12d). PM2 + you batch T1s. Warning: tightest ratio — no slack on T3 track.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px">T0 buffer</div>
+          <div style="font-size:12px;color:var(--text2)"><strong>2–3 T0s</strong> — 1 per gap between T1s on Flutter track (~1–2d gaps at handoff). T3 track zero T0s.</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Who: Junior Flutter between T1s, Junior BE after API closes</div>
+        </div>
+      </div>
+
+      <!-- Combo 4 -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span style="font-size:13px;font-weight:600">Combo 4 — three T2s</span>
+          <span style="font-size:11px;font-family:'DM Mono',monospace;background:var(--bg4);color:var(--text2);padding:2px 8px;border-radius:10px">3T2 staggered = 24–25d</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">BE / Web</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature A · 8d</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature B · 7d</div>
+            <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">sequential</div>
+          </div>
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px">
+            <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:6px">Flutter</div>
+            <div style="font-size:12px;margin-bottom:3px"><span class="t2-pill">T2</span> Feature C · 10d</div>
+            <div style="font-size:12px"><span class="t1-pill">T1</span> Buffer · 5d</div>
+          </div>
+        </div>
+        <div style="background:var(--t2-bg);border:1px solid var(--t2-bd);border-radius:var(--rs);padding:9px 12px;margin-bottom:8px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);font-family:'DM Mono',monospace;margin-bottom:4px">Discovery in parallel</div>
+          <div style="font-size:12px;color:var(--text2)">Both PM+designer pairs run 2× T2. Done by day 8. Most discovery slack of any combo — next two cycles can be prepped.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 12px">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:4px">T0 buffer</div>
+          <div style="font-size:12px;color:var(--text2)"><strong>2–3 T0s</strong> — most flexible. Gaps between sequential T2s on BE track (~1–2d each). Flutter gap after T2 closes.</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Who: Junior Flutter, Junior BE, BE lead, Web intern</div>
+        </div>
+      </div>
+
+    </div><!-- /combos grid -->
+
+    <!-- T0 queue rule -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);padding:14px 16px;margin-bottom:12px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;font-family:'DM Mono',monospace">T0 pre-approved queue — all combos</div>
+      <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px">4–6 T0s pre-approved at every betting table. They don't get a slot — they're pulled by whoever finishes early. Nobody waits for a meeting. The queue is replenished by PM at weekly triage.</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">Junior Flutter</div>
+          <div style="font-size:12px;color:var(--text3)">Any time — bugs are mostly theirs</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">Junior BE</div>
+          <div style="font-size:12px;color:var(--text3)">After APIs close, while waiting for integration</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">BE lead</div>
+          <div style="font-size:12px;color:var(--text3)">Fast-close queue — pulls between main tasks</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">Flutter lead</div>
+          <div style="font-size:12px;color:var(--text3)">Only after T2/T3 closes — never during</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">Web intern</div>
+          <div style="font-size:12px;color:var(--text3)">Any gap in web tasks</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 12px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:4px">Fullstack senior</div>
+          <div style="font-size:12px;color:var(--text3)">Rarely — keep on committed scope</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Not allowed -->
+    <div style="background:var(--bg3);border:1.5px solid #E24B4A;border-radius:var(--rs);padding:12px 16px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#A32D2D;margin-bottom:5px;font-family:'DM Mono',monospace">Never allowed</div>
+      <div style="font-size:13px;color:var(--text2)"><strong>2× T3 simultaneous</strong> — locks both PM+designer pairs for 2.5 weeks. Zero capacity to prep next cycle. Pipeline gap guaranteed. Max 1 T3 in discovery at a time, max 1 T3 in build at a time.</div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+let cur = null;
+function sel(id) {
+  if (cur) {
+    document.getElementById('n-'+cur)?.classList.remove('selected');
+    document.getElementById('d-'+cur)?.classList.remove('visible');
+  }
+  if (cur === id) { cur = null; document.getElementById('det-empty').style.display = ''; return; }
+  cur = id;
+  document.getElementById('n-'+id)?.classList.add('selected');
+  document.getElementById('det-empty').style.display = 'none';
+  document.getElementById('d-'+id)?.classList.add('visible');
+  setTimeout(() => document.getElementById('detail-panel').scrollIntoView({behavior:'smooth',block:'nearest'}), 40);
+}
+</script>
+</body>
+</html>
