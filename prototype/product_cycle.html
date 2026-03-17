@@ -317,37 +317,45 @@ td:first-child{font-weight:500;white-space:nowrap;padding-right:14px}
 
     <!-- S5 Build -->
     <g class="node-group" id="n-s5" onclick="sel('s5')">
-      <rect x="28" y="214" width="200" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
-      <text x="128" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">5 · Build &amp; release</text>
-      <text x="128" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">30 min – 3–4 weeks</text>
+      <rect x="28" y="214" width="170" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
+      <text x="113" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">5 · Build &amp; release</text>
+      <text x="113" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">30 min – 3–4 weeks</text>
+    </g>
+    <!-- Release note touchpoint (build track) -->
+    <g class="node-group" id="n-relnote" onclick="sel('relnote')">
+      <rect x="210" y="214" width="100" height="54" rx="8" fill="#faeee9" stroke="#f0a88e" stroke-width="1"/>
+      <text x="260" y="232" text-anchor="middle" font-size="11" font-weight="600" fill="#7d2e14" font-family="DM Sans,sans-serif">Release</text>
+      <text x="260" y="246" text-anchor="middle" font-size="11" font-weight="600" fill="#7d2e14" font-family="DM Sans,sans-serif">note</text>
+      <text x="260" y="261" text-anchor="middle" font-size="9" fill="#c24b28" font-family="DM Mono,monospace">async</text>
     </g>
     <!-- S6 Measure -->
     <g class="node-group" id="n-s6" onclick="sel('s6')">
-      <rect x="248" y="214" width="200" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
-      <text x="348" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">6 · Measure impact</text>
-      <text x="348" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">immediate – 3 months</text>
+      <rect x="322" y="214" width="170" height="54" rx="8" fill="#e3f5ef" stroke="#8fd6c0" stroke-width="1"/>
+      <text x="407" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#074d3b" font-family="DM Sans,sans-serif">6 · Measure impact</text>
+      <text x="407" y="254" text-anchor="middle" font-size="9" fill="#0c7a5e" font-family="DM Mono,monospace">immediate – 3 months</text>
     </g>
     <!-- Cool-down -->
     <g class="node-group" id="n-cd" onclick="sel('cd')">
-      <rect x="468" y="214" width="200" height="54" rx="8" fill="#f0ede7" stroke="#c5c1b8" stroke-width="1"/>
-      <text x="568" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#3a3834" font-family="DM Sans,sans-serif">Cool-down</text>
-      <text x="568" y="254" text-anchor="middle" font-size="9" fill="#5c5a55" font-family="DM Mono,monospace">2–3 days (scales w/ cycle)</text>
+      <rect x="504" y="214" width="170" height="54" rx="8" fill="#f0ede7" stroke="#c5c1b8" stroke-width="1"/>
+      <text x="589" y="235" text-anchor="middle" font-size="12" font-weight="600" fill="#3a3834" font-family="DM Sans,sans-serif">Cool-down</text>
+      <text x="589" y="254" text-anchor="middle" font-size="9" fill="#5c5a55" font-family="DM Mono,monospace">2–3 days (scales w/ cycle)</text>
     </g>
 
     <!-- Build arrows -->
-    <line x1="228" y1="241" x2="246" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
-    <line x1="448" y1="241" x2="466" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="198" y1="241" x2="208" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="310" y1="241" x2="320" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
+    <line x1="492" y1="241" x2="502" y2="241" stroke="#c5c1b8" stroke-width="1.2" marker-end="url(#arr)"/>
 
     <!-- Cool-down → back to betting -->
-    <path d="M568 268 L568 310 L560 310 L560 342 L560 380 L80 380 L80 100" fill="none" stroke="#c5c1b8" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr)"/>
+    <path d="M589 268 L589 310 L560 310 L560 342 L560 380 L80 380 L80 100" fill="none" stroke="#c5c1b8" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr)"/>
     <text x="310" y="376" text-anchor="middle" font-size="9" fill="#9e9b95" font-family="DM Mono,monospace">next cycle → betting table</text>
 
     <!-- Betting → S5 drop -->
-    <path d="M560 100 L560 170 L128 170 L128 214" fill="none" stroke="#b06d0a" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr-amber)"/>
+    <path d="M560 100 L560 170 L113 170 L113 214" fill="none" stroke="#b06d0a" stroke-width="1.2" stroke-dasharray="5 3" marker-end="url(#arr-amber)"/>
     <text x="344" y="166" text-anchor="middle" font-size="9" fill="#b06d0a" font-family="DM Mono,monospace">committed pitch → build</text>
 
     <!-- S6 loop back to S1 (if not solved) -->
-    <path d="M348 268 L348 330 L700 330 L700 380 L80 380 L80 100" fill="none" stroke="#0c7a5e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-teal)" opacity="0.6"/>
+    <path d="M407 268 L407 330 L700 330 L700 380 L80 380 L80 100" fill="none" stroke="#0c7a5e" stroke-width="1" stroke-dasharray="4 3" marker-end="url(#arr-teal)" opacity="0.6"/>
 
     <!-- Tier legend -->
     <rect x="14" y="290" width="430" height="108" rx="8" fill="none" stroke="#e0dcd4" stroke-width="1"/>
@@ -558,6 +566,41 @@ td:first-child{font-weight:500;white-space:nowrap;padding-right:14px}
     </div>
   </div>
 
+  <!-- Release note -->
+  <div class="detail-content" id="d-relnote">
+    <div class="dh">
+      <div><div><span class="badge b-coral">Business Touchpoint</span></div><h2>Release note</h2><p>Async post-deploy notification. Closes the loop with business — what shipped, what it does, what to watch.</p></div>
+      <span class="timebox">⏱ 5–15 min async</span>
+    </div>
+    <div class="db">
+      <div class="alert"><h4>Why this gets missed</h4><p>Teams go quiet after deploy. Business hears about releases through support tickets or user complaints instead of a PM. A short async note prevents both.</p></div>
+      <div class="card full" style="margin-bottom:12px">
+        <h4>Tier depth</h4>
+        <div class="tier-table-wrap"><table class="tier-table">
+          <tr><th>Tier</th><th>Format</th><th>Duration</th></tr>
+          <tr><td><span class="t0-pill">T0</span></td><td>"Fixed and deployed" Slack message + ticket link</td><td>1 min</td></tr>
+          <tr><td><span class="t1-pill">T1</span></td><td>Slack: what shipped + 1-line user impact</td><td>5 min</td></tr>
+          <tr><td><span class="t2-pill">T2</span></td><td>Slack/doc: what shipped, what it does, KPI to watch</td><td>10 min</td></tr>
+          <tr><td><span class="t3-pill">T3</span></td><td>Structured release note doc + Slack summary link</td><td>15 min</td></tr>
+        </table></div>
+      </div>
+      <div class="g2">
+        <div class="card"><h4>Include</h4><ul><li>✓ What shipped (user-facing language)</li><li>✓ What changed for the user</li><li>✓ KPI / metric being tracked</li><li>✓ Known limitations or follow-ups</li></ul></div>
+        <div class="card"><h4>Don't include</h4><ul><li>✗ Technical implementation detail</li><li>✗ PRs or task lists</li><li>✗ What was cut (save for betting table)</li></ul></div>
+      </div>
+      <div class="card full">
+        <h4>T2/T3 release note template</h4>
+        <div style="background:var(--bg);border-radius:var(--rs);padding:14px 16px;font-size:13px;line-height:1.8;color:var(--text2);border:1px solid var(--border);font-style:italic">
+          "🚀 Shipped: [feature name] · [date]<br>
+          What it does: [1–2 sentences, user-facing]<br>
+          Who it affects: [user segment]<br>
+          Metric we're watching: [KPI + baseline]<br>
+          Impact discussion scheduled: [date or 'in X weeks']"
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- S4 -->
   <div class="detail-content" id="d-s4">
     <div class="dh">
@@ -723,6 +766,99 @@ td:first-child{font-weight:500;white-space:nowrap;padding-right:14px}
   </div>
 
 </div><!-- /detail-panel -->
+
+<!-- BUSINESS TOUCHPOINTS CADENCE -->
+<div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
+  <div style="padding:18px 22px 14px;border-bottom:1px solid var(--border)">
+    <div style="font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:7px;font-family:'DM Mono',monospace;background:var(--coral-bg);color:var(--coral-t)">Business touchpoints · 2-week cadence</div>
+    <h2 style="font-size:18px;font-weight:600;letter-spacing:-.3px">When business is involved</h2>
+    <p style="font-size:13px;color:var(--text2);margin-top:3px;max-width:560px">Two sync meetings per cycle. Everything else is async. Discovery touchpoints complete in Week 1; build touchpoints follow in Week 2.</p>
+  </div>
+  <div style="padding:18px 22px">
+
+    <!-- Week 1 -->
+    <div style="margin-bottom:8px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px">Week 1 — Discovery</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <div style="background:var(--coral-bg);border:1.5px solid var(--coral-bd);border-radius:var(--rs);padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="background:var(--coral-t);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'DM Mono',monospace">Day 1 · Sync</span>
+          </div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:3px">Define + Impact discussion</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Close the previous cycle, open the next. One meeting, two agendas. Business attends once.</div>
+          <div style="font-size:11px;color:var(--coral-t);font-family:'DM Mono',monospace;font-weight:600;margin-bottom:4px">Agenda</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">
+            1. Impact review: did we move the KPI last cycle?<br>
+            2. New problem intake: business brings the problem statement<br>
+            3. PM confirms framing + success KPI
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">T2/T3 only · T0/T1 skip</div>
+        </div>
+
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="background:var(--gray-t);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'DM Mono',monospace">Days 2–5 · Async</span>
+          </div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:3px">Soft sync after research</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:8px">PM shares research findings. Business confirms direction or redirects framing. Not a solution review.</div>
+          <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;font-weight:600;margin-bottom:4px">Format by tier</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">
+            T1 → Slack message, thumbs up/down<br>
+            T2 → Async doc or Loom + comments<br>
+            T3 → Sync only if misaligned after async
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Week 2 -->
+    <div style="margin-bottom:8px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);font-family:'DM Mono',monospace;margin-bottom:10px">Week 2 — Build</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <div style="background:var(--amber-bg);border:1.5px solid var(--amber-bd);border-radius:var(--rs);padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="background:var(--amber-t);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'DM Mono',monospace">Day 1 · Sync</span>
+          </div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:3px">Betting table</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:8px">The only place work is committed. Full Week 1 of shaping feeds this. No changes after this gate.</div>
+          <div style="font-size:11px;color:var(--amber-t);font-family:'DM Mono',monospace;font-weight:600;margin-bottom:4px">Agenda</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">
+            1. Capacity check (eng lead)<br>
+            2. Pitch presentations (10 min each)<br>
+            3. Deliberation + Bet / Hold / Kill
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">T2: 30 min · T3: 1 hr · T0/T1: async only</div>
+        </div>
+
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="background:var(--gray-t);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;font-family:'DM Mono',monospace">Days 2–5 · Async</span>
+          </div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:3px">Timeline handoff + Release note</div>
+          <div style="font-size:12px;color:var(--text2);margin-bottom:8px">Two async messages. Timeline after scope lock. Release note after deploy. Never a meeting unless T3 negotiation needed.</div>
+          <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;font-weight:600;margin-bottom:4px">Two separate messages</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.7">
+            Timeline → after eng lead commits date<br>
+            Release note → after deploy (any day)
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--coral-t);font-family:'DM Mono',monospace">Release note is new — was previously missed</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Summary rule -->
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:var(--rs);padding:12px 16px;display:flex;gap:24px;flex-wrap:wrap">
+      <div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">2 sync meetings</strong> — Define+Impact (W1D1) and Betting table (W2D1)</div>
+      <div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">3 async touchpoints</strong> — Soft sync, Timeline handoff, Release note</div>
+      <div style="font-size:12px;color:var(--text2)"><strong style="color:var(--text)">0 mid-cycle surprises</strong> — business hears from PM, not from users</div>
+    </div>
+
+  </div>
+</div>
 
 <!-- CYCLE COMBOS -->
 <div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden">
