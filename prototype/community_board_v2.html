@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>goSTOPS Community Board</title>
+<style>
+:root{
+  --brand:#FF5C35;--brand-dark:#E04820;--brand-bg:#FFF0EC;
+  --green:#22C55E;--green-bg:#F0FDF4;
+  --surface:#fff;--bg:#F2F2F7;--text:#1C1C1E;--text2:#636366;--text3:#AEAEB2;
+  --border:#E5E5EA;--radius:14px;--shadow:0 1px 6px rgba(0,0,0,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior:none}
+
+.hdr{background:var(--brand);color:#fff;padding:14px 16px 10px;position:sticky;top:0;z-index:100}
+.hdr-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.hdr h1{font-size:17px;font-weight:700;flex:1}
+.hdr-sub{font-size:12px;opacity:.8}
+.sel-wrap{position:relative}
+.sel{width:100%;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.35);color:#fff;padding:9px 32px 9px 13px;border-radius:10px;font-size:13px;font-weight:600;appearance:none;cursor:pointer}
+.sel option{background:#2c2c2e;color:#fff}
+.sel-wrap::after{content:"▾";position:absolute;right:11px;top:50%;transform:translateY(-50%);color:#fff;font-size:12px;pointer-events:none}
+
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:105px;z-index:99}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .15s}
+.tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+
+/* CATEGORY FILTER */
+.catrow{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:149px;z-index:98;scrollbar-width:none}
+.catrow::-webkit-scrollbar{display:none}
+.catbtn{flex-shrink:0;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);background:#fff;white-space:nowrap;transition:all .12s}
+.catbtn.on{background:var(--brand);border-color:var(--brand);color:#fff}
+
+.main{padding:14px 14px 80px;max-width:460px;margin:0 auto}
+
+.slabel{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 8px}
+.slabel:first-child{margin-top:6px}
+
+/* VIBE CARD */
+.vibe{background:var(--surface);border-radius:var(--radius);padding:13px 15px;margin-bottom:14px;box-shadow:var(--shadow)}
+.vibe-city{font-size:18px;font-weight:800}
+.vibe-tag{display:inline-block;font-size:11px;font-weight:600;background:var(--brand-bg);color:var(--brand);padding:2px 8px;border-radius:20px;margin-top:5px}
+
+/* ACTIVE EVENT CARD */
+.ecard{background:var(--surface);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.ecard-top{display:flex;gap:12px;align-items:flex-start}
+.emoji-big{font-size:30px;flex-shrink:0;line-height:1;margin-top:2px}
+.einfo{flex:1;min-width:0}
+.elabel{font-size:15px;font-weight:700;margin-bottom:2px}
+.etime{font-size:12px;color:var(--brand);font-weight:600;margin-bottom:3px}
+.edesc{font-size:13px;color:var(--text2);line-height:1.4}
+.efoot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.avs{display:flex}
+.av{width:24px;height:24px;border-radius:50%;background:var(--brand-bg);border:2px solid #fff;margin-left:-5px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--brand);flex-shrink:0}
+.av:first-child{margin-left:0}
+.going{font-size:12px;color:var(--text2);margin-left:7px;font-weight:500}
+.jbtn{background:var(--brand);color:#fff;border:none;padding:7px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;flex-shrink:0}
+.jbtn.on{background:var(--green)}
+.jbtn:active{transform:scale(.94)}
+.slots{font-size:11px;color:var(--text3);background:var(--bg);padding:2px 7px;border-radius:6px;margin-left:6px}
+
+.cmts{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.cmts-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;cursor:pointer;user-select:none}
+.cmts-head span{font-size:12px;font-weight:700;color:var(--text2)}
+.cmts-toggle{font-size:11px;color:var(--brand);font-weight:600}
+.cmt{display:flex;gap:8px;margin-bottom:8px}
+.cmt-av{width:22px;height:22px;border-radius:50%;background:var(--bg);border:1.5px solid var(--border);font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--text2);flex-shrink:0;margin-top:1px}
+.cmt-body{flex:1;min-width:0}
+.cmt-name{font-size:11px;font-weight:700;color:var(--text);margin-bottom:1px}
+.cmt-text{font-size:13px;color:var(--text2);line-height:1.4}
+.cmt-src{font-size:10px;color:var(--text3);margin-top:2px;display:flex;align-items:center;gap:3px}
+.src-dot{width:5px;height:5px;border-radius:50%;background:var(--brand-bg);border:1px solid var(--brand);flex-shrink:0}
+.add-cmt{display:flex;gap:8px;margin-top:8px;align-items:center}
+.add-cmt input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:7px 11px;font-size:13px;color:var(--text);background:var(--bg);outline:none}
+.add-cmt input:focus{border-color:var(--brand)}
+.add-cmt button{background:var(--brand);color:#fff;border:none;width:32px;height:32px;border-radius:8px;font-size:16px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+.empty{text-align:center;padding:44px 20px;color:var(--text3)}
+.empty div{font-size:44px;margin-bottom:10px}
+.empty p{font-size:14px;line-height:1.5}
+.empty small{font-size:12px;display:block;margin-top:5px}
+
+/* EXPLORE CARD (new, more specific) */
+.xcard{background:var(--surface);border-radius:var(--radius);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);cursor:pointer;border:1.5px solid transparent;transition:border-color .15s}
+.xcard:active{border-color:var(--brand)}
+.xcard-top{display:flex;gap:10px;align-items:flex-start}
+.xcard-emoji{font-size:28px;flex-shrink:0;margin-top:1px}
+.xcard-body{flex:1;min-width:0}
+.xcard-label{font-size:15px;font-weight:700;margin-bottom:3px;line-height:1.3}
+.xcard-catbadge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:700;background:var(--bg);color:var(--text2);padding:2px 7px;border-radius:10px;margin-bottom:5px}
+.xcard-desc{font-size:12px;color:var(--text2);line-height:1.4;margin-bottom:6px}
+.xcard-quote{font-size:12px;color:var(--text2);font-style:italic;border-left:2px solid var(--brand-bg);padding-left:8px;margin-bottom:8px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.xcard-foot{display:flex;align-items:center;justify-content:space-between}
+.xcard-count{font-size:11px;color:var(--text3);font-weight:500}
+.xbtn{background:var(--brand);color:#fff;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer}
+.arr{color:var(--text3);font-size:18px;flex-shrink:0;align-self:center;margin-left:4px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.overlay.on{display:flex;animation:fi .15s}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.modal{background:#fff;width:100%;max-width:460px;border-radius:20px 20px 0 0;padding:6px 18px 44px;max-height:88vh;overflow-y:auto;animation:su .2s ease-out}
+@keyframes su{from{transform:translateY(28px);opacity:.8}to{transform:translateY(0);opacity:1}}
+.mhandle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 18px}
+.mtitle{font-size:19px;font-weight:800;margin-bottom:3px}
+.msub{font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.4}
+.past-msgs{background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:18px}
+.past-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:8px}
+.past-item{display:flex;gap:7px;margin-bottom:7px}
+.past-item:last-child{margin-bottom:0}
+.past-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);margin-top:5px;flex-shrink:0}
+.past-text{font-size:12px;color:var(--text2);font-style:italic;line-height:1.4}
+.flabel{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px;display:block}
+.fgroup{margin-bottom:18px}
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);transition:all .1s;background:#fff}
+.pill.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.tinput{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid var(--border);font-size:14px;color:var(--text);outline:none;margin-top:9px}
+.tinput:focus{border-color:var(--brand)}
+.ninput{width:100%;padding:11px 13px;border-radius:10px;border:1.5px solid var(--border);font-size:13px;color:var(--text);outline:none;min-height:72px;resize:none;font-family:inherit;line-height:1.5}
+.ninput:focus{border-color:var(--brand)}
+.pbtn{width:100%;background:var(--brand);color:#fff;border:none;padding:15px;border-radius:12px;font-size:15px;font-weight:800;cursor:pointer;transition:all .15s;margin-top:6px}
+.pbtn:active{background:var(--brand-dark);transform:scale(.98)}
+.xbtn-modal{width:100%;background:none;color:var(--text2);border:none;padding:11px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px}
+
+.toast{position:fixed;bottom:72px;left:50%;transform:translateX(-50%) translateY(16px);background:#1c1c1e;color:#fff;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:300;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+::-webkit-scrollbar{width:0}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-row">
+    <span style="font-size:20px">🏕️</span>
+    <h1>Community Board</h1>
+    <span class="hdr-sub" id="evCount"></span>
+  </div>
+  <div class="sel-wrap">
+    <select class="sel" id="hsel" onchange="switchHostel(this.value)"></select>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab on" id="t-board" onclick="switchTab('board')">📋 Live Events</div>
+  <div class="tab" id="t-explore" onclick="switchTab('explore')">🔍 Explore</div>
+</div>
+
+<div class="catrow" id="catrow"></div>
+
+<div class="main" id="main"></div>
+
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal"><div id="mbody"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── CATEGORY DEFINITIONS ───────────────────────────────────────────────────
+const CATS=[
+  {id:'all',      label:'All',           emoji:'✨'},
+  {id:'hostel',   label:'At the Hostel', emoji:'🏠'},
+  {id:'split',    label:'Split & Save',  emoji:'💸'},
+  {id:'adventure',label:'Adventure',     emoji:'🥾'},
+  {id:'explore',  label:'Explore',       emoji:'🗺️'},
+  {id:'food',     label:'Food',          emoji:'🍽️'},
+  {id:'nightlife',label:'Nightlife',     emoji:'🎉'},
+  {id:'meetups',  label:'Meetups',       emoji:'👥'},
+];
+
+// ─── BOARDS DATA ─────────────────────────────────────────────────────────────
+const BOARDS={
+  "rishikesh_tapovan":{
+    city:"Rishikesh",hostel:"goSTOPS PLUS — Tapovan",personality:"🌊 Adrenaline + Ganga vibes",
+    categories:{
+      adventure:[
+        {id:"rft",label:"River Rafting",emoji:"🚣",desc:"Grade 3–5 rapids on the Ganga, 16km–36km stretches",count:26,
+         times:["7:00 AM","9:00 AM"],slots:8,msgs:["Anyone up for river rafting today? super excited 🚣","planning rafting tomorrow morning — who's joining?","went rafting from Shivpuri today, absolutely insane rapids!"]},
+        {id:"bj",label:"Bungee Jumping — Mohan Chatti",emoji:"🪂",desc:"83m jump at India's highest fixed bungee, 15km from hostel",count:12,
+         times:["10:00 AM","2:00 PM"],slots:4,msgs:["Did bungee today — cannot believe I actually jumped 🔥","anyone tried the bungee? scared but want to do it","is it worth it? the 83m jump?"]},
+        {id:"kjt",label:"Kunjapuri Sunrise Trek",emoji:"⛰️",desc:"Pre-dawn hike to Kunjapuri temple for panoramic Himalayan + Ganga sunrise views",count:17,
+         times:["4:30 AM","5:00 AM"],slots:null,msgs:["going for kunjapuri sunrise trek tonight, who wants to join?","kunjapuri was insane today, full Himalaya view 🏔️"]},
+        {id:"camp",label:"Camping + Bonfire near Rishikesh",emoji:"⛺",desc:"Riverside or hilltop camping sites, 1hr from hostel",count:8,
+         times:["4:00 PM"],slots:6,msgs:["anyone up for camping tonight near the river?","planning a camping trip, 2 nights, who's in?"]},
+      ],
+      explore:[
+        {id:"aarti",label:"Ganga Aarti — Parmarth Niketan",emoji:"🪔",desc:"Sunset Ganga aarti ceremony at Triveni/Parmarth ghat — unmissable",count:19,
+         times:["6:00 PM","6:30 PM"],slots:null,msgs:["Anyone joining for Ganga aarti this evening?","ganga aarti was absolutely spiritual, must do 🙏","going to parmarth aarti today evening, who wants to come"]},
+        {id:"beatles",label:"Beatles Ashram (Chaurasi Kutia)",emoji:"🎸",desc:"Abandoned ashram where the Beatles meditated in 1968 — now covered in murals",count:9,
+         times:["10:00 AM","3:00 PM"],slots:null,msgs:["Beatles ashram tomorrow morning? the murals are incredible","is the beatles ashram worth it? thinking of going"]},
+        {id:"ljhula",label:"Laxman Jhula to Ram Jhula Walk",emoji:"🌉",desc:"Iconic suspension bridges with Ganga views, temples, and cafes on both banks",count:14,
+         times:["7:00 AM","5:00 PM"],slots:null,msgs:["anyone walking to laxman jhula today?","walked from laxman to ram jhula this morning — so peaceful"]},
+      ],
+      food:[
+        {id:"littlebuddha",label:"Little Buddha Cafe",emoji:"☕",desc:"Rooftop cafe over the Ganga — legendary views, continental + Indian",count:11,
+         times:["8:00 AM","12:00 PM","7:00 PM"],slots:null,msgs:["little buddha cafe for breakfast? the view is unreal","going to little buddha for sunset, anyone joining?"]},
+        {id:"chillout",label:"Chill Out Cafe",emoji:"🥣",desc:"Backpacker favourite — huge breakfast portions, amazing chai, shakes",count:8,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["chill out cafe for breakfast tomorrow?","best breakfast in rishikesh honestly"]},
+      ],
+      nightlife:[
+        {id:"bonfire_rk",label:"Hostel Bonfire Night",emoji:"🔥",desc:"Bonfire on the terrace — music, chai, strangers becoming friends",count:15,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["bonfire tonight at the hostel? who's in 🔥","bonfire + guitars tonight, come join us","anyone up for bonfire and stargazing tonight?"]},
+      ],
+      meetups:[
+        {id:"yoga_rk",label:"Morning Yoga by the Ganga",emoji:"🧘",desc:"Free yoga sessions at sunrise on the ghats or hostel terrace",count:13,
+         times:["6:00 AM","6:30 AM"],slots:null,msgs:["yoga session tomorrow at 6am, who wants to join?","morning yoga by the ganga is so peaceful 🙏"]},
+        {id:"solo_rk",label:"Solo Traveller Meetup",emoji:"👋",desc:"Find your Rishikesh crew — daily meetups at the common area",count:22,
+         times:["7:00 PM","8:00 PM"],slots:null,msgs:["Any solo travellers here? Would love to explore together","solo travel gang — anyone up for rafting tomorrow?","hi, solo traveller here, anyone free today?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_ddn",label:"Cab to Dehradun",emoji:"🚕",desc:"Split to Dehradun station or Jolly Grant Airport",count:8,times:["6:00 AM","7:00 AM","8:00 AM"],slots:3,
+         msgs:["sharing a cab to dehradun station?","going to jolly grant airport at 7, 2 seats free","cab to dehradun, anyone?"]},
+        {id:"s_hrd",label:"Cab to Haridwar",emoji:"🚕",desc:"45 min to Haridwar — split 4 ways it's nothing",count:6,times:["8:00 AM","10:00 AM"],slots:3,
+         msgs:["anyone going to haridwar?","cab to haridwar station, share?"]},
+        {id:"s_kjt",label:"Jeep to Kunjapuri Trailhead",emoji:"🚙",desc:"Pre-dawn shared jeep to the Kunjapuri trek start (5am)",count:5,times:["4:30 AM","5:00 AM"],slots:5,
+         msgs:["sharing a jeep to kunjapuri tomorrow?","need 3 more for kunjapuri jeep"]},
+      ],
+    }
+  },
+
+  "rishikesh_lj":{
+    city:"Rishikesh",hostel:"goSTOPS — Lakshman Jhula",personality:"🌊 River-front backpacker hub",
+    categories:{
+      adventure:[
+        {id:"rft_lj",label:"River Rafting (Shivpuri)",emoji:"🚣",desc:"Book from hostel — Grade 3–5 rapids, 16km stretch most popular",count:24,
+         times:["7:00 AM","8:30 AM"],slots:8,msgs:["who's up for rafting from Shivpuri today?","organizing a group for rafting tomorrow 7am, anyone?"]},
+        {id:"cliff_lj",label:"Cliff Jumping at the Ganga",emoji:"💦",desc:"Local spot near Laxman Jhula — 15–30ft jumps into the Ganga",count:10,
+         times:["10:00 AM","2:00 PM"],slots:null,msgs:["cliff jumping today! who's brave enough 😂","anyone been to the cliff jumping spot near here?"]},
+      ],
+      explore:[
+        {id:"aarti_lj",label:"Ganga Aarti at Triveni Ghat",emoji:"🪔",desc:"Evening aarti at the meeting of three rivers — very atmospheric",count:16,
+         times:["6:00 PM"],slots:null,msgs:["anyone joining for aarti tonight?","ganga aarti tonight — one of the most beautiful things I've witnessed"]},
+        {id:"ljhula2",label:"Laxman Jhula Bridge & Market",emoji:"🌉",desc:"Cross the famous suspension bridge, explore the temple-lined lanes",count:12,
+         times:["9:00 AM","4:00 PM"],slots:null,msgs:["heading to laxman jhula market, anyone coming?"]},
+      ],
+      food:[
+        {id:"coffeegoa",label:"Cafe de Goa",emoji:"☕",desc:"Cosy rooftop cafe near the jhula — Israeli food, wood-fired pizza",count:9,
+         times:["9:00 AM","1:00 PM","7:00 PM"],slots:null,msgs:["cafe de goa tonight? their pizza is incredible","anyone been to cafe de goa? is it good?"]},
+        {id:"ramana",label:"Ramana's Organic Bakery",emoji:"🥐",desc:"Best granola bowls, fresh bakes, and health food in Laxman Jhula",count:7,
+         times:["8:00 AM","10:00 AM"],slots:null,msgs:["ramana's bakery for breakfast? best place here"]},
+      ],
+      nightlife:[
+        {id:"rooftop_lj",label:"Rooftop Jam Session",emoji:"🎸",desc:"Bring your instrument or just listen — impromptu music on the rooftop",count:11,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["guitar jam on the roof tonight 🎸 who's in?","amazing impromptu music session last night!"]},
+      ],
+      meetups:[
+        {id:"solo_lj",label:"Solo Traveller Board",emoji:"👋",desc:"Post here to find travel buddies for any activity in Rishikesh",count:28,
+         times:["7:00 PM"],slots:null,msgs:["solo traveller, up for rafting tomorrow?","anyone heading to Rishikesh waterfall tomorrow? looking for company"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_ddn_lj",label:"Cab to Dehradun",emoji:"🚕",desc:"Split to Dehradun station / Jolly Grant Airport",count:7,times:["6:00 AM","7:00 AM"],slots:3,
+         msgs:["sharing cab to dehradun?","going to dehradun airport, 2 seats free"]},
+        {id:"s_hrd_lj",label:"Cab to Haridwar",emoji:"🚕",desc:"Share a cab to Haridwar station",count:5,times:["8:00 AM","10:00 AM"],slots:3,
+         msgs:["anyone going to haridwar?","splitting cab to haridwar"]},
+        {id:"s_shiv",label:"Cab to Shivpuri (Rafting Start)",emoji:"🚙",desc:"Share ride to Shivpuri for the 16km rafting stretch",count:9,times:["7:00 AM","8:00 AM"],slots:4,
+         msgs:["sharing cab to shivpuri for rafting?","jeep to shivpuri, need 2 more"]},
+      ],
+    }
+  },
+
+  "kasol":{
+    city:"Kasol",hostel:"goSTOPS Kasol",personality:"🏔️ Parvati Valley vibes",
+    categories:{
+      adventure:[
+        {id:"kheergang",label:"Kheerganga Trek",emoji:"🏔️",desc:"12km through pine forests to natural hot springs at the top — 2 day option available",count:9,
+         times:["6:00 AM","7:00 AM"],slots:null,msgs:["kheerganga trek tomorrow, who's joining? 🏔️","doing kheerganga in 2 days — anyone interested?","just came back from kheerganga — the hot springs are magical!"]},
+        {id:"tosh",label:"Tosh Valley Day Trip",emoji:"🗻",desc:"Remote Himalayan village 10km from Kasol — stunning views, relaxed vibe",count:11,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["planning tosh tomorrow, anyone coming?","tosh is so beautiful and peaceful, must visit","day trip to tosh? renting bikes from the market"]},
+        {id:"chalal",label:"Chalal Village Walk",emoji:"🌿",desc:"Easy 2km riverside walk from Kasol to the chill village of Chalal",count:7,
+         times:["5:00 PM","4:00 PM"],slots:null,msgs:["evening walk to chalal? very chill and beautiful","chalal walk today evening, who's joining?"]},
+        {id:"rasol",label:"Rasol Village Trek",emoji:"⛰️",desc:"Hidden village above Kasol with incredible valley views — 4hr hike",count:5,
+         times:["6:00 AM"],slots:null,msgs:["is anyone up for rasol trek? heard it's beautiful"]},
+      ],
+      explore:[
+        {id:"manikaran",label:"Manikaran Gurudwara",emoji:"🙏",desc:"Holy Sikh shrine with natural hot springs — free langar (community meal)",count:5,
+         times:["10:00 AM","11:00 AM"],slots:null,msgs:["manikaran tomorrow? the hot springs are amazing","anyone visiting manikaran today? can share a taxi"]},
+        {id:"parvati",label:"Parvati River Walk",emoji:"🏞️",desc:"Stroll along the Parvati River banks — swim, sit, soak in the scenery",count:6,
+         times:["5:00 PM","6:00 PM"],slots:null,msgs:["evening walk along the river? so peaceful","chilling by the parvati river — anyone joining?"]},
+      ],
+      food:[
+        {id:"evergreen_k",label:"The Evergreen Cafe",emoji:"🌲",desc:"Kasol's most beloved cafe — Israeli food, mushroom tea, incredible views",count:8,
+         times:["9:00 AM","7:00 PM"],slots:null,msgs:["evergreen cafe tonight? best food in kasol","anyone been to evergreen? is it as good as they say?"]},
+        {id:"riverview_k",label:"Riverview Cafe",emoji:"🌊",desc:"Riverside seating, Israeli breakfast, amazing hummus and shakshuka",count:6,
+         times:["9:00 AM","12:00 PM"],slots:null,msgs:["riverview cafe for breakfast? the view is unreal","going to riverview today, anyone joining?"]},
+        {id:"german",label:"German Bakery",emoji:"🥐",desc:"Fresh-baked breads, amazing cinnamon rolls, strong espresso",count:5,
+         times:["8:00 AM"],slots:null,msgs:["german bakery run this morning? their cinnamon rolls are incredible"]},
+      ],
+      nightlife:[
+        {id:"kasol_bonfire",label:"Riverside Bonfire",emoji:"🔥",desc:"Bonfires by the Parvati River — bring guitars, snacks, good vibes",count:12,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["bonfire by the river tonight 🔥 who's in?","amazing bonfire last night — music and stars until 2am","sunset + bonfire tonight by the river?"]},
+      ],
+      meetups:[
+        {id:"kasol_solo",label:"Parvati Valley Travel Crew",emoji:"👥",desc:"Find fellow travellers for treks, cafes, and Parvati valley adventures",count:18,
+         times:["7:00 PM"],slots:null,msgs:["anyone heading to tosh or kheerganga?","solo traveller here — looking for a trek buddy","anyone up for anything today in kasol?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_bars",label:"Taxi to Kheerganga Trailhead",emoji:"🚕",desc:"Share taxi to Barsheni — the start of Kheerganga trek",count:11,times:["6:00 AM","7:00 AM"],slots:4,
+         msgs:["sharing taxi to barsheni for kheerganga?","need 2 more for barsheni taxi, 6am start","anyone splitting cab to kheerganga trailhead?"]},
+        {id:"s_tosh",label:"Cab to Tosh Village",emoji:"🚕",desc:"Split the steep taxi ride up to Tosh",count:8,times:["8:00 AM","9:00 AM"],slots:4,
+         msgs:["going to tosh, sharing a cab?","taxi to tosh, anyone?"]},
+        {id:"s_bhun",label:"Cab to Bhuntar (Bus/Airport)",emoji:"🚕",desc:"Bhuntar for onward buses to Manali, Chandigarh, Delhi",count:5,times:["7:00 AM","9:00 AM"],slots:3,
+         msgs:["anyone going to bhuntar?","sharing cab to bhuntar bus stand"]},
+      ],
+    }
+  },
+
+  "mcleodganj_bhagsu":{
+    city:"McLeod Ganj",hostel:"goSTOPS — Bhagsu",personality:"☁️ Himalayan hideout",
+    categories:{
+      adventure:[
+        {id:"triund",label:"Triund Trek",emoji:"⛰️",desc:"The crown jewel of Dharamsala — 9km hike to a meadow above the clouds, breathtaking",count:24,
+         times:["5:00 AM","6:00 AM"],slots:null,msgs:["triund trek tomorrow 5am, who's in? 🏔️","just came back from triund — best day of my trip by far!","triund sunrise > everything. anyone going tomorrow?"]},
+        {id:"bhagsu_wf",label:"Bhagsu Waterfall & Pool",emoji:"💦",desc:"30min walk to the waterfall — swim in the natural pool, magical spot",count:8,
+         times:["10:00 AM","2:00 PM"],slots:null,msgs:["bhagsu waterfall today? I'll go in the morning","heading to bhagsu waterfall, anyone joining?"]},
+        {id:"dharamkot",label:"Dharamkot Hike",emoji:"🌲",desc:"Easy 2km uphill walk to Dharamkot — yoga retreats, hippie cafes, forest vibes",count:10,
+         times:["6:00 AM","4:00 PM"],slots:null,msgs:["dharamkot walk this evening? super scenic","going to dharamkot tomorrow for yoga — anyone coming?"]},
+        {id:"kareri",label:"Kareri Lake Trek",emoji:"🏔️",desc:"2-day trek to a pristine alpine lake at 2950m — much less crowded than Triund",count:5,
+         times:["6:00 AM"],slots:4,msgs:["planning kareri lake trek, 2 days — anyone interested?"]},
+      ],
+      explore:[
+        {id:"namgyal",label:"Namgyal Monastery",emoji:"🙏",desc:"Dalai Lama's personal monastery — prayer wheels, monks, mountain backdrop",count:9,
+         times:["9:00 AM","3:00 PM"],slots:null,msgs:["visiting the monastery this morning, anyone want to come?","namgyal monastery is so peaceful — highly recommend"]},
+        {id:"mcleod_mkt",label:"McLeod Ganj Market Walk",emoji:"🛍️",desc:"Tibetan handicrafts, momos, prayer flags, and Buddhist bookstores",count:7,
+         times:["11:00 AM","5:00 PM"],slots:null,msgs:["market stroll in mcleod? lots of tibetan stuff","exploring the market this afternoon"]},
+        {id:"bhagsu_temple",label:"Bhagsu Nag Temple",emoji:"🕌",desc:"Ancient Shiva temple at the base of the waterfall trail — serene and scenic",count:6,
+         times:["9:00 AM"],slots:null,msgs:["bhagsu temple + waterfall combo this morning?"]},
+      ],
+      food:[
+        {id:"moonpeak",label:"Moonpeak Espresso",emoji:"☕",desc:"Dharamsala's best specialty coffee + artisan bakes — cult following",count:8,
+         times:["8:00 AM","10:00 AM"],slots:null,msgs:["moonpeak for coffee tomorrow morning? best espresso in Himachal","moonpeak + triund? perfect day plan"]},
+        {id:"italian_kitchen",label:"Nick's Italian Kitchen",emoji:"🍕",desc:"Famous pasta and wood-fired pizza in McLeod Ganj — must-visit",count:6,
+         times:["1:00 PM","7:00 PM"],slots:null,msgs:["nick's italian kitchen tonight? their pasta is incredible","going to nick's kitchen, anyone joining?"]},
+        {id:"shiva_bhagsu",label:"Shiva Cafe",emoji:"🌿",desc:"Chill rooftop cafe above the waterfall trail — great views, hippie vibe",count:7,
+         times:["11:00 AM","6:00 PM"],slots:null,msgs:["shiva cafe near the waterfall is so good","sunset drinks at shiva cafe?"]},
+      ],
+      nightlife:[
+        {id:"open_mic",label:"Open Mic Night at the Hostel",emoji:"🎤",desc:"Sing, perform, listen — anyone can get on the mic",count:5,
+         times:["8:00 PM"],slots:null,msgs:["open mic tonight! come sing, play, or just vibe 🎤","open mic was amazing last night — such talented people in the hostel"]},
+      ],
+      meetups:[
+        {id:"mcleod_solo",label:"Triund Trek Squad",emoji:"🥾",desc:"Build your Triund group — early morning start, back by afternoon",count:20,
+         times:["5:00 AM","6:00 AM"],slots:null,msgs:["anyone going triund tomorrow? looking to form a group","planning triund trek, need more people!","solo traveller — who wants to hike triund?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_mcl_dhm",label:"Cab to Dharamsala (Lower)",emoji:"🚕",desc:"15min to Dharamsala bus stand or McLeod taxi stand",count:8,times:["7:00 AM","8:00 AM"],slots:3,
+         msgs:["sharing cab to dharamsala bus stand?","going to lower dharamsala, anyone?"]},
+        {id:"s_mcl_triund",label:"Jeep to Triund Trailhead",emoji:"🚙",desc:"Share jeep to Galu Devi temple — Triund trek start",count:12,times:["7:00 AM","8:00 AM"],slots:5,
+         msgs:["sharing jeep to triund start?","anyone going for triund today?"]},
+        {id:"s_mcl_bir",label:"Cab to Bir Billing",emoji:"🚕",desc:"1.5hr drive to India's paragliding capital — worthwhile split",count:5,times:["8:00 AM"],slots:4,
+         msgs:["going to bir billing, sharing?","paragliding at bir, anyone?"]},
+      ],
+    }
+  },
+
+  "bir":{
+    city:"Bir",hostel:"goSTOPS Bir",personality:"🪂 Paragliding capital of India",
+    categories:{
+      adventure:[
+        {id:"para_bir",label:"Bir Billing Paragliding",emoji:"🪂",desc:"India's paragliding capital — 3km above sea level, 14km glide to Bir landing site",count:15,
+         times:["8:00 AM","10:00 AM","2:00 PM"],slots:4,msgs:["paragliding tomorrow!! anyone else booked?","just landed from billing — absolutely life-changing experience 🪂","paragliding in bir is insane, you literally fly through clouds"]},
+        {id:"rajgundha",label:"Rajgundha Valley Trek",emoji:"🏔️",desc:"Remote Himalayan valley with apple orchards and shepherd huts — 2 day trek",count:7,
+         times:["7:00 AM"],slots:4,msgs:["anyone up for rajgundha trek? 2 days","planning rajgundha tomorrow, need 2 more people"]},
+        {id:"billing",label:"Billing Viewpoint Day Trip",emoji:"⛰️",desc:"Drive up to Billing (2600m) for panoramic views — where the paragliders launch",count:8,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["driving up to billing tomorrow for views, who's coming?","billing point at sunset is incredible"]},
+      ],
+      explore:[
+        {id:"monasteries",label:"Buddhist Monastery Hop",emoji:"🙏",desc:"Bir has 8+ Tibetan monasteries — prayer flags, murals, serene atmosphere",count:6,
+         times:["10:00 AM","3:00 PM"],slots:null,msgs:["visiting the monasteries this morning, anyone joining?","the chokling monastery is so beautiful"]},
+        {id:"cycling",label:"Bir Village Cycling",emoji:"🚴",desc:"Rent cycles at the hostel and explore the village, tea estates, and forest roads",count:5,
+         times:["7:00 AM","4:00 PM"],slots:null,msgs:["cycling through bir village tomorrow? renting from hostel","cycling around bir was so peaceful"]},
+      ],
+      food:[
+        {id:"himalayan_pizza",label:"Himalayan Pizza",emoji:"🍕",desc:"Famous pizza joint near the landing site — wood-fired, incredible views",count:5,
+         times:["1:00 PM","7:00 PM"],slots:null,msgs:["himalayan pizza tonight? their pizzas are so good","post-paragliding lunch at himalayan pizza 🍕"]},
+        {id:"vaayu",label:"Vaayu Cafe",emoji:"☕",desc:"Chilled out cafe run by a paragliding school — good coffee, pancakes, sunset views",count:4,
+         times:["8:00 AM","6:00 PM"],slots:null,msgs:["vaayu cafe for breakfast? super chill place"]},
+      ],
+      nightlife:[
+        {id:"bir_bonfire",label:"Stargazing + Bonfire",emoji:"🌟",desc:"Bir has zero light pollution — get away from town and lie under the Milky Way",count:9,
+         times:["9:00 PM"],slots:null,msgs:["stargazing tonight? the sky here is unbelievable 🌟","bonfire + stars tonight, come join us!"]},
+      ],
+      meetups:[
+        {id:"bir_crew",label:"Paragliding Group Booking",emoji:"🪂",desc:"Group discount available — let's get 4+ people to book together",count:12,
+         times:["8:00 AM"],slots:4,msgs:["anyone else booking paragliding? can we do a group?","paragliding tomorrow — need 2 more for group booking"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_bir_billing",label:"Jeep to Billing (Paragliding Launch)",emoji:"🚙",desc:"Share the steep 14km jeep ride up to Billing launch site",count:14,times:["7:00 AM","8:00 AM","9:00 AM"],slots:5,
+         msgs:["sharing jeep to billing for paragliding?","jeep to billing launch site, need 2 more","going to billing tomorrow for paragliding, who's joining?"]},
+        {id:"s_bir_mcl",label:"Cab to McLeodganj / Dharamsala",emoji:"🚕",desc:"1.5hr back to McLeod — share cab after paragliding",count:6,times:["2:00 PM","3:00 PM","4:00 PM"],slots:3,
+         msgs:["sharing cab to mcleodganj after?","going to dharamsala, anyone?"]},
+        {id:"s_bir_pth",label:"Cab to Pathankot (Railway)",emoji:"🚕",desc:"2hr to Pathankot junction for trains to Delhi/Amritsar",count:4,times:["6:00 AM","7:00 AM"],slots:3,
+         msgs:["cab to pathankot station?","anyone going to pathankot?"]},
+      ],
+    }
+  },
+
+  "varanasi":{
+    city:"Varanasi",hostel:"goSTOPS Varanasi",personality:"🪔 Spiritual & eternal city",
+    categories:{
+      adventure:[
+        {id:"morning_boat",label:"Morning Boating on the Ganga",emoji:"🚣",desc:"Sunrise boat ride through the ghats — watch the city wake up on the river",count:13,
+         times:["5:30 AM","6:00 AM"],slots:8,msgs:["morning boating tomorrow 5:30am, who's in? 🚣","sunrise boat ride on the ganga — most beautiful 2 hours of my life"]},
+        {id:"sbwt",label:"South Banaras Walking Tour",emoji:"🚶",desc:"Guided 3hr walk through the old city ghats — hidden temples, chai stalls, silk weavers",count:8,
+         times:["6:00 AM","7:00 AM"],slots:null,msgs:["doing the south banaras walking tour tomorrow, anyone joining?","walking tour of the ghats was the best decision — highly recommend"]},
+      ],
+      explore:[
+        {id:"ganga_aarti_v",label:"Dashashwamedh Ghat Aarti",emoji:"🪔",desc:"The grand evening aarti — fire, chanting, priests, and 1000+ devotees",count:21,
+         times:["6:00 PM","6:30 PM"],slots:null,msgs:["ganga aarti this evening? one of the most powerful things I've seen","who wants to watch the ganga aarti tonight? going at 6:30","ganga aarti in varanasi will change you"]},
+        {id:"assi_ghat",label:"Assi Ghat at Sunrise",emoji:"🌅",desc:"The most beautiful ghat in Varanasi — morning yoga, old men playing chess, chai",count:15,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["assi ghat sunrise is unbelievable — wake up early!","heading to assi ghat at 5:30, anyone?","chai at assi ghat this morning? perfect start to the day"]},
+        {id:"sarnath",label:"Sarnath Day Trip",emoji:"☸️",desc:"Where Buddha gave his first sermon — ancient stupas, Dhamek Stupa, museum",count:9,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["going to sarnath tomorrow, anyone coming?","sarnath was surprisingly moving — the oldest Buddhist site"]},
+        {id:"kashi_temple",label:"Kashi Vishwanath Temple",emoji:"🛕",desc:"One of the 12 Jyotirlingas — incredible new corridor, very atmospheric morning visit",count:11,
+         times:["5:00 AM","6:00 AM"],slots:null,msgs:["kashi vishwanath temple early morning visit anyone?","the new corridor makes the temple so much more accessible"]},
+      ],
+      food:[
+        {id:"blue_lassi",label:"Blue Lassi Shop",emoji:"🥛",desc:"Famous tiny lassi shop near the golden temple — 100+ flavours, cult status",count:10,
+         times:["10:00 AM","2:00 PM"],slots:null,msgs:["blue lassi is a must! the oreo and rose flavours are insane","blue lassi run today, anyone joining?"]},
+        {id:"kashi_chat",label:"Kashi Chaat Bhandar",emoji:"🥙",desc:"Iconic street food spot — tamatar chaat, aloo tikki, dahi vada, 60+ years old",count:8,
+         times:["5:00 PM","6:00 PM"],slots:null,msgs:["kashi chat for evening snacks? the best chaat I've ever had","going for street food near the ghats this evening"]},
+      ],
+      nightlife:[
+        {id:"ghat_evening",label:"Ghat Evening & Dev Deepawali",emoji:"🕯️",desc:"Every evening the ghats light up — sit and watch the ceremonies, bonfires of incense",count:14,
+         times:["7:00 PM","8:00 PM"],slots:null,msgs:["hanging at the ghats tonight, joining?","ghat evenings in varanasi hit different — there's music everywhere"]},
+      ],
+      meetups:[
+        {id:"v_solo",label:"Ghat Walking Group",emoji:"👥",desc:"Morning or evening walk through all the ghats with fellow travellers",count:17,
+         times:["6:00 AM","6:00 PM"],slots:null,msgs:["anyone want to walk the ghats together this evening?","solo traveller — looking to explore the ghats together","who wants to walk from Assi to Manikarnika ghat?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_var_assi",label:"Auto to Assi Ghat",emoji:"🛺",desc:"Split auto to Assi Ghat for sunrise boat or evening aarti",count:9,times:["5:00 AM","6:00 AM","5:30 PM"],slots:3,
+         msgs:["auto to assi ghat for sunrise?","anyone going to assi ghat?","auto share to assi ghat?"]},
+        {id:"s_var_sarnath",label:"Cab to Sarnath",emoji:"🚕",desc:"13km to Sarnath — where Buddha gave his first sermon",count:7,times:["9:00 AM","10:00 AM"],slots:3,
+         msgs:["going to sarnath, sharing cab?","sarnath day trip, anyone?"]},
+        {id:"s_var_boat",label:"Shared Boat on the Ganga",emoji:"🚣",desc:"Split the sunrise boat ride from Dashashwamedh to Assi Ghat",count:13,times:["5:00 AM","5:30 AM"],slots:6,
+         msgs:["sharing boat ride at sunrise?","sunrise boat on the ganga, who's joining?","anyone for the morning boat?"]},
+      ],
+    }
+  },
+
+  "mussoorie_pp":{
+    city:"Mussoorie",hostel:"goSTOPS — Picture Palace",personality:"🌤️ Queen of Hill Stations",
+    categories:{
+      adventure:[
+        {id:"george_ev",label:"George Everest Peak Trek",emoji:"⛰️",desc:"6km hike to the house of Sir George Everest — 360° Himalayan views",count:14,
+         times:["7:00 AM","8:00 AM"],slots:null,msgs:["george everest trek tomorrow? the views are incredible","heading to george everest point today, who's joining?","george everest on a clear day — you can see Kedar peak!"]},
+        {id:"camel",label:"Camel's Back Road Walk",emoji:"🐪",desc:"3km ridge walk shaped like a camel's back — sunset views over the Doon Valley",count:9,
+         times:["5:00 PM","6:00 PM"],slots:null,msgs:["camel's back road walk for sunset?","evening walk on camel's back road is so peaceful"]},
+        {id:"gun_hill",label:"Gun Hill Sunrise",emoji:"🔭",desc:"Second highest peak in Mussoorie — cable car or steep 30min hike",count:8,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["gun hill sunrise tomorrow? taking the cable car up","gun hill at sunrise is beautiful — worth the early wake"]},
+      ],
+      explore:[
+        {id:"mall_road_m",label:"Mall Road Evening Stroll",emoji:"🛍️",desc:"Mussoorie's famous promenade — shops, street food, sunset views over the valley",count:16,
+         times:["5:00 PM","6:00 PM","7:00 PM"],slots:null,msgs:["mall road in the evening? lots of good street food","mall road walk tonight — who wants to join?","the view from mall road at dusk is just perfect"]},
+        {id:"landour",label:"Landour Bakehouse & Walk",emoji:"🥐",desc:"Quieter British-era cantonment — Landour Bakehouse is legendary, Char Dukaan view",count:23,
+         times:["9:00 AM","10:00 AM","3:00 PM"],slots:null,msgs:["landour bakehouse tomorrow morning? their croissants are incredible","walking up to landour today — who wants to come?","char dukaan in landour for chai and views = perfect morning"]},
+      ],
+      food:[
+        {id:"landour_bake",label:"Landour Bakehouse (Char Dukaan)",emoji:"🥐",desc:"Heritage bakery at the famous four-dukaan junction — fresh bread, coffee, valley views",count:15,
+         times:["8:00 AM","10:00 AM"],slots:null,msgs:["landour bakehouse for breakfast? worth the walk up","their sourdough at landour is out of this world"]},
+        {id:"kalsang",label:"Kalsang Friends Corner",emoji:"🥘",desc:"Best Tibetan food in Mussoorie — momos, thukpa, butter tea",count:8,
+         times:["12:00 PM","7:00 PM"],slots:null,msgs:["kalsang for momos tonight? best thukpa I've had","tibetan food dinner tonight? who's coming"]},
+      ],
+      nightlife:[
+        {id:"muss_bonfire",label:"Hostel Terrace Bonfire",emoji:"🔥",desc:"Bonfire on the terrace with valley views — Doon Valley lit up at night",count:11,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["bonfire on the terrace tonight? the valley looks beautiful at night","bonfire + chai + valley views 🔥 who's joining?"]},
+      ],
+      meetups:[
+        {id:"muss_crew",label:"Mussoorie Explorer Group",emoji:"🗺️",desc:"Form a group for George Everest + Landour + sunset walks",count:13,
+         times:["7:00 AM","5:00 PM"],slots:null,msgs:["anyone up for exploring today?","forming a group for george everest and landour tomorrow — interested?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_mpp_ddn",label:"Cab to Dehradun",emoji:"🚕",desc:"Split the 1.5hr drive down to Dehradun station or airport",count:10,times:["7:00 AM","8:00 AM"],slots:3,
+         msgs:["sharing cab to dehradun station?","going to jolly grant airport, 2 seats free"]},
+        {id:"s_mpp_kempty",label:"Cab to Kempty Falls",emoji:"🚕",desc:"15min ride to Kempty Falls — worthwhile split",count:6,times:["10:00 AM","11:00 AM"],slots:3,
+         msgs:["kempty falls today, sharing cab?","going to kempty?"]},
+        {id:"s_mpp_rksh",label:"Cab to Rishikesh",emoji:"🚕",desc:"90min drive to Rishikesh for rafting or yoga",count:5,times:["7:00 AM","8:00 AM"],slots:4,
+         msgs:["rishikesh day trip, sharing cab?","going to rishikesh from mussoorie"]},
+      ],
+    }
+  },
+
+  "goa_vagator_plus":{
+    city:"Goa — Vagator",hostel:"goSTOPS PLUS — Vagator",personality:"🏖️ Beach + party capital",
+    categories:{
+      adventure:[
+        {id:"kayaking_v",label:"Kayaking — Mandovi / Goa Coast",emoji:"🚣",desc:"Sea kayaking along the Goa coast at sunrise or sunset",count:14,
+         times:["7:00 AM","5:00 PM"],slots:6,msgs:["kayaking tomorrow morning at 7, who's joining?","kayaking at sunrise was magical — calm water and dolphins!"]},
+        {id:"watersports",label:"Watersports at Vagator Beach",emoji:"🤿",desc:"Jet ski, parasailing, banana boat — all available directly at the beach",count:12,
+         times:["10:00 AM","2:00 PM"],slots:null,msgs:["watersports at vagator today? let's go in a group","parasailing was terrifying and amazing 😂"]},
+        {id:"divar_cycle",label:"Divar Island Bicycle Tour",emoji:"🚴",desc:"Ferry to the quiet island, cycle through Portuguese villages and churches",count:12,
+         times:["8:00 AM","9:00 AM"],slots:8,msgs:["divar island bicycle tour tomorrow? sounds amazing","cycling divar island was so different from touristy goa"]},
+      ],
+      explore:[
+        {id:"fort_aguada",label:"Fort Aguada & Sinquerim Beach",emoji:"🏰",desc:"Portuguese fort from 1612 with lighthouse and stunning sea views",count:10,
+         times:["9:00 AM","4:00 PM"],slots:null,msgs:["fort aguada tomorrow? want to see the sunset from there","fort aguada + sinquerim beach combo is perfect"]},
+        {id:"south_goa",label:"South Goa Tour (Old Goa Churches)",emoji:"⛪",desc:"Basilica of Bom Jesus, Se Cathedral, Fontainhas Latin Quarter",count:12,
+         times:["9:00 AM"],slots:null,msgs:["south goa heritage tour tomorrow? old goa churches are stunning","fontainhas is so beautiful — feels like Portugal"]},
+        {id:"anjuna_flea",label:"Anjuna Flea Market (Wednesday)",emoji:"🛍️",desc:"Goa's famous flea market — hippie jewellery, vintage clothes, local crafts",count:8,
+         times:["10:00 AM","11:00 AM"],slots:null,msgs:["anjuna flea market tomorrow, who wants to come?","flea market tomorrow — let's go early before it gets crowded"]},
+        {id:"chapora",label:"Chapora Fort (Dil Chahta Hai)",emoji:"🏯",desc:"The iconic Dil Chahta Hai fort — 360° views, sunrise/sunset magic",count:9,
+         times:["5:30 AM","5:00 PM"],slots:null,msgs:["chapora fort for sunset tonight? DCH feels 😂","chapora at sunrise was empty and incredible"]},
+      ],
+      food:[
+        {id:"thalassa_v",label:"Thalassa (Greek Restaurant)",emoji:"🫒",desc:"Legendary Greek restaurant in Vagator — sunset cocktails and incredible food",count:9,
+         times:["6:00 PM","7:00 PM"],slots:null,msgs:["thalassa for sunset tonight? their cocktails are 🔥","thalassa sundowners is the Goa dream"]},
+        {id:"antares_v",label:"Antares Restaurant",emoji:"🌅",desc:"Celebrity chef Floyd Cardoz's restaurant — sunset views, top-notch Goa cuisine",count:7,
+         times:["7:00 PM"],slots:null,msgs:["antares tonight for dinner? a bit pricey but amazing","antares is so worth it for a special evening"]},
+      ],
+      nightlife:[
+        {id:"sunset_cruise",label:"Sunset Dinner Cruise",emoji:"🚢",desc:"2hr cruise on the Mandovi River — dinner, DJ, open bar, views of Panjim",count:14,
+         times:["6:00 PM"],slots:null,msgs:["sunset cruise tonight!! who's in? 🚢","party dinner cruise was SO much fun — best night in goa","booking sunset cruise tonight — get a group discount!"]},
+        {id:"hilltop",label:"Hilltop Goa (Saturday Night)",emoji:"🎵",desc:"The legendary Saturday night market and party venue in Vagator hills",count:11,
+         times:["10:00 PM"],slots:null,msgs:["hilltop tonight? who wants to go 🎵","hilltop on saturday is the real goa nightlife experience"]},
+        {id:"party_boat",label:"Adventure Party Boat (Watersports)",emoji:"⛵",desc:"Boat party with watersports — parasailing, jet ski, swimming, DJ on board",count:12,
+         times:["10:00 AM"],slots:8,msgs:["party boat tomorrow! watersports + music 🔥 who's in?","party boat was the best thing I did in Goa"]},
+      ],
+      meetups:[
+        {id:"goa_solo",label:"Beach Day Crew",emoji:"🏖️",desc:"Find your Goa crew — beach, sunsets, nightlife, day trips",count:22,
+         times:["10:00 AM","5:00 PM"],slots:null,msgs:["solo traveller — anyone up for beach day?","looking for people to explore Goa with!","anyone want to hit anjuna or morjim tomorrow?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_goa_apt",label:"Cab to Goa Airport",emoji:"🚕",desc:"Share to Dabolim or Mopa airport — saves ₹500+",count:12,times:["4:00 AM","5:00 AM","6:00 AM"],slots:3,
+         msgs:["sharing cab to goa airport?","going to dabolim, 2 seats free","mopa airport cab tomorrow?"]},
+        {id:"s_goa_scooter",label:"Scooter Share",emoji:"🛵",desc:"Split the rental cost — ₹300–400/day split 2 ways",count:14,times:["9:00 AM","10:00 AM"],slots:2,
+         msgs:["scooter share today?","anyone want to split a scooter?","renting scooter, want to share?"]},
+        {id:"s_goa_anjuna",label:"Cab to Anjuna Flea Market",emoji:"🚕",desc:"Wednesday flea market — split cab from Vagator",count:8,times:["10:00 AM","11:00 AM"],slots:3,
+         msgs:["anjuna market today, sharing?","flea market at anjuna, anyone?"]},
+      ],
+    }
+  },
+
+  "amritsar":{
+    city:"Amritsar",hostel:"goSTOPS — Chatiwind Gate",personality:"🙏 Punjab's golden heart",
+    categories:{
+      explore:[
+        {id:"golden_temple",label:"Golden Temple (Day + Night)",emoji:"⭐",desc:"The holiest Sikh shrine — visit at dawn for the most spiritual experience, stunning at night",count:14,
+         times:["4:30 AM","7:00 PM"],slots:null,msgs:["golden temple at dawn is unreal — wake up early!","going to the golden temple tonight for the light-up, anyone joining?","golden temple at night is absolutely breathtaking"]},
+        {id:"wagah",label:"Wagah Border Ceremony",emoji:"🚩",desc:"The India-Pakistan border closing ceremony — patriotic, emotional, incredible spectacle",count:15,
+         times:["4:00 PM","5:00 PM"],slots:null,msgs:["wagah border tomorrow? can share a taxi from hostel","wagah ceremony was one of the most intense things I've ever seen!","organizing a group for wagah tomorrow afternoon, interested?"]},
+        {id:"partition_museum",label:"Partition Museum",emoji:"🏛️",desc:"The only museum dedicated to the 1947 Partition — deeply moving, must-visit",count:6,
+         times:["10:00 AM","11:00 AM"],slots:null,msgs:["partition museum today? heard it's incredibly powerful","partition museum left me speechless — do visit"]},
+        {id:"jallianwala",label:"Jallianwala Bagh",emoji:"🕊️",desc:"Historic garden of the 1919 massacre — sobering and important",count:7,
+         times:["10:00 AM","3:00 PM"],slots:null,msgs:["jallianwala bagh tomorrow? the bullet holes in the walls are chilling","visiting jallianwala bagh today, anyone?"]},
+      ],
+      food:[
+        {id:"food_tour_a",label:"Amritsar Food Tour (Hop-On)",emoji:"🍽️",desc:"Organized street food trail — Bharawan da Dhaba, Kesar da Dhaba, lassi shops, kulcha trail",count:11,
+         times:["8:00 AM","6:00 PM"],slots:null,msgs:["food tour tomorrow? Amritsar food is incredible","doing the food tour today — kulchas and lassi paradise"]},
+        {id:"kesar_dhaba",label:"Kesar da Dhaba",emoji:"🫓",desc:"Amritsar's most famous dhaba since 1916 — dal makhani, kulcha, pure butter 🤤",count:9,
+         times:["12:00 PM","7:00 PM"],slots:null,msgs:["kesar da dhaba for lunch? the kulcha is legendary","kesar da dhaba dal makhani is life-changing"]},
+        {id:"brother_dhaba",label:"Bharawan da Dhaba (Town Hall)",emoji:"🥘",desc:"Classic Amritsari breakfast — stuffed parathas, fresh lassi, hot chai",count:7,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["bharawan da dhaba for breakfast? best kulchas in Amritsar","amritsari kulcha for breakfast is the only way to start the day"]},
+      ],
+      nightlife:[
+        {id:"golden_night",label:"Golden Temple Night Visit",emoji:"🌙",desc:"Visit the Golden Temple at night when it's illuminated — more peaceful, otherworldly",count:12,
+         times:["9:00 PM","10:00 PM"],slots:null,msgs:["golden temple at night is incredible — going tonight, joining?","night visit to golden temple was the most peaceful thing I've done"]},
+      ],
+      meetups:[
+        {id:"amr_crew",label:"Wagah Border Group Taxi",emoji:"🚕",desc:"Share a taxi to the Wagah Border — split the cost, better together",count:13,
+         times:["3:30 PM","4:00 PM"],slots:4,msgs:["sharing a taxi to wagah, 3 seats left — anyone?","organizing wagah taxi tomorrow, DM me!","who's up for wagah tomorrow?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_amt_wagah",label:"Taxi to Wagah Border",emoji:"🚕",desc:"Share taxi to Wagah — the flag ceremony at sunset is unmissable",count:15,times:["3:30 PM","4:00 PM"],slots:4,
+         msgs:["sharing taxi to wagah border?","wagah border today, anyone?","taxi to wagah, need 2 more"]},
+        {id:"s_amt_apt",label:"Cab to Amritsar Airport",emoji:"🚕",desc:"25min to Sri Guru Ram Dass Jee Airport",count:7,times:["4:00 AM","5:00 AM","6:00 AM"],slots:3,
+         msgs:["sharing cab to amritsar airport?","going to airport at 5, 2 seats free"]},
+        {id:"s_amt_dhm",label:"Cab to Dharamsala/McLeod",emoji:"🚕",desc:"3hr drive to McLeodganj — perfect onward trip split",count:4,times:["7:00 AM","8:00 AM"],slots:3,
+         msgs:["going to dharamsala, sharing cab?","mcleodganj next — anyone splitting?"]},
+      ],
+    }
+  },
+
+  "udaipur":{
+    city:"Udaipur",hostel:"goSTOPS Udaipur",personality:"🏰 City of Lakes",
+    categories:{
+      adventure:[
+        {id:"bahubali",label:"Bahubali Hill Sunrise Trek",emoji:"🌅",desc:"45min trek to Bahubali Hill — 360° view of Udaipur and all three lakes at sunrise",count:12,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["bahubali hill sunrise tomorrow? the view is worth the early alarm","going for bahubali hill sunrise, who's joining?","bahubali at sunrise — the city reflected in all three lakes is stunning"]},
+        {id:"village_jeep",label:"Village Jeep Safari",emoji:"🚙",desc:"Half-day jeep safari through local Rajasthani villages — pottery, temples, rural life",count:12,
+         times:["8:00 AM","9:00 AM"],slots:6,msgs:["village jeep safari tomorrow? I've heard it's amazing","doing the village jeep safari today — anyone?","the jeep safari gave us a real look at rural Rajasthan"]},
+        {id:"sunset_heritage",label:"Sunset Heritage Walking Tour",emoji:"🚶",desc:"Guided walk through old city palaces, temples, and ghats at sunset",count:12,
+         times:["5:00 PM","5:30 PM"],slots:null,msgs:["heritage walking tour at sunset? so beautiful","going on the sunset heritage walk today, who's joining?"]},
+      ],
+      explore:[
+        {id:"city_palace_u",label:"City Palace",emoji:"🏰",desc:"The largest palace complex in Rajasthan — stunning lake views from the top",count:11,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["city palace tomorrow morning? need to book tickets","city palace is incredible — go early to avoid the crowds"]},
+        {id:"lake_pichola",label:"Lake Pichola Boat Ride",emoji:"⛵",desc:"Sunset boat ride on the famous lake — pass by the Lake Palace (Taj Hotel) and islands",count:9,
+         times:["5:30 PM","6:00 PM"],slots:null,msgs:["lake pichola sunset boat ride tonight? who's in?","lake pichola at sunset is pure magic — highly recommend"]},
+        {id:"sajjangarh",label:"Sajjangarh (Monsoon Palace)",emoji:"🌤️",desc:"Hilltop palace with the best panoramic view of Udaipur and the Aravalli range",count:8,
+         times:["4:00 PM","5:00 PM"],slots:null,msgs:["monsoon palace for sunset? the view is incredible","sajjangarh palace for evening views, anyone?"]},
+      ],
+      food:[
+        {id:"millets",label:"Millets of Mewar",emoji:"🌾",desc:"Unique millet-based Rajasthani cuisine — healthy, delicious, Instagram-worthy",count:8,
+         times:["12:00 PM","7:00 PM"],slots:null,msgs:["millets of mewar for lunch? the most unique restaurant in Udaipur","millets restaurant is so good and different"]},
+        {id:"ambrai",label:"Ambrai Restaurant",emoji:"🌊",desc:"Lakeside restaurant with the best view of the City Palace — romantic and magical",count:7,
+         times:["7:00 PM","8:00 PM"],slots:null,msgs:["ambrai for dinner tonight? the city palace view is unreal","going to ambrai tonight — the lake reflection is stunning"]},
+      ],
+      nightlife:[
+        {id:"udaipur_bonfire",label:"Lakeside Bonfire Evening",emoji:"🔥",desc:"Informal bonfires and chai by the lake — Udaipur evenings are magical",count:10,
+         times:["8:00 PM"],slots:null,msgs:["bonfire by the lake tonight? who's in?","udaipur evenings are so beautiful — let's sit by the lake"]},
+      ],
+      meetups:[
+        {id:"u_crew",label:"Udaipur Explorer Crew",emoji:"🗺️",desc:"From Bahubali sunrise to lake sunsets — build your Udaipur group",count:15,
+         times:["6:00 AM","5:00 PM"],slots:null,msgs:["solo traveller looking to explore Udaipur together!","anyone up for bahubali + city palace + lake pichola day?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_udr_ranakpur",label:"Cab to Ranakpur Temples",emoji:"🚕",desc:"90min drive to stunning Jain temples — split it",count:7,times:["8:00 AM","9:00 AM"],slots:3,
+         msgs:["ranakpur temples today, sharing?","going to ranakpur, anyone?"]},
+        {id:"s_udr_kumbhal",label:"Cab to Kumbhalgarh Fort",emoji:"🚕",desc:"2hr to Kumbhalgarh — the world's second longest wall",count:6,times:["8:00 AM"],slots:4,
+         msgs:["kumbhalgarh day trip, sharing cab?","going to kumbhalgarh fort?"]},
+        {id:"s_udr_jodhpur",label:"Cab to Jodhpur",emoji:"🚕",desc:"3hr to the Blue City — split for next leg of Rajasthan",count:5,times:["7:00 AM","8:00 AM"],slots:3,
+         msgs:["anyone going to jodhpur next?","sharing cab to jodhpur?"]},
+      ],
+    }
+  },
+
+  "nainital":{
+    city:"Nainital",hostel:"goSTOPS Nainital",personality:"🏔️ Lake in the clouds",
+    categories:{
+      adventure:[
+        {id:"naina_peak",label:"Naina Peak Hike",emoji:"⛰️",desc:"Highest peak around Nainital at 2611m — 5km trek, spectacular 360° Himalayan views",count:12,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["naina peak hike tomorrow morning? the views are insane","going naina peak at dawn — who's joining?","naina peak on a clear day you can see Tibet!"]},
+        {id:"ayarpata",label:"Ayarpata Hill Hike",emoji:"🌲",desc:"Less-touristy forest hike above Nainital — deodar trees, birds, valley views",count:9,
+         times:["6:00 AM","7:00 AM"],slots:null,msgs:["ayarpata hike this morning? beautiful forest walk","heading to ayarpata, anyone?"]},
+        {id:"mukteshwar_day",label:"Mukteshwar Day Trip",emoji:"🏔️",desc:"30km from Nainital — cliff viewpoint, rappelling, and apple orchards in season",count:8,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["anyone up for a day trip to mukteshwar?","mukteshwar cliff viewpoint is incredible — worth the drive"]},
+      ],
+      explore:[
+        {id:"naini_lake",label:"Naini Lake Boat Ride",emoji:"⛵",desc:"Rowboat or pedalo on the famous lake — surrounded by the forested hills of Nainital",count:13,
+         times:["10:00 AM","5:00 PM"],slots:4,msgs:["naini lake boat ride this afternoon? so peaceful","rowing on naini lake with the hills around you is magical"]},
+        {id:"mall_road_n",label:"Mall Road Evening Walk",emoji:"🛍️",desc:"The classic Nainital promenade — shops, hot gulab jamuns, lake views",count:9,
+         times:["5:00 PM","6:00 PM"],slots:null,msgs:["mall road this evening? good street food there","mall road at dusk with the lake is so beautiful"]},
+        {id:"naina_temple",label:"Naina Devi Temple",emoji:"🙏",desc:"Ancient goddess temple on the northern shore of the lake — serene morning visits",count:7,
+         times:["6:00 AM","7:00 AM"],slots:null,msgs:["naina devi temple this morning? beautiful and peaceful"]},
+      ],
+      food:[
+        {id:"zooby",label:"Zooby's Kitchen & Cafe",emoji:"☕",desc:"Cosy cafe with lake views — best chai and Maggi in Nainital",count:7,
+         times:["8:00 AM","4:00 PM"],slots:null,msgs:["zooby's for breakfast? their chai is the best","going to zooby's cafe this morning"]},
+        {id:"sakley",label:"Sakley's Restaurant",emoji:"🥗",desc:"Heritage restaurant on Mall Road since 1950s — great continental and Indian",count:6,
+         times:["1:00 PM","7:00 PM"],slots:null,msgs:["sakley's for dinner? classic nainital experience","sakley's is very old school and charming"]},
+      ],
+      nightlife:[
+        {id:"nainital_bonfire",label:"Hostel Bonfire with Lake View",emoji:"🔥",desc:"Bonfire with views over Naini Lake — cold nights, warm fire, good company",count:9,
+         times:["8:00 PM"],slots:null,msgs:["bonfire tonight? lake looks beautiful in the dark 🔥","cold nights + bonfire + chai = perfect Nainital evening"]},
+      ],
+      meetups:[
+        {id:"n_crew",label:"Morning Hike Group",emoji:"🥾",desc:"Early morning hike to Naina Peak or Ayarpata — let's do it together",count:11,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["anyone hiking naina peak tomorrow morning?","forming a group for the ayarpata hike — who's in?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_nain_muss",label:"Cab to Mukteshwar",emoji:"🚕",desc:"1.5hr to Mukteshwar — apple orchards and Himalayan views",count:7,times:["9:00 AM","10:00 AM"],slots:3,
+         msgs:["mukteshwar today, sharing cab?","going to mukteshwar, anyone?"]},
+        {id:"s_nain_ald",label:"Cab to Almora",emoji:"🚕",desc:"1.5hr to Almora — stunning ridge town, Kasar Devi nearby",count:5,times:["8:00 AM","9:00 AM"],slots:3,
+         msgs:["almora day trip, sharing?","going to almora, anyone joining?"]},
+        {id:"s_nain_airport",label:"Cab to Pantnagar Airport",emoji:"🚕",desc:"80km to Pantnagar — shared cab saves significantly",count:4,times:["5:00 AM","6:00 AM"],slots:3,
+         msgs:["pantnagar airport cab?","sharing to pantnagar?"]},
+      ],
+    }
+  },
+
+  "pondicherry":{
+    city:"Pondicherry",hostel:"goSTOPS — Near Auroville",personality:"🇫🇷 French quarter + Auroville",
+    categories:{
+      adventure:[
+        {id:"boat_pondi",label:"Four Places Coastal Boat Tour",emoji:"⛵",desc:"Sea boat trip to 4 Pondicherry coastal spots — beaches, rocks, sunrise option",count:16,
+         times:["6:00 AM","7:00 AM"],slots:8,msgs:["boat tour tomorrow morning? the coastal views are stunning","four places boat tour at sunrise was incredible"]},
+        {id:"paradise_beach",label:"Paradise Beach",emoji:"🏖️",desc:"Secluded beach accessible only by boat from Chunnambar — pristine and worth it",count:8,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["paradise beach by boat today? it's beautiful and not crowded","chunnambar to paradise beach — anyone interested?"]},
+        {id:"scooter_pondi",label:"Scooter Ride to Auroville",emoji:"🛵",desc:"Rent a scooter and explore Auroville and the beaches on your own pace",count:9,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["renting a scooter today, anyone want to join for Auroville?","scooter through Pondicherry and beaches was perfect"]},
+      ],
+      explore:[
+        {id:"auroville_v",label:"Auroville Matrimandir",emoji:"🌐",desc:"The golden sphere meditation dome — book in advance, outer ring is free",count:26,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["auroville tomorrow morning? need to book in advance","auroville is unlike anything I've experienced — so peaceful","the golden dome at auroville is breathtaking"]},
+        {id:"french_quarter",label:"French Quarter Walk",emoji:"🏛️",desc:"Yellow mustard walls, bougainvillea, French cafes and churches — very photogenic",count:12,
+         times:["7:00 AM","6:00 PM"],slots:null,msgs:["french quarter walk this morning? so beautiful and quiet at dawn","walking the french quarter at golden hour is incredible"]},
+        {id:"promenade",label:"Promenade Beach Sunrise",emoji:"🌅",desc:"Pondicherry's rocky promenade — sunrise jog or walk with sea spray",count:10,
+         times:["5:30 AM","6:00 AM"],slots:null,msgs:["promenade beach for sunrise? meeting at 5:30","the promenade at sunrise is the best way to start the day"]},
+      ],
+      food:[
+        {id:"auroville_bakery",label:"Auroville Bakery",emoji:"🥖",desc:"Organic artisan breads from the Auroville community — incredible croissants and sourdough",count:9,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["auroville bakery tomorrow? their breads are to die for","bakery run this morning — the croissants are out of this world"]},
+        {id:"cafe_des_arts",label:"Cafe des Arts",emoji:"☕",desc:"French colonial cafe with courtyard — great coffee, crepes, and quiche",count:8,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["cafe des arts for breakfast? very French and beautiful","going to cafe des arts this morning, anyone joining?"]},
+        {id:"dreamers",label:"Dreamers Cafe",emoji:"🌿",desc:"Laid-back cafe near the beach — hippie vibe, good smoothies and light food",count:7,
+         times:["9:00 AM","7:00 PM"],slots:null,msgs:["dreamers cafe anyone? super chill place near promenade"]},
+      ],
+      nightlife:[
+        {id:"pondi_evening",label:"Promenade Evening Walk & Sunset",emoji:"🌅",desc:"Classic Pondicherry evening — walk the promenade as the fishermen return",count:11,
+         times:["5:30 PM","6:00 PM"],slots:null,msgs:["promenade evening walk tonight? the sunset is beautiful","pondi evenings are so peaceful — promenade walk anyone?"]},
+      ],
+      meetups:[
+        {id:"pondi_crew",label:"Auroville & Beach Day Crew",emoji:"👥",desc:"Split scooter rental, explore Auroville together, then hit the beaches",count:14,
+         times:["8:00 AM"],slots:null,msgs:["forming an auroville group today — 3 scooters, 6 people?","solo traveller looking to explore pondi and auroville"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_pon_auro",label:"Scooter Share to Auroville",emoji:"🛵",desc:"10km to Auroville — split a scooter or taxi",count:9,times:["9:00 AM","10:00 AM"],slots:2,
+         msgs:["auroville today, scooter share?","going to auroville, sharing a ride?","taxi to auroville, anyone?"]},
+        {id:"s_pon_mhe",label:"Cab to Mahabalipuram",emoji:"🚕",desc:"2hr drive to Mahabalipuram shore temple — great day trip split",count:6,times:["8:00 AM","9:00 AM"],slots:3,
+         msgs:["mahabalipuram day trip, sharing?","going to mahabalipuram?"]},
+        {id:"s_pon_chn",label:"Cab to Chennai",emoji:"🚕",desc:"3hr to Chennai airport or railway — good split",count:5,times:["6:00 AM","7:00 AM"],slots:3,
+         msgs:["cab to chennai?","sharing to chennai airport?"]},
+      ],
+    }
+  },
+
+  "coorg":{
+    city:"Coorg",hostel:"goSTOPS Coorg",personality:"☕ Coffee, mist & silence",
+    categories:{
+      adventure:[
+        {id:"coffee_walk",label:"Coffee Estate Walk",emoji:"☕",desc:"Guided walk through a working coffee estate — smell the blossoms, taste the beans",count:11,
+         times:["7:00 AM","8:00 AM"],slots:6,msgs:["coffee estate walk tomorrow morning? smells incredible","the coffee estate walk was so educational and beautiful"]},
+        {id:"dubare",label:"Dubare Elephant Camp",emoji:"🐘",desc:"Feed and bathe elephants in the river at Dubare — magical and ethical",count:9,
+         times:["7:00 AM","8:00 AM"],slots:6,msgs:["dubare elephant camp tomorrow? sounds amazing!","going to dubare to see the elephants, who's joining?"]},
+        {id:"rafting_coorg",label:"White Water Rafting — Barapole River",emoji:"🚣",desc:"Grade 2–3 rapids through Coorg's coffee estate jungle — very scenic",count:7,
+         times:["9:00 AM","10:00 AM"],slots:8,msgs:["white water rafting on barapole tomorrow? who's in?","rafting through the coffee estates is incredible"]},
+      ],
+      explore:[
+        {id:"coorgi_lunch",label:"Coorgi Lunch Experience",emoji:"🍛",desc:"Traditional Coorgi meal at a local home — pandhi curry, kadambuttu, akki roti",count:11,
+         times:["1:00 PM","2:00 PM"],slots:8,msgs:["coorgi lunch at a local house today? the pandhi curry is amazing","doing the coorgi home lunch — anyone joining? it's so authentic"]},
+        {id:"abbey_falls",label:"Abbey Falls",emoji:"💦",desc:"Beautiful 70ft waterfall in the coffee plantation — misty and scenic",count:9,
+         times:["9:00 AM","3:00 PM"],slots:null,msgs:["abbey falls tomorrow? it's beautiful in this weather","heading to abbey falls today"]},
+        {id:"namdroling",label:"Namdroling Monastery (Golden Temple)",emoji:"🙏",desc:"Stunning Tibetan monastery — known as Golden Temple of Coorg, stunning murals",count:8,
+         times:["10:00 AM","3:00 PM"],slots:null,msgs:["namdroling monastery is absolutely stunning — must visit","golden temple of coorg tomorrow? it's incredible"]},
+      ],
+      food:[
+        {id:"raintree",label:"Raintree Cafe & Restaurant",emoji:"🌳",desc:"Cozy cafe under raintrees — best Coorgi filter coffee and breakfast",count:7,
+         times:["8:00 AM","10:00 AM"],slots:null,msgs:["raintree for morning coffee? the filter coffee is amazing","raintree cafe for breakfast this morning?"]},
+      ],
+      nightlife:[
+        {id:"coorg_bonfire",label:"Estate Bonfire + Stargazing",emoji:"🌟",desc:"Zero light pollution in Coorg — bonfire in the coffee estate under the Milky Way",count:10,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["bonfire tonight in the estate? the stars here are unreal 🌟","coorg nights are magical — bonfire anyone?"]},
+      ],
+      meetups:[
+        {id:"coorg_crew",label:"Coorg Full Day Explorer",emoji:"🗺️",desc:"Abbey Falls + Dubare + Coffee Estate + Coorgi Lunch — do it as a group",count:12,
+         times:["7:00 AM"],slots:null,msgs:["anyone up for the full Coorg day — falls, elephants, coffee walk?","forming a coorg group for tomorrow — who's interested?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_cog_abbey",label:"Cab to Abbey Falls & Iruppu",emoji:"🚕",desc:"Split day trip to Abbey Falls and Iruppu Falls",count:8,times:["9:00 AM","10:00 AM"],slots:4,
+         msgs:["abbey falls today, sharing?","going to abbey falls, anyone joining?"]},
+        {id:"s_cog_talak",label:"Cab to Talakaveri",emoji:"🚕",desc:"Source of the Cauvery river — 40km from Madikeri, share it",count:6,times:["8:00 AM","9:00 AM"],slots:4,
+         msgs:["talakaveri trip, sharing cab?","anyone going to talakaveri?"]},
+        {id:"s_cog_mys",label:"Cab to Mysore",emoji:"🚕",desc:"2hr to Mysore — Mysore Palace, Chamundi Hills, Devaraja Market",count:7,times:["7:00 AM","8:00 AM"],slots:3,
+         msgs:["mysore from coorg, sharing cab?","going to mysore next?"]},
+      ],
+    }
+  },
+
+  "ooty":{
+    city:"Ooty",hostel:"goSTOPS Ooty",personality:"🌿 Nilgiri tea & mist",
+    categories:{
+      adventure:[
+        {id:"doddabetta",label:"Doddabetta Peak",emoji:"⛰️",desc:"Highest peak in the Nilgiris at 2637m — telescope house, dramatic mist views",count:8,
+         times:["7:00 AM","8:00 AM"],slots:null,msgs:["doddabetta tomorrow morning? beautiful and misty","anyone going doddabetta today?"]},
+        {id:"bike_escape",label:"Bike Escape — Countryside Ride",emoji:"🚴",desc:"Rent bikes and ride through tea estates, pine forests, and Nilgiri villages",count:15,
+         times:["8:00 AM","9:00 AM"],slots:null,msgs:["bike escape through the tea estates tomorrow? so beautiful","cycling through ooty countryside was the best day","bike ride through nilgiris — the tea is everywhere!"]},
+        {id:"niligiri_rail",label:"Nilgiri Mountain Railway",emoji:"🚂",desc:"UNESCO heritage toy train from Ooty to Coonoor — through tea estates and tunnels",count:12,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["toy train to coonoor tomorrow? the journey is beautiful","nilgiri mountain railway is a must — book in advance"]},
+      ],
+      explore:[
+        {id:"ooty_sightseeing",label:"Ooty Private Sightseeing",emoji:"🗺️",desc:"Botanical Gardens, Rose Garden, Ooty Lake, Doddabetta, Pykara Falls — full day",count:17,
+         times:["9:00 AM"],slots:6,msgs:["ooty sightseeing day tomorrow? who's forming a group?","private sightseeing car for the full Ooty tour — split the cost?"]},
+        {id:"coonoor",label:"Coonoor Tea Estate Visit",emoji:"🍵",desc:"Visit a working tea estate near Coonoor — factory tour, fresh tea tasting",count:9,
+         times:["9:00 AM","10:00 AM"],slots:null,msgs:["coonoor tea estate visit tomorrow? the factory tour is fascinating","going to coonoor for tea — anyone wants to join?"]},
+        {id:"pykara",label:"Pykara Lake & Waterfall",emoji:"💦",desc:"Beautiful lake and waterfall 20km from Ooty — peaceful and less touristy",count:7,
+         times:["10:00 AM"],slots:null,msgs:["pykara lake tomorrow? less crowded than ooty","pykara falls + lake is so beautiful and peaceful"]},
+      ],
+      food:[
+        {id:"ooty_choc",label:"King Star Homemade Chocolates",emoji:"🍫",desc:"Ooty's legendary chocolate shop — homemade chocolates in 100+ flavours",count:9,
+         times:["11:00 AM","3:00 PM"],slots:null,msgs:["king star chocolates run today? the varieties are insane","ooty chocolates are a must-buy — king star is the best"]},
+        {id:"sidewalk_ooty",label:"Sidewalk Cafe",emoji:"☕",desc:"Cosy European-style cafe in Ooty — good coffee, bakes, and Nilgiri mist views",count:6,
+         times:["8:00 AM","3:00 PM"],slots:null,msgs:["sidewalk cafe for morning coffee?"]},
+      ],
+      nightlife:[
+        {id:"ooty_bonfire",label:"Bonfire Night in the Nilgiris",emoji:"🔥",desc:"Cold Ooty nights are perfect for a bonfire — the mist adds to the atmosphere",count:8,
+         times:["8:00 PM"],slots:null,msgs:["bonfire tonight? it's cold and perfect for it 🔥","ooty bonfire nights are magical — who's joining?"]},
+      ],
+      meetups:[
+        {id:"ooty_crew",label:"Nilgiri Day Explorer",emoji:"🌿",desc:"Toy train + tea estate + Doddabetta + bike ride — full Ooty experience together",count:11,
+         times:["8:00 AM"],slots:null,msgs:["anyone up for the full Ooty exploration day?","forming an ooty group — toy train + tea estate + bike?"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_ooty_coonoor",label:"Cab to Coonoor",emoji:"🚕",desc:"30min to Coonoor for Sim's Park and tea estates — easy split",count:9,times:["9:00 AM","10:00 AM"],slots:3,
+         msgs:["coonoor today, sharing?","going to coonoor, anyone?"]},
+        {id:"s_ooty_dod",label:"Cab to Doddabetta Peak",emoji:"🚕",desc:"10min to highest point in Nilgiris — great views, cheap split",count:7,times:["9:00 AM","11:00 AM"],slots:3,
+         msgs:["doddabetta, sharing cab?","going to doddabetta peak today?"]},
+        {id:"s_ooty_coim",label:"Cab to Coimbatore",emoji:"🚕",desc:"3hr to Coimbatore airport or station — worthwhile split",count:5,times:["6:00 AM","7:00 AM"],slots:3,
+         msgs:["cab to coimbatore?","sharing to coimbatore airport?"]},
+      ],
+    }
+  },
+
+  "alibaug":{
+    city:"Alibaug",hostel:"goSTOPS Alibaug",personality:"🌊 Mumbai's island escape",
+    categories:{
+      adventure:[
+        {id:"kolaba_fort",label:"Kolaba Fort (at Low Tide)",emoji:"🏰",desc:"Walk to the 17th-century sea fort at low tide — waves crash around the walls",count:7,
+         times:["7:00 AM","5:00 PM"],slots:null,msgs:["kolaba fort at low tide tomorrow morning? it's incredible","anyone checking the tide times for kolaba fort today?"]},
+        {id:"beach_sports",label:"Alibaug Beach Water Sports",emoji:"🤿",desc:"Jet ski, banana boat, and parasailing directly at Alibaug Beach",count:8,
+         times:["10:00 AM","2:00 PM"],slots:null,msgs:["beach sports today? jet ski + parasailing!","water sports at alibaug beach this afternoon, anyone?"]},
+        {id:"kankeshwar",label:"Kankeshwar Temple Trek",emoji:"⛰️",desc:"Ancient hilltop temple through forest — 1hr hike, stunning coastal views from top",count:6,
+         times:["7:00 AM","8:00 AM"],slots:null,msgs:["kankeshwar temple trek tomorrow? great views from the top","hiking to kankeshwar this morning, anyone coming?"]},
+      ],
+      explore:[
+        {id:"mandwa_ferry",label:"Mandwa Ferry to Gateway",emoji:"⛴️",desc:"30min speedboat to Gateway of India — the quintessential Alibaug experience",count:7,
+         times:["7:00 AM","9:00 AM"],slots:null,msgs:["mandwa ferry to gateway tomorrow morning? great way to arrive/leave","taking the mandwa ferry today, anyone?"]},
+        {id:"alibaug_beach",label:"Alibaug Beach Sunset",emoji:"🌅",desc:"Long sandy beach, very clean — excellent sunset spot with Mumbai skyline in the distance",count:9,
+         times:["5:30 PM","6:00 PM"],slots:null,msgs:["alibaug beach for sunset tonight? so beautiful","sunset at alibaug beach — who's joining?"]},
+      ],
+      food:[
+        {id:"sanman",label:"Sanman Restaurant",emoji:"🦞",desc:"Best seafood in Alibaug — fresh Bombay duck, pomfret, solkadhi",count:7,
+         times:["1:00 PM","7:00 PM"],slots:null,msgs:["sanman for lunch? the seafood is incredible","going to sanman today — their pomfret is amazing"]},
+        {id:"bohemyan",label:"Bohemyan Blue Cafe",emoji:"☕",desc:"Quirky artsy cafe with fairy lights — good coffee, sea breeze, chill vibe",count:6,
+         times:["9:00 AM","5:00 PM"],slots:null,msgs:["bohemyan blue cafe this morning? such a beautiful space","evening coffee at bohemyan blue?"]},
+      ],
+      nightlife:[
+        {id:"alibaug_bonfire",label:"Beach Bonfire",emoji:"🔥",desc:"Bonfires on the beach — Mumbai crowd, good music, very social",count:8,
+         times:["8:00 PM","9:00 PM"],slots:null,msgs:["beach bonfire tonight? who's in 🔥","alibaug beach bonfire is such a vibe"]},
+      ],
+      meetups:[
+        {id:"ali_crew",label:"Alibaug Weekend Crew",emoji:"🏖️",desc:"Connect with the Mumbai getaway crowd — beach, fort, seafood, sunset",count:10,
+         times:["10:00 AM"],slots:null,msgs:["first time in alibaug — who wants to explore together?","solo traveller looking for beach day company!"]},
+      ],
+      hostel:[
+        {id:"cmn",label:"Hang at Common Area",emoji:"☕",desc:"Just chilling — come hang with whoever's around",count:null,times:["6:00 PM","7:00 PM","8:00 PM"],slots:null,
+         msgs:["anyone at common area?","chilling in common room, come hang","who's around rn?","come to the common area!"]},
+        {id:"mvn",label:"Movie Night",emoji:"🎬",desc:"Movie screening at the hostel — bring snacks",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["movie tonight?","anyone up for a movie?","movie night at 8?","what movie should we watch?"]},
+        {id:"gms",label:"Cards & Board Games",emoji:"🃏",desc:"Uno, Mafia, Poker — bring whoever's in the dorm",count:null,times:["7:00 PM","8:00 PM"],slots:8,
+         msgs:["cards anyone?","uno tonight?","anyone for mafia?","poker night?","uno or mafia, who's in?"]},
+        {id:"pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool table or foosball at the hostel — 1v1 or team",count:null,times:["6:00 PM","8:00 PM"],slots:4,
+         msgs:["pool table?","foosball anyone?","anyone for pool?","1v1 foosball?"]},
+        {id:"kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke, open mic, or jam session — all voices welcome",count:null,times:["8:00 PM","9:00 PM"],slots:null,
+         msgs:["karaoke tonight?","anyone singing?","open mic night!","guitar jam at common area?"]},
+      ],
+      split:[
+        {id:"s_ali_mum",label:"Ferry/Cab to Mumbai",emoji:"🚢",desc:"Ferry from Mandwa to Gateway of India — or share a cab via road",count:11,times:["7:00 AM","8:00 AM","9:00 AM"],slots:3,
+         msgs:["ferry to mumbai tomorrow?","sharing cab back to mumbai?","going to mumbai, anyone splitting?"]},
+        {id:"s_ali_kashid",label:"Scooter Share to Kashid Beach",emoji:"🛵",desc:"45min to Kashid — pristine beach, split a scooter or cab",count:8,times:["9:00 AM","10:00 AM"],slots:2,
+         msgs:["kashid beach today, scooter share?","going to kashid, anyone?"]},
+        {id:"s_ali_murud",label:"Cab to Murud-Janjira",emoji:"🚕",desc:"45min drive to Murud for the sea fort — split it",count:5,times:["9:00 AM"],slots:4,
+         msgs:["murud janjira today, sharing?","going to murud fort, anyone?"]},
+      ],
+    }
+  },
+
+  // ─── ADDITIONAL HOSTELS ────────────────────────────────────────────────────
+
+  "delhi":{
+    city:"Delhi",hostel:"goSTOPS Delhi",personality:"🕌 Old & new Delhi collide",
+    categories:{
+      hostel:[
+        {id:"d_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at common area?","chilling here, come hang"]},
+        {id:"d_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?","anyone for a movie?"]},
+        {id:"d_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","uno or mafia tonight?"]},
+        {id:"d_kkm",label:"Karaoke Night",emoji:"🎤",desc:"Karaoke at the hostel",count:null,times:["8:00 PM","9:00 PM"],slots:null,msgs:["karaoke night?","anyone singing tonight?"]},
+      ],
+      split:[
+        {id:"ds_igi",label:"Cab to IGI Airport",emoji:"🚕",desc:"Share to Terminal 3 — saves ₹300+ each",count:10,times:["5:00 AM","6:00 AM","7:00 AM"],slots:3,msgs:["sharing cab to IGI airport?","going to T3 tomorrow 6am, seats free","airport cab, anyone?"]},
+        {id:"ds_agra",label:"Cab to Agra (Taj Mahal)",emoji:"🚙",desc:"Split the 3.5hr drive — much better than the bus",count:8,times:["6:00 AM","7:00 AM"],slots:4,msgs:["agra day trip, sharing a cab?","going to taj mahal, anyone splitting?","cab to agra?"]},
+        {id:"ds_jpr",label:"Cab to Jaipur",emoji:"🚕",desc:"5hr drive — split it for the day or overnight",count:6,times:["7:00 AM","8:00 AM"],slots:3,msgs:["jaipur cab share?","going to jaipur, 2 seats free"]},
+      ],
+      explore:[
+        {id:"d_cc",label:"Chandni Chowk Walk",emoji:"🕌",desc:"Old Delhi's ancient bazaar — spice market, Jama Masjid, paranthe wali gali",count:4,times:["9:00 AM","6:00 PM"],slots:null,msgs:["chandni chowk walk today?","heading to old delhi, anyone?"]},
+        {id:"d_hum",label:"Humayun's Tomb & Lodi Garden",emoji:"🏛️",desc:"Mughal architecture + morning walks in Lodi Garden — underrated combo",count:4,times:["7:00 AM","10:00 AM"],slots:null,msgs:["humayun's tomb this morning?","lodi garden walk at 7am?"]},
+        {id:"d_hauz",label:"Hauz Khas Village",emoji:"🏘️",desc:"Medieval ruins + cafes + boutiques — Delhi's coolest neighbourhood",count:3,times:["4:00 PM","6:00 PM"],slots:null,msgs:["hauz khas village this evening?","anyone heading to hauz khas?"]},
+      ],
+      food:[
+        {id:"d_prnth",label:"Paranthe Wali Gali",emoji:"🫓",desc:"Century-old lane of stuffed parathas in Chandni Chowk — unmissable",count:5,times:["9:00 AM","12:00 PM"],slots:null,msgs:["paranthe wali gali for breakfast?","old delhi food run, anyone?"]},
+        {id:"d_karims",label:"Karim's (Jama Masjid)",emoji:"🍖",desc:"Delhi's most legendary Mughal restaurant since 1913",count:5,times:["1:00 PM","7:00 PM"],slots:null,msgs:["karim's for dinner?","going to karim's, who wants to join?"]},
+      ],
+      nightlife:[
+        {id:"d_kar",label:"Karaoke Night at Hostel",emoji:"🎤",desc:"Hostel karaoke sessions — always a good time",count:4,times:["8:00 PM","9:00 PM"],slots:null,msgs:["karaoke tonight at the hostel!","singing tonight?"]},
+      ],
+      meetups:[
+        {id:"d_solo",label:"Delhi Explorer Crew",emoji:"👥",desc:"Solo travellers — meet up for old Delhi, food walks, and more",count:8,times:["7:00 PM"],slots:null,msgs:["solo traveller here, anyone up to explore?","looking for a crew for chandni chowk tomorrow"]},
+      ]
+    }
+  },
+
+  "jaipur":{
+    city:"Jaipur",hostel:"goSTOPS Jaipur",personality:"🏰 Pink City royalty",
+    categories:{
+      hostel:[
+        {id:"j_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","chilling in common area"]},
+        {id:"j_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?","anyone for a movie?"]},
+        {id:"j_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards tonight?","uno or mafia?"]},
+      ],
+      split:[
+        {id:"js_amf",label:"Cab to Amber Fort",emoji:"🚕",desc:"11km — share the cab, hire an elephant together",count:9,times:["9:00 AM","10:00 AM"],slots:4,msgs:["sharing cab to amber fort?","going to amber fort, anyone?","auto to amber fort, splitting?"]},
+        {id:"js_nhr",label:"Cab to Nahargarh Fort (Sunset)",emoji:"🚕",desc:"Split the cab for the best sunset view in Jaipur",count:7,times:["5:00 PM","5:30 PM"],slots:3,msgs:["nahargarh fort for sunset, sharing a cab?","going to nahargarh, anyone?"]},
+        {id:"js_jpr_apt",label:"Cab to Jaipur Airport",emoji:"🚕",desc:"Share to Sanganer Airport",count:7,times:["6:00 AM","7:00 AM"],slots:3,msgs:["sharing cab to jaipur airport?","airport cab, 2 seats free"]},
+      ],
+      explore:[
+        {id:"j_amb",label:"Amber Fort",emoji:"🏰",desc:"Rajput palace complex on a hill — elephant rides, mirror palace, lake views",count:10,times:["9:00 AM","10:00 AM"],slots:null,msgs:["amber fort tomorrow?","going to amber fort, anyone joining?"]},
+        {id:"j_hawa",label:"Hawa Mahal + Pink City Walk",emoji:"🏛️",desc:"The iconic honeycomb facade + wander the pink-painted old city",count:9,times:["8:00 AM","9:00 AM"],slots:null,msgs:["hawa mahal + old city walk?","exploring pink city today"]},
+        {id:"j_nah",label:"Nahargarh Fort Sunset",emoji:"🌅",desc:"Jaipur's best sunset viewpoint — overlooking the whole city",count:7,times:["5:00 PM","5:30 PM"],slots:null,msgs:["nahargarh fort for sunset?","who's going to nahargarh this evening?"]},
+      ],
+      food:[
+        {id:"j_lmb",label:"Laxmi Misthan Bhandar (LMB)",emoji:"🍬",desc:"Jaipur's most famous sweets + thali since 1954",count:5,times:["10:00 AM","1:00 PM"],slots:null,msgs:["LMB for breakfast sweets?","going to LMB, anyone?"]},
+        {id:"j_msc",label:"Masala Chowk Street Food",emoji:"🥘",desc:"Johari Bazaar evening street food — 50+ stalls, very local",count:4,times:["6:00 PM","7:00 PM"],slots:null,msgs:["masala chowk tonight?","street food in jaipur?"]},
+      ],
+      meetups:[
+        {id:"j_solo",label:"Jaipur Explorer Group",emoji:"👥",desc:"Form a crew for forts, palaces, and food",count:8,times:["7:00 PM"],slots:null,msgs:["solo traveller, anyone exploring jaipur together?"]},
+      ]
+    }
+  },
+
+  "mumbai":{
+    city:"Mumbai",hostel:"goSTOPS Mumbai",personality:"🌆 Maximum city energy",
+    categories:{
+      hostel:[
+        {id:"m_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out — rooftop or common area",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at rooftop?","chilling here, come hang","come to common area"]},
+        {id:"m_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM","9:00 PM"],slots:null,msgs:["movie tonight?","anyone for a movie?","projector room?"]},
+        {id:"m_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","poker tonight?","uno?"]},
+        {id:"m_pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Pool or foosball at the hostel",count:null,times:["6:00 PM","8:00 PM"],slots:4,msgs:["pool table?","foosball anyone?"]},
+      ],
+      split:[
+        {id:"ms_apt",label:"Cab to CST / Bandra Station",emoji:"🚕",desc:"Split an Ola/Uber to the station",count:8,times:["6:00 AM","7:00 AM","8:00 AM"],slots:3,msgs:["sharing a cab to CST?","going to bandra terminus, 2 seats free","cab to station?"]},
+        {id:"ms_t2",label:"Cab to Mumbai Airport (T2)",emoji:"🚕",desc:"Share to Chhatrapati Shivaji Airport T2",count:10,times:["5:00 AM","6:00 AM"],slots:3,msgs:["sharing cab to t2 airport?","going to airport at 5am, 2 seats free"]},
+        {id:"ms_ali",label:"Car to Alibaug (via Ferry or Drive)",emoji:"🚕",desc:"Weekend escape — ferry from gateway or 2hr drive",count:5,times:["8:00 AM","9:00 AM"],slots:4,msgs:["alibaug day trip, sharing a car?","going to alibaug, anyone splitting?"]},
+      ],
+      explore:[
+        {id:"m_goi",label:"Gateway of India + Colaba",emoji:"🏛️",desc:"Start at the iconic gateway, walk to Colaba Causeway market",count:7,times:["9:00 AM","5:00 PM"],slots:null,msgs:["gateway of india this morning?","colaba walk today?"]},
+        {id:"m_dhar",label:"Dharavi Slum Tour",emoji:"🏘️",desc:"Fascinating walking tour of Asia's largest slum — book with a local guide",count:5,times:["9:00 AM","10:00 AM"],slots:8,msgs:["dharavi tour tomorrow?","anyone doing the dharavi tour?"]},
+        {id:"m_eleph",label:"Elephanta Caves (Ferry)",emoji:"⛴️",desc:"45min ferry to the UNESCO cave temples on Elephanta Island",count:6,times:["9:00 AM","10:00 AM"],slots:null,msgs:["elephanta caves by ferry?","anyone going to elephanta island?"]},
+      ],
+      food:[
+        {id:"m_vada",label:"Vada Pav Trail",emoji:"🥔",desc:"Best vada pav near Dadar, Churchgate, or just ask a local",count:7,times:["9:00 AM","5:00 PM"],slots:null,msgs:["best vada pav near here?","vada pav run?"]},
+        {id:"m_juhu",label:"Juhu Beach Street Food",emoji:"🏖️",desc:"Bhel puri, pani puri, sev puri at sunset on Juhu Beach",count:5,times:["5:00 PM","6:00 PM"],slots:null,msgs:["juhu beach for sunset + street food?","going to juhu, anyone?"]},
+      ],
+      meetups:[
+        {id:"m_solo",label:"Mumbai Explorer Crew",emoji:"👥",desc:"Solo travellers — meet for markets, street food, and the sea face",count:10,times:["7:00 PM"],slots:null,msgs:["solo traveller, anyone exploring together?","looking for company for dharavi tour + juhu"]},
+      ]
+    }
+  },
+
+  "goa_panaji":{
+    city:"Goa — Panaji",hostel:"goSTOPS Goa Panaji",personality:"🏖️ Old Goa & the Mandovi",
+    categories:{
+      hostel:[
+        {id:"gp_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","common area?"]},
+        {id:"gp_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"gp_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","poker?"]},
+        {id:"gp_pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Games at the hostel",count:null,times:["6:00 PM","8:00 PM"],slots:4,msgs:["pool?","foosball?"]},
+      ],
+      split:[
+        {id:"gps_apt",label:"Cab to Goa Airport",emoji:"🚕",desc:"Share to Mopa or Dabolim airport",count:10,times:["5:00 AM","6:00 AM","7:00 AM"],slots:3,msgs:["sharing cab to goa airport?","airport cab tomorrow, 2 seats"]},
+        {id:"gps_anj",label:"Cab to Anjuna / Vagator",emoji:"🚕",desc:"Share the 20min ride to the party beaches",count:7,times:["9:00 PM","10:00 PM"],slots:4,msgs:["cab to anjuna tonight?","going to vagator, sharing?"]},
+        {id:"gps_bike",label:"Scooter Rental Share",emoji:"🛵",desc:"Split 2 scooters between 4 — best way to see Goa",count:12,times:["9:00 AM","10:00 AM"],slots:4,msgs:["splitting scooter rental?","renting bikes, need 2 more to split"]},
+      ],
+      explore:[
+        {id:"gp_font",label:"Fontainhas — Latin Quarter",emoji:"🏛️",desc:"Portuguese-era narrow lanes, coloured houses, little cafes",count:8,times:["9:00 AM","6:00 PM"],slots:null,msgs:["fontainhas walk this morning?","exploring fontainhas today"]},
+        {id:"gp_ogoa",label:"Old Goa Churches",emoji:"⛪",desc:"Basilica of Bom Jesus + Se Cathedral — UNESCO heritage, stunning",count:9,times:["9:00 AM"],slots:null,msgs:["old goa churches tomorrow?","going to basilica of bom jesus, anyone?"]},
+        {id:"gp_divar",label:"Divar Island Bicycle Tour",emoji:"🚴",desc:"Ferry to the sleepy island, cycle Portuguese villages",count:12,times:["8:00 AM","9:00 AM"],slots:8,msgs:["divar island tour?","cycling divar island?"]},
+      ],
+      nightlife:[
+        {id:"gp_cruise",label:"Party Dinner Cruise",emoji:"🚢",desc:"Sunset cruise on the Mandovi River — dinner, DJ, open bar",count:14,times:["6:00 PM"],slots:null,msgs:["sunset cruise tonight?","party dinner cruise, who's in?"]},
+        {id:"gp_casino",label:"Casino Night (Deltin Royale)",emoji:"🎰",desc:"Floating casino on the Mandovi — India's biggest",count:6,times:["9:00 PM","10:00 PM"],slots:null,msgs:["casino tonight?","going to deltin royale, anyone?"]},
+      ],
+      meetups:[
+        {id:"gp_solo",label:"Goa Crew",emoji:"🏖️",desc:"Find your Goa gang — beaches, night life, day trips",count:18,times:["5:00 PM"],slots:null,msgs:["solo traveller, anyone want to explore goa together?","looking for company for anjuna flea market tomorrow"]},
+      ]
+    }
+  },
+
+  "goa_baga":{
+    city:"Goa — Baga",hostel:"goSTOPS Goa Baga",personality:"🎵 Baga nights & beach days",
+    categories:{
+      hostel:[
+        {id:"gb_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","common area chill"]},
+        {id:"gb_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"gb_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or board games",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","uno?"]},
+      ],
+      split:[
+        {id:"gbs_apt",label:"Cab to Goa Airport",emoji:"🚕",desc:"Share to Mopa or Dabolim airport",count:9,times:["5:00 AM","6:00 AM"],slots:3,msgs:["sharing to goa airport?","airport cab tomorrow?"]},
+        {id:"gbs_bike",label:"Scooter Rental Share",emoji:"🛵",desc:"Split 2 scooters between 4 — explore Goa freely",count:11,times:["9:00 AM"],slots:4,msgs:["splitting scooter rental?","renting bikes, need 2 more"]},
+        {id:"gbs_sgoa",label:"Cab — South Goa Day Trip",emoji:"🚙",desc:"Share cab for a south Goa beaches + Old Goa run",count:8,times:["9:00 AM","10:00 AM"],slots:4,msgs:["south goa day trip, sharing cab?","palolem + old goa, anyone?"]},
+      ],
+      explore:[
+        {id:"gb_fort",label:"Fort Aguada + Sinquerim Beach",emoji:"🏰",desc:"Portuguese fort from 1612, then beach below",count:9,times:["9:00 AM","4:00 PM"],slots:null,msgs:["fort aguada tomorrow?","sinquerim beach after fort aguada?"]},
+        {id:"gb_anj",label:"Anjuna Flea Market (Wednesday)",emoji:"🛍️",desc:"Famous market — vintage clothes, jewellery, local crafts",count:8,times:["10:00 AM"],slots:null,msgs:["anjuna flea market wednesday?","anyone going to anjuna market?"]},
+      ],
+      nightlife:[
+        {id:"gb_titos",label:"Club Tito's / Baga Nightlife",emoji:"🎵",desc:"Baga's legendary strip — Tito's, Mambo's, Cavala all in a row",count:11,times:["10:00 PM","11:00 PM"],slots:null,msgs:["titos tonight?","baga nightlife, who's coming?","club tito's?"]},
+        {id:"gb_bonfire",label:"Baga Beach Bonfire",emoji:"🔥",desc:"Evening bonfires on the beach with music",count:8,times:["8:00 PM","9:00 PM"],slots:null,msgs:["beach bonfire tonight?","bonfire on baga beach?"]},
+      ],
+      meetups:[
+        {id:"gb_solo",label:"Baga Beach Crew",emoji:"🏖️",desc:"Solo traveller? Find your Goa gang here",count:15,times:["5:00 PM"],slots:null,msgs:["solo traveller here, anyone for beach + nightlife?","looking for company for goa adventures"]},
+      ]
+    }
+  },
+
+  "bengaluru":{
+    city:"Bengaluru",hostel:"goSTOPS Bengaluru",personality:"🌆 Garden city + startup vibes",
+    categories:{
+      hostel:[
+        {id:"b_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at common area?","come hang"]},
+        {id:"b_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM","9:00 PM"],slots:null,msgs:["movie tonight?","anyone for a movie?"]},
+        {id:"b_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","poker or mafia tonight?"]},
+        {id:"b_pfb",label:"Pool / Foosball",emoji:"🎱",desc:"Games at the hostel",count:null,times:["6:00 PM","8:00 PM"],slots:4,msgs:["pool?","foosball?"]},
+        {id:"b_kkm",label:"Karaoke / Music Night",emoji:"🎤",desc:"Karaoke or open jam",count:null,times:["8:00 PM"],slots:null,msgs:["karaoke tonight?","music night?"]},
+      ],
+      split:[
+        {id:"bs_apt",label:"Cab to Kempegowda Airport",emoji:"🚕",desc:"Share to BLR T2 — saves ₹400+ each",count:8,times:["4:00 AM","5:00 AM","6:00 AM"],slots:3,msgs:["sharing cab to blr airport?","going to t2, 2 seats free","airport cab tomorrow?"]},
+        {id:"bs_coorg",label:"Cab to Coorg",emoji:"🚙",desc:"4.5hr drive — split it for a weekend trip",count:7,times:["6:00 AM","7:00 AM"],slots:4,msgs:["coorg weekend, sharing a cab?","going to coorg, need 2 more to split"]},
+        {id:"bs_mys",label:"Cab to Mysore",emoji:"🚕",desc:"3hr drive to Mysore — perfect day trip or overnight",count:6,times:["7:00 AM","8:00 AM"],slots:3,msgs:["mysore day trip, sharing cab?","going to mysore tomorrow, 2 seats free"]},
+      ],
+      explore:[
+        {id:"b_cub",label:"Cubbon Park Morning Walk",emoji:"🌳",desc:"Beautiful 300-acre park in the heart of the city — good morning run too",count:5,times:["6:00 AM","7:00 AM"],slots:null,msgs:["cubbon park morning walk?","jogging at cubbon park?"]},
+        {id:"b_lab",label:"Lalbagh Botanical Garden",emoji:"🌺",desc:"150-acre garden with a Victorian glasshouse + 1.8k species of plants",count:5,times:["7:00 AM","8:00 AM"],slots:null,msgs:["lalbagh garden this morning?","anyone going to lalbagh?"]},
+      ],
+      nightlife:[
+        {id:"b_ind",label:"Indiranagar Pub Crawl",emoji:"🍺",desc:"100 Feet Road — Toit, Arbor Brewing, Church Street Social",count:9,times:["8:00 PM","9:00 PM"],slots:null,msgs:["indiranagar pub hopping tonight?","anyone heading to 100ft road?","toit brewery tonight?"]},
+      ],
+      meetups:[
+        {id:"b_solo",label:"Bengaluru Explorer Crew",emoji:"👥",desc:"Connect with fellow travellers for pubs, parks, and day trips",count:10,times:["7:00 PM"],slots:null,msgs:["solo traveller, anyone for pub hopping or day trips?"]},
+      ]
+    }
+  },
+
+  "gurugram":{
+    city:"Gurugram",hostel:"goSTOPS Gurugram — Baani Square",personality:"🏙️ Corporate city escape",
+    categories:{
+      hostel:[
+        {id:"g_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at common area?","chilling here"]},
+        {id:"g_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"g_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards anyone?","poker?"]},
+        {id:"g_kkm",label:"Karaoke Night",emoji:"🎤",desc:"Karaoke at the hostel",count:null,times:["8:00 PM","9:00 PM"],slots:null,msgs:["karaoke tonight?","singing night!"]},
+      ],
+      split:[
+        {id:"gs_igi",label:"Cab to IGI Airport",emoji:"🚕",desc:"Share to Terminal 3 — 30 min from Gurugram",count:9,times:["5:00 AM","6:00 AM"],slots:3,msgs:["sharing to IGI airport?","going to T3, 2 seats free","airport cab?"]},
+        {id:"gs_del",label:"Cab to Delhi (Connaught Place)",emoji:"🚕",desc:"Quick shared Ola to CP or Hauz Khas",count:7,times:["10:00 AM","6:00 PM"],slots:3,msgs:["going to CP, sharing?","cab to delhi?","anyone heading to hauz khas?"]},
+        {id:"gs_jpr",label:"Cab to Jaipur",emoji:"🚕",desc:"4hr drive — very reasonable split",count:5,times:["7:00 AM","8:00 AM"],slots:3,msgs:["jaipur day trip, sharing cab?","going to jaipur tomorrow?"]},
+      ],
+      explore:[
+        {id:"g_cp",label:"Connaught Place & Delhi Day",emoji:"🏛️",desc:"CP, India Gate, Lodi Garden — a proper Delhi day from Gurugram",count:6,times:["10:00 AM"],slots:null,msgs:["delhi day trip today?","going to CP, anyone?"]},
+        {id:"g_cyber",label:"Cyber Hub Food & Drinks",emoji:"🍹",desc:"Gurugram's own food & drinks hub — 60+ restaurants and bars",count:8,times:["7:00 PM","8:00 PM"],slots:null,msgs:["cyber hub tonight?","anyone heading to dlf cyber hub?"]},
+      ],
+      nightlife:[
+        {id:"g_pub",label:"Sector 29 / Cyber Hub Night Out",emoji:"🎵",desc:"Gurugram's best nightlife strip — Striker, Imperfecto, Molecule",count:9,times:["9:00 PM","10:00 PM"],slots:null,msgs:["sector 29 tonight?","going to cyber hub for drinks, anyone?"]},
+      ],
+      meetups:[
+        {id:"g_solo",label:"Gurugram Hangout Crew",emoji:"👥",desc:"Connect with fellow travellers — Cyber Hub, Delhi trips, more",count:8,times:["7:00 PM"],slots:null,msgs:["solo traveller, anyone for cyber hub tonight?"]},
+      ]
+    }
+  },
+
+  "mussoorie_lr":{
+    city:"Mussoorie",hostel:"goSTOPS — Library Road",personality:"🌤️ Queen of Hill Stations",
+    categories:{
+      hostel:[
+        {id:"ml_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at common area?","come hang"]},
+        {id:"ml_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"ml_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards tonight?","uno?"]},
+      ],
+      split:[
+        {id:"mls_ddn",label:"Cab to Dehradun",emoji:"🚕",desc:"Split the 1.5hr drive to Dehradun station or airport",count:9,times:["7:00 AM","8:00 AM"],slots:3,msgs:["sharing cab to dehradun?","going to dehradun station, 2 seats free"]},
+        {id:"mls_kempty",label:"Cab to Kempty Falls",emoji:"🚕",desc:"Share the 15min ride to Kempty Falls",count:6,times:["10:00 AM","11:00 AM"],slots:3,msgs:["kempty falls, sharing?","going to kempty?"]},
+      ],
+      adventure:[
+        {id:"ml_ge",label:"George Everest Point Trek",emoji:"⛰️",desc:"6km hike to Sir George Everest's house — 360° Himalayan views",count:14,times:["7:00 AM","8:00 AM"],slots:null,msgs:["george everest trek tomorrow?","heading to george everest today, who's joining?"]},
+        {id:"ml_camel",label:"Camel's Back Road Walk",emoji:"🐪",desc:"3km ridge walk — sunset views over the Doon Valley",count:9,times:["5:00 PM","6:00 PM"],slots:null,msgs:["camel's back road walk for sunset?"]},
+      ],
+      explore:[
+        {id:"ml_mall",label:"Mall Road Evening",emoji:"🛍️",desc:"The classic promenade — shops, street food, valley views at dusk",count:15,times:["5:00 PM","6:00 PM"],slots:null,msgs:["mall road this evening?","walk on mall road tonight?"]},
+        {id:"ml_land",label:"Landour Bakehouse",emoji:"🥐",desc:"Walk up to Char Dukaan for Landour Bakehouse — croissants + valley views",count:22,times:["9:00 AM","10:00 AM"],slots:null,msgs:["landour bakehouse tomorrow?","walking to landour, who wants to come?"]},
+      ],
+      food:[
+        {id:"ml_kal",label:"Kalsang Friends Corner",emoji:"🥘",desc:"Best Tibetan food in Mussoorie — momos, thukpa, butter tea",count:8,times:["12:00 PM","7:00 PM"],slots:null,msgs:["kalsang for dinner?","tibetan food tonight?"]},
+      ],
+      nightlife:[
+        {id:"ml_bf",label:"Terrace Bonfire",emoji:"🔥",desc:"Bonfire with Doon Valley views — cold nights, warm fire",count:10,times:["8:00 PM","9:00 PM"],slots:null,msgs:["bonfire tonight? the valley looks beautiful","bonfire + chai?"]},
+      ],
+      meetups:[
+        {id:"ml_crew",label:"Mussoorie Explorer Group",emoji:"🗺️",desc:"George Everest + Landour + Mall Road — form a group",count:11,times:["7:00 AM","5:00 PM"],slots:null,msgs:["anyone exploring today?","group for george everest tomorrow?"]},
+      ]
+    }
+  },
+
+  "mukteshwar":{
+    city:"Mukteshwar",hostel:"goSTOPS Mukteshwar",personality:"🍎 Apple orchards & Himalayan silence",
+    categories:{
+      hostel:[
+        {id:"mk_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["5:00 PM","6:00 PM"],slots:null,msgs:["anyone around?","chai in common area?"]},
+        {id:"mk_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"mk_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards by the fireplace",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards tonight?","uno?"]},
+      ],
+      split:[
+        {id:"mks_nin",label:"Cab to Nainital",emoji:"🚕",desc:"35km to Nainital — perfect day trip or onward",count:9,times:["9:00 AM","10:00 AM"],slots:3,msgs:["sharing cab to nainital?","going to nainital, anyone?"]},
+        {id:"mks_kgd",label:"Cab to Kathgodam Station",emoji:"🚕",desc:"60km to the railhead — share the mountain drive",count:7,times:["7:00 AM","8:00 AM"],slots:3,msgs:["sharing cab to kathgodam?","going to kathgodam station?"]},
+      ],
+      adventure:[
+        {id:"mk_trek",label:"Mukteshwar Temple Cliff Trek",emoji:"⛰️",desc:"30min hike to the ancient Shiva temple and the famous Chauli Ki Jali clifftop",count:8,times:["6:00 AM","7:00 AM"],slots:null,msgs:["mukteshwar temple trek this morning?","heading to chauli ki jali, anyone?"]},
+        {id:"mk_cj",label:"Chauli Ki Jali Rappelling",emoji:"🧗",desc:"Rappelling and rock climbing at the dramatic cliff face — guides available",count:6,times:["10:00 AM","11:00 AM"],slots:6,msgs:["chauli ki jali rappelling?","rock climbing here?"]},
+        {id:"mk_sit",label:"Sitla Apple Orchard Walk",emoji:"🍎",desc:"Walk through apple and peach orchards — seasonal",count:5,times:["9:00 AM","10:00 AM"],slots:null,msgs:["sitla orchard walk?","walking to the orchards today?"]},
+      ],
+      explore:[
+        {id:"mk_view",label:"Mukteshwar Viewpoint (Himalayan Sunrise)",emoji:"🌄",desc:"Some of the best Himalayan sunrise views in Uttarakhand — stay up or wake early",count:9,times:["5:30 AM","6:00 AM"],slots:null,msgs:["sunrise at mukteshwar viewpoint?","waking up for sunrise view?"]},
+        {id:"mk_nain_dt",label:"Nainital Day Trip",emoji:"⛵",desc:"35km away — Naini Lake, Mall Road, Naina Peak in one day",count:7,times:["8:00 AM","9:00 AM"],slots:null,msgs:["nainital day trip today?","going to nainital, anyone joining?"]},
+      ],
+      nightlife:[
+        {id:"mk_star",label:"Stargazing Bonfire",emoji:"🌟",desc:"Zero light pollution — bonfire and lying under the Milky Way",count:10,times:["8:00 PM","9:00 PM"],slots:null,msgs:["stargazing bonfire tonight?","sky is incredible here, bonfire?"]},
+      ],
+      meetups:[
+        {id:"mk_solo",label:"Mukteshwar Explorer",emoji:"👥",desc:"Meet fellow travellers for treks, viewpoints, and apple orchards",count:7,times:["6:00 PM"],slots:null,msgs:["solo traveller, anyone for exploring mukteshwar?"]},
+      ]
+    }
+  },
+
+  "dehradun":{
+    city:"Dehradun",hostel:"goSTOPS Dehradun — Maldevta",personality:"🌿 Gateway to the Himalayas",
+    categories:{
+      hostel:[
+        {id:"dd_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone at common area?","come hang"]},
+        {id:"dd_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"dd_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or board games",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards tonight?"]},
+      ],
+      split:[
+        {id:"dds_rk",label:"Cab to Rishikesh",emoji:"🚕",desc:"45min to Rishikesh — split makes it trivial",count:9,times:["8:00 AM","9:00 AM"],slots:3,msgs:["sharing cab to rishikesh?","going to rishikesh, 2 seats free"]},
+        {id:"dds_muss",label:"Cab to Mussoorie",emoji:"🚕",desc:"1.5hr up to Mussoorie — share the drive",count:7,times:["9:00 AM","10:00 AM"],slots:3,msgs:["sharing to mussoorie?","cab to mussoorie?"]},
+        {id:"dds_apt",label:"Cab to Jolly Grant Airport",emoji:"🚕",desc:"Share to Dehradun airport",count:8,times:["5:00 AM","6:00 AM"],slots:3,msgs:["cab to jolly grant airport?","airport, 2 seats free"]},
+      ],
+      adventure:[
+        {id:"dd_maldevta",label:"Maldevta River & Forest Walk",emoji:"🌿",desc:"The hostel's backyard — rocky riverbed, waterfalls, forest trails",count:10,times:["7:00 AM","4:00 PM"],slots:null,msgs:["maldevta walk this morning?","heading to the river, anyone?"]},
+        {id:"dd_rk",label:"Rishikesh Day Trip",emoji:"🌊",desc:"45min away — rafting, aarti, Beatles Ashram, the works",count:12,times:["7:00 AM","8:00 AM"],slots:null,msgs:["rishikesh day trip today?","going to rishikesh, anyone joining?"]},
+      ],
+      explore:[
+        {id:"dd_paltan",label:"Paltan Bazaar & Clock Tower",emoji:"🕰️",desc:"Dehradun's main bazaar — street food, tibetan market, the old clock tower",count:6,times:["5:00 PM","6:00 PM"],slots:null,msgs:["paltan bazaar this evening?","exploring dehradun market?"]},
+        {id:"dd_rob",label:"Robber's Cave (Guchhupani)",emoji:"🌊",desc:"A river that flows through a cave — wade through it, very unique",count:8,times:["10:00 AM","11:00 AM"],slots:null,msgs:["robber's cave today?","anyone going to guchhupani?"]},
+      ],
+      meetups:[
+        {id:"dd_solo",label:"Dehradun Explorer",emoji:"👥",desc:"Meet up for Rishikesh, Mussoorie, or local walks",count:8,times:["7:00 PM"],slots:null,msgs:["solo traveller, anyone for rishikesh or mussoorie?"]},
+      ]
+    }
+  },
+
+  "kasol_plus":{
+    city:"Kasol",hostel:"goSTOPS PLUS — Suma Ropa",personality:"🏔️ Parvati Valley silence",
+    categories:{
+      hostel:[
+        {id:"kp_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["5:00 PM","6:00 PM"],slots:null,msgs:["anyone around?","common area?"]},
+        {id:"kp_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"kp_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards?","uno tonight?"]},
+      ],
+      split:[
+        {id:"kps_bars",label:"Taxi to Kheerganga Trailhead",emoji:"🚕",desc:"Shared taxi to Barsheni — the start of Kheerganga trek",count:9,times:["6:00 AM","7:00 AM"],slots:4,msgs:["sharing taxi to barsheni?","need 2 more for barsheni taxi"]},
+        {id:"kps_tosh",label:"Cab to Tosh Village",emoji:"🚕",desc:"Split the steep taxi ride up to Tosh",count:7,times:["8:00 AM","9:00 AM"],slots:4,msgs:["going to tosh, sharing?","tosh taxi?"]},
+        {id:"kps_kasol",label:"Walk to Kasol Village",emoji:"🚶",desc:"3km walk through the valley — meet halfway for chai",count:6,times:["10:00 AM","5:00 PM"],slots:null,msgs:["walking to kasol village?","going to kasol, anyone?"]},
+      ],
+      adventure:[
+        {id:"kp_kheer",label:"Kheerganga Trek",emoji:"🏔️",desc:"12km through pine forest to natural hot springs — magical",count:9,times:["6:00 AM","7:00 AM"],slots:null,msgs:["kheerganga trek tomorrow?","who's doing kheerganga?"]},
+        {id:"kp_tosh",label:"Tosh Valley Day Trek",emoji:"🗻",desc:"Remote Himalayan village with stunning valley views",count:10,times:["8:00 AM","9:00 AM"],slots:null,msgs:["tosh valley trip tomorrow?","going to tosh, anyone?"]},
+        {id:"kp_chalal",label:"Chalal Village Walk",emoji:"🌿",desc:"Easy 2km riverside walk to the relaxed village",count:6,times:["5:00 PM","4:00 PM"],slots:null,msgs:["chalal walk this evening?","walk to chalal?"]},
+      ],
+      explore:[
+        {id:"kp_mani",label:"Manikaran Gurudwara + Hot Springs",emoji:"🙏",desc:"Holy Sikh shrine with natural hot springs — free langar included",count:5,times:["10:00 AM"],slots:null,msgs:["manikaran today?","going to manikaran, anyone?"]},
+      ],
+      nightlife:[
+        {id:"kp_bonfire",label:"Riverside Bonfire",emoji:"🔥",desc:"Bonfire by the Parvati River — music, stars, good people",count:12,times:["8:00 PM","9:00 PM"],slots:null,msgs:["river bonfire tonight?","bonfire by the parvati?"]},
+      ],
+      meetups:[
+        {id:"kp_crew",label:"Parvati Valley Trek Crew",emoji:"👥",desc:"Find trek buddies for Kheerganga, Tosh, or Rasol",count:16,times:["7:00 PM"],slots:null,msgs:["looking for kheerganga trek buddies","anyone going tosh or kheerganga?"]},
+      ]
+    }
+  },
+
+  "udaipur_plus":{
+    city:"Udaipur",hostel:"goSTOPS PLUS — Gulab Bagh",personality:"🏰 Lakes, palaces & sunsets",
+    categories:{
+      hostel:[
+        {id:"up_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","common area?"]},
+        {id:"up_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"up_gms",label:"Cards & Games",emoji:"🃏",desc:"Uno, Mafia, Poker",count:null,times:["7:00 PM","8:00 PM"],slots:8,msgs:["cards?","poker?"]},
+      ],
+      split:[
+        {id:"ups_chit",label:"Cab to Chittorgarh Fort",emoji:"🚙",desc:"Share the 1.5hr drive",count:7,times:["8:00 AM","9:00 AM"],slots:4,msgs:["chittorgarh day trip, sharing?","cab to chittorgarh?"]},
+        {id:"ups_apt",label:"Cab to Udaipur Airport",emoji:"🚕",desc:"Share to Maharana Pratap Airport",count:6,times:["6:00 AM","7:00 AM"],slots:3,msgs:["airport cab, sharing?","udaipur airport, 2 seats free"]},
+      ],
+      explore:[
+        {id:"up_bahu",label:"Bahubali Hill Sunrise Trek",emoji:"🌅",desc:"45min hike for 360° city + lake views at sunrise",count:11,times:["5:30 AM","6:00 AM"],slots:null,msgs:["bahubali sunrise trek tomorrow?","going for bahubali sunrise, who's joining?"]},
+        {id:"up_lakeboat",label:"Lake Pichola Sunset Cruise",emoji:"⛵",desc:"Sunset boat ride past the Lake Palace — magical",count:9,times:["5:30 PM","6:00 PM"],slots:null,msgs:["lake pichola cruise tonight?","sunset boat ride on lake pichola?"]},
+        {id:"up_palace",label:"City Palace",emoji:"🏰",desc:"The grand Mewar dynasty palace — best views over the lake from the top",count:11,times:["9:00 AM","10:00 AM"],slots:null,msgs:["city palace tomorrow?","going to city palace, anyone?"]},
+      ],
+      food:[
+        {id:"up_millets",label:"Millets of Mewar",emoji:"🌾",desc:"Unique millet-based Rajasthani cuisine — healthy and delicious",count:7,times:["12:00 PM","7:00 PM"],slots:null,msgs:["millets of mewar for dinner?","anyone tried millets restaurant?"]},
+      ],
+      meetups:[
+        {id:"up_solo",label:"Udaipur Explorer Crew",emoji:"👥",desc:"Connect for Bahubali sunrise, lake cruise, and palace visits",count:13,times:["6:00 PM"],slots:null,msgs:["solo traveller, anyone exploring udaipur together?"]},
+      ]
+    }
+  },
+
+  "srinagar":{
+    city:"Srinagar",hostel:"goSTOPS Srinagar",personality:"🌷 Heaven on earth",
+    categories:{
+      hostel:[
+        {id:"sr_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["5:00 PM","6:00 PM"],slots:null,msgs:["anyone around?","come hang"]},
+        {id:"sr_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"sr_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or games",count:null,times:["7:00 PM"],slots:8,msgs:["cards tonight?"]},
+      ],
+      split:[
+        {id:"srs_gulmarg",label:"Cab to Gulmarg",emoji:"🚙",desc:"Share the 55km drive to Gulmarg — gondola + skiing",count:8,times:["8:00 AM","9:00 AM"],slots:4,msgs:["gulmarg day trip, sharing?","cab to gulmarg?"]},
+        {id:"srs_pahalgam",label:"Cab to Pahalgam",emoji:"🚙",desc:"Share the 90km drive to Pahalgam",count:6,times:["7:00 AM","8:00 AM"],slots:4,msgs:["pahalgam sharing?","cab to pahalgam?"]},
+        {id:"srs_apt",label:"Cab to Srinagar Airport",emoji:"🚕",desc:"Share to Sheikh ul-Alam Airport",count:7,times:["5:00 AM","6:00 AM"],slots:3,msgs:["sharing to srinagar airport?","airport cab?"]},
+      ],
+      explore:[
+        {id:"sr_dal",label:"Dal Lake Shikara Ride",emoji:"🚣",desc:"Dawn or sunset shikara on Dal Lake — the iconic Kashmir experience",count:10,times:["6:00 AM","5:00 PM"],slots:4,msgs:["shikara on dal lake tomorrow morning?","sunrise shikara on dal?"]},
+        {id:"sr_nishat",label:"Nishat & Shalimar Bagh (Mughal Gardens)",emoji:"🌷",desc:"Terraced Mughal gardens above Dal Lake — stunning in spring/summer",count:8,times:["10:00 AM","11:00 AM"],slots:null,msgs:["mughal gardens tomorrow?","going to nishat bagh, anyone?"]},
+        {id:"sr_old",label:"Old City Lanes Walk",emoji:"🕌",desc:"Jamia Masjid, Shah Hamdan Shrine, Lal Chowk — authentic Old Srinagar",count:6,times:["9:00 AM","10:00 AM"],slots:null,msgs:["old city walk today?","exploring old srinagar lanes?"]},
+      ],
+      adventure:[
+        {id:"sr_gulmarg",label:"Gulmarg — Gondola + Snow",emoji:"🎿",desc:"Asia's highest gondola to 4000m — skiing in winter, wildflower meadows in summer",count:10,times:["8:00 AM","9:00 AM"],slots:null,msgs:["gulmarg day trip?","anyone going gulmarg for skiing?"]},
+      ],
+      meetups:[
+        {id:"sr_solo",label:"Kashmir Explorer Crew",emoji:"👥",desc:"Meet fellow travellers for Dal Lake, Gulmarg, and the valleys",count:8,times:["6:00 PM"],slots:null,msgs:["solo traveller, anyone exploring kashmir together?"]},
+      ]
+    }
+  },
+
+  "alleppey":{
+    city:"Alleppey",hostel:"goSTOPS Alleppey",personality:"🌊 Backwaters & houseboats",
+    categories:{
+      hostel:[
+        {id:"al_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","come hang"]},
+        {id:"al_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"al_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or board games",count:null,times:["7:00 PM"],slots:8,msgs:["cards tonight?"]},
+      ],
+      split:[
+        {id:"als_kochi",label:"Cab to Kochi",emoji:"🚕",desc:"1.5hr to Kochi — share it",count:7,times:["8:00 AM","9:00 AM"],slots:3,msgs:["sharing cab to kochi?","going to kochi, seats free"]},
+        {id:"als_boat",label:"Split Houseboat Rental",emoji:"⛴️",desc:"Split a 1-night houseboat on the backwaters — much more affordable as a group",count:9,times:["10:00 AM","11:00 AM"],slots:6,msgs:["splitting a houseboat?","anyone for shared houseboat?","backwater houseboat, splitting cost?"]},
+        {id:"als_apt",label:"Cab to Kochi Airport",emoji:"🚕",desc:"Share to Cochin International Airport (1.5hr)",count:6,times:["5:00 AM","6:00 AM"],slots:3,msgs:["kochi airport, sharing?","cab to cochin airport?"]},
+      ],
+      explore:[
+        {id:"al_bw",label:"Backwater Canoe / Kayak",emoji:"🚣",desc:"Hire a canoe or kayak and explore the backwater channels at your own pace",count:9,times:["7:00 AM","8:00 AM"],slots:4,msgs:["kayaking in the backwaters?","canoe through the canals?"]},
+        {id:"al_beach",label:"Alleppey Beach Sunset",emoji:"🌅",desc:"Long sandy beach with a historic pier — great sunset",count:7,times:["5:30 PM","6:00 PM"],slots:null,msgs:["alleppey beach for sunset?","beach walk this evening?"]},
+        {id:"al_kari",label:"Kari Meen (Pearl Spot) Lunch",emoji:"🐟",desc:"The local delicacy — grilled or fried pearl spot fish in a toddy shop",count:6,times:["1:00 PM"],slots:null,msgs:["kari meen lunch today?","best place for pearl spot near here?"]},
+      ],
+      nightlife:[
+        {id:"al_tod",label:"Kerala Toddy Shop Evening",emoji:"🥃",desc:"Traditional palm toddy (slightly alcoholic coconut drink) at a local shop",count:8,times:["6:00 PM","7:00 PM"],slots:null,msgs:["toddy shop tonight?","anyone for toddy?"]},
+      ],
+      meetups:[
+        {id:"al_crew",label:"Backwaters Explorer Crew",emoji:"👥",desc:"Split a houseboat, kayak together, or just explore the canals",count:10,times:["6:00 PM"],slots:null,msgs:["solo traveller, anyone for backwaters?","split houseboat, need 3 more"]},
+      ]
+    }
+  },
+
+  "kochi":{
+    city:"Kochi",hostel:"goSTOPS Kochi",personality:"🌊 Spices & the sea",
+    categories:{
+      hostel:[
+        {id:"ko_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["6:00 PM","7:00 PM"],slots:null,msgs:["anyone around?","come hang"]},
+        {id:"ko_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"ko_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or board games",count:null,times:["7:00 PM"],slots:8,msgs:["cards tonight?"]},
+      ],
+      split:[
+        {id:"kos_ali",label:"Cab to Alleppey (Backwaters)",emoji:"🚕",desc:"1.5hr to Alleppey — split it for a day trip",count:8,times:["8:00 AM","9:00 AM"],slots:4,msgs:["alleppey day trip, sharing?","cab to alleppey backwaters?"]},
+        {id:"kos_mun",label:"Cab to Munnar",emoji:"🚙",desc:"3.5hr to Munnar tea hills — split the cab",count:6,times:["7:00 AM","8:00 AM"],slots:4,msgs:["munnar day trip, sharing?","cab to munnar tea estates?"]},
+        {id:"kos_apt",label:"Cab to Kochi Airport",emoji:"🚕",desc:"Share to Cochin International Airport",count:7,times:["5:00 AM","6:00 AM"],slots:3,msgs:["kochi airport, sharing?","airport cab?"]},
+      ],
+      explore:[
+        {id:"ko_fort",label:"Fort Kochi Walk + Chinese Nets",emoji:"🎣",desc:"Walk through the historic Fort area, watch Chinese fishing nets at sunset",count:9,times:["9:00 AM","5:00 PM"],slots:null,msgs:["fort kochi walk today?","chinese fishing nets at sunset?"]},
+        {id:"ko_matt",label:"Mattancherry + Jew Town",emoji:"🕍",desc:"Spice market, Paradesi Synagogue, antique shops",count:7,times:["10:00 AM","11:00 AM"],slots:null,msgs:["mattancherry and jew town today?","going to spice market?"]},
+        {id:"ko_ferry",label:"Fort Kochi Ferry (₹5!)",emoji:"⛴️",desc:"The cheapest most scenic commute — 10min ferry across the harbour",count:8,times:["9:00 AM","5:00 PM"],slots:null,msgs:["fort kochi ferry?","anyone taking the ferry?"]},
+      ],
+      meetups:[
+        {id:"ko_crew",label:"Kochi Explorer Crew",emoji:"👥",desc:"Fort Kochi, backwaters, and beyond",count:8,times:["6:00 PM"],slots:null,msgs:["solo traveller, anyone exploring kochi?"]},
+      ]
+    }
+  },
+
+  "kasar_devi":{
+    city:"Kasar Devi (Almora)",hostel:"goSTOPS Kasar Devi",personality:"🌀 Cosmic energy zone",
+    categories:{
+      hostel:[
+        {id:"kd_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out — chai, views, good conversation",count:null,times:["5:00 PM","6:00 PM"],slots:null,msgs:["anyone around?","chai in common area?"]},
+        {id:"kd_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"kd_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or games",count:null,times:["7:00 PM"],slots:8,msgs:["cards?"]},
+      ],
+      split:[
+        {id:"kds_nin",label:"Cab to Nainital",emoji:"🚕",desc:"55km to Nainital — share the drive",count:7,times:["9:00 AM","10:00 AM"],slots:3,msgs:["nainital day trip, sharing?","cab to nainital?"]},
+        {id:"kds_kgd",label:"Cab to Kathgodam Station",emoji:"🚕",desc:"Share to the railhead",count:6,times:["7:00 AM","8:00 AM"],slots:3,msgs:["kathgodam, sharing?","going to kathgodam station?"]},
+      ],
+      adventure:[
+        {id:"kd_trek",label:"Kasar Devi Ridge Walk",emoji:"⛰️",desc:"Walk the sacred ridge where Swami Vivekananda meditated — Himalayan panorama",count:8,times:["6:00 AM","7:00 AM"],slots:null,msgs:["ridge walk this morning?","kasar devi temple walk?"]},
+        {id:"kd_binsar",label:"Binsar Wildlife Sanctuary",emoji:"🌲",desc:"18km from Kasar Devi — dense oak forests, Himalayan views, leopards",count:7,times:["8:00 AM","9:00 AM"],slots:null,msgs:["binsar day trip?","going to binsar?"]},
+      ],
+      explore:[
+        {id:"kd_almora",label:"Almora Town Walk",emoji:"🛍️",desc:"Charming hill town — Lala Bazaar, Nanda Devi Temple, traditional sweets",count:6,times:["10:00 AM","11:00 AM"],slots:null,msgs:["almora town walk?","anyone going to almora?"]},
+      ],
+      nightlife:[
+        {id:"kd_star",label:"Stargazing Bonfire",emoji:"🌟",desc:"Kasar Devi has some of India's clearest night skies — bonfire + stars",count:11,times:["8:00 PM","9:00 PM"],slots:null,msgs:["stargazing tonight?","bonfire + stars at the ridge?"]},
+      ],
+      meetups:[
+        {id:"kd_yoga",label:"Morning Yoga / Meditation",emoji:"🧘",desc:"Kasar Devi is famous for its spiritual energy — join for sunrise yoga",count:8,times:["6:00 AM","6:30 AM"],slots:null,msgs:["morning yoga tomorrow?","meditation session at sunrise?"]},
+      ]
+    }
+  },
+
+  "bir_landing":{
+    city:"Bir",hostel:"goSTOPS Bir — Landing Site",personality:"🪂 Paragliding capital",
+    categories:{
+      hostel:[
+        {id:"bl_cmn",label:"Hang at Common Area",emoji:"☕",desc:"Chill out with whoever's around",count:null,times:["5:00 PM","6:00 PM"],slots:null,msgs:["anyone around?","common area?"]},
+        {id:"bl_mvn",label:"Movie Night",emoji:"🎬",desc:"Movie at the hostel",count:null,times:["8:00 PM"],slots:null,msgs:["movie tonight?"]},
+        {id:"bl_gms",label:"Cards & Games",emoji:"🃏",desc:"Cards or games",count:null,times:["7:00 PM"],slots:8,msgs:["cards?","uno?"]},
+      ],
+      split:[
+        {id:"bls_bill",label:"Jeep to Billing Launch Site",emoji:"🚙",desc:"Share the steep drive up to the paragliding launch point",count:12,times:["8:00 AM","9:00 AM","10:00 AM"],slots:4,msgs:["sharing jeep to billing?","cab to billing launch?","billing taxi, need 2 more"]},
+        {id:"bls_dsl",label:"Cab to Dharamsala / McLeod Ganj",emoji:"🚕",desc:"1.5hr — share it",count:6,times:["8:00 AM","9:00 AM"],slots:3,msgs:["going to mcleodganj, sharing?","dharamsala cab, anyone?"]},
+        {id:"bls_chd",label:"Cab to Chandigarh",emoji:"🚕",desc:"Share the 4hr drive to Chandigarh",count:4,times:["7:00 AM"],slots:3,msgs:["chandigarh, sharing?","going to chandigarh?"]},
+      ],
+      adventure:[
+        {id:"bl_para",label:"Bir Billing Paragliding",emoji:"🪂",desc:"India's paragliding capital — 3km above clouds, 14km glide to landing site",count:15,times:["8:00 AM","9:00 AM","10:00 AM"],slots:4,msgs:["paragliding tomorrow? SO EXCITED","just landed from billing — life-changing 🪂","paragliding group booking?"]},
+        {id:"bl_rajg",label:"Rajgundha Valley Trek",emoji:"🏔️",desc:"Remote Himalayan valley with apple orchards and shepherd huts — 2 days",count:7,times:["7:00 AM"],slots:4,msgs:["rajgundha trek?","2 day trek to rajgundha valley?"]},
+        {id:"bl_bill_view",label:"Billing Viewpoint Day Trip",emoji:"⛰️",desc:"Drive to Billing (2600m) for views — where the paragliders launch",count:8,times:["9:00 AM","10:00 AM"],slots:null,msgs:["billing viewpoint today?","driving up to billing for views, anyone?"]},
+      ],
+      explore:[
+        {id:"bl_mono",label:"Buddhist Monastery Hop",emoji:"🙏",desc:"Bir has 8+ Tibetan monasteries — prayer wheels, murals, very peaceful",count:6,times:["10:00 AM","3:00 PM"],slots:null,msgs:["monastery hop this morning?","visiting the monasteries?"]},
+      ],
+      nightlife:[
+        {id:"bl_star",label:"Stargazing Bonfire",emoji:"🌟",desc:"Zero light pollution in Bir — bonfire under the Milky Way",count:9,times:["8:00 PM","9:00 PM"],slots:null,msgs:["stargazing tonight? sky is insane here","bonfire + stars?"]},
+      ],
+      meetups:[
+        {id:"bl_para_grp",label:"Paragliding Group Booking",emoji:"🪂",desc:"Group discount for 4+ bookings — let's go together",count:12,times:["8:00 AM"],slots:4,msgs:["paragliding group? discount if 4+","anyone booking paragliding?"]},
+      ]
+    }
+  },
+
+};
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let hostel=Object.keys(BOARDS)[0], tab='board', catFilter='all', pending=null;
+
+// ─── UTILS ──────────────────────────────────────────────────────────────────
+function gs(){try{return JSON.parse(localStorage.getItem('gcb4')||'{}')}catch{return {}}}
+function ss(v){localStorage.setItem('gcb4',JSON.stringify(v))}
+function me(){if(!localStorage.getItem('gcb_me'))localStorage.setItem('gcb_me','You');return localStorage.getItem('gcb_me')}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function catName(id){return CATS.find(c=>c.id===id)||{label:'',emoji:''}}
+
+// ─── INIT ───────────────────────────────────────────────────────────────────
+function init(){
+  const sel=document.getElementById('hsel');
+  Object.entries(BOARDS).forEach(([k,b])=>{
+    const o=document.createElement('option');
+    o.value=k; o.textContent=b.hostel; sel.appendChild(o);
+  });
+  renderCatRow();
+  seedDemo();
+  render();
+}
+
+function switchHostel(h){hostel=h;catFilter='all';renderCatRow();render();}
+function switchTab(t){tab=t;document.getElementById('t-board').classList.toggle('on',t==='board');document.getElementById('t-explore').classList.toggle('on',t==='explore');render();}
+function switchCat(c){catFilter=c;renderCatRow();render();}
+
+function renderCatRow(){
+  const row=document.getElementById('catrow');
+  row.innerHTML=CATS.map(c=>`<button class="catbtn ${catFilter===c.id?'on':''}" onclick="switchCat('${c.id}')">${c.emoji} ${c.label}</button>`).join('');
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function render(){
+  const board=BOARDS[hostel]; if(!board)return;
+  const st=gs(); const hs=st[hostel]||{events:[]};
+  const evs=hs.events||[];
+  document.getElementById('evCount').textContent=evs.length?`${evs.length} live`:'';
+  const main=document.getElementById('main');
+  if(tab==='board') renderBoard(main,board,evs);
+  else renderExplore(main,board);
+}
+
+function renderBoard(main,board,evs){
+  let h=`<div class="vibe"><div class="vibe-city">${board.city}</div>${board.personality?`<div class="vibe-tag">${board.personality}</div>`:''}</div>`;
+  h+='<div class="slabel">Happening now</div>';
+  const filtered = catFilter==='all' ? evs : evs.filter(ev=>ev.cat===catFilter);
+  if(!filtered.length){
+    h+=`<div class="empty"><div>🌅</div><p>No events yet${catFilter!=='all'?' in this category':''}.</p><small>Switch to <b>Explore</b> to post one!</small></div>`;
+  } else {
+    filtered.forEach(ev=>{
+      const joined=ev.attendees.includes(me());
+      const slotsLeft=ev.slots?ev.slots-ev.attendees.length:null;
+      const avHTML=ev.attendees.slice(0,5).map(n=>`<div class="av">${n.charAt(0).toUpperCase()}</div>`).join('');
+      const cmts=ev.comments||[]; const srcMsgs=ev.sourceMsgs||[];
+      const totalCmts=srcMsgs.length+cmts.length; const isExpanded=ev._cmtOpen;
+      let cmtHTML='';
+      if(isExpanded){
+        srcMsgs.forEach(m=>{const init=m.charAt(0).toUpperCase();cmtHTML+=`<div class="cmt"><div class="cmt-av" style="background:var(--brand-bg);color:var(--brand);border-color:var(--brand-bg)">${init}</div><div class="cmt-body"><div class="cmt-text">${escH(m)}</div><div class="cmt-src"><span class="src-dot"></span>from past chats at this hostel</div></div></div>`;});
+        cmts.forEach(c=>{cmtHTML+=`<div class="cmt"><div class="cmt-av">${c.name.charAt(0).toUpperCase()}</div><div class="cmt-body"><div class="cmt-name">${escH(c.name)}</div><div class="cmt-text">${escH(c.text)}</div></div></div>`;});
+        cmtHTML+=`<div class="add-cmt"><input id="ci_${ev.id}" placeholder="Add a comment…" maxlength="100" onkeydown="cmtKey(event,'${ev.id}')"><button onclick="addCmt('${ev.id}')">↑</button></div>`;
+      }
+      const c=catName(ev.cat||'');
+      h+=`<div class="ecard"><div class="ecard-top"><div class="emoji-big">${ev.emoji}</div><div class="einfo"><div class="elabel">${escH(ev.label)}</div><div class="etime">⏰ ${escH(ev.time)}${c.label?` · <span style="font-size:10px;opacity:.7">${c.emoji} ${c.label}</span>`:''}</div><div class="edesc">${escH(ev.note||ev.desc||'')}</div></div></div><div class="efoot"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px"><div class="avs">${avHTML}</div><span class="going">${ev.attendees.length} going</span>${slotsLeft!==null?`<span class="slots">${slotsLeft} left</span>`:''}</div><button class="jbtn ${joined?'on':''}" onclick="toggleJoin('${ev.id}')">${joined?'✓ Joined':'Join'}</button></div><div class="cmts"><div class="cmts-head" onclick="toggleCmts('${ev.id}')"><span>💬 ${totalCmts} comment${totalCmts!==1?'s':''}</span><span class="cmts-toggle">${isExpanded?'Hide':'Show'}</span></div>${isExpanded?cmtHTML:''}</div></div>`;
+    });
+  }
+  main.innerHTML=h;
+}
+
+function renderExplore(main,board){
+  const cats=board.categories; let h='';
+  if(catFilter==='all'){
+    // Show all categories with section headers
+    Object.entries(cats).forEach(([catId,items])=>{
+      const ci=CATS.find(c=>c.id===catId)||{emoji:'',label:catId};
+      h+=`<div class="slabel">${ci.emoji} ${ci.label||catId}</div>`;
+      items.forEach(item=>{ h+=exploreCard(item,catId); });
+    });
+  } else {
+    // Show only selected category
+    const items=cats[catFilter];
+    if(!items||!items.length){
+      h=`<div class="empty"><div>${catName(catFilter).emoji||'🔍'}</div><p>No ${catName(catFilter).label} ideas for this hostel yet.</p></div>`;
+    } else {
+      const ci=CATS.find(c=>c.id===catFilter)||{emoji:'',label:catFilter};
+      h=`<div class="slabel">${ci.emoji} ${ci.label}</div>`;
+      items.forEach(item=>{ h+=exploreCard(item,catFilter); });
+    }
+  }
+  h+='<div style="height:20px"></div>';
+  main.innerHTML=h;
+}
+
+function exploreCard(item,catId){
+  const ci=CATS.find(c=>c.id===catId)||{emoji:'',label:catId};
+  const quote=item.msgs&&item.msgs.length?item.msgs[0]:'';
+  return `<div class="xcard" onclick="openModal('${item.id}','${catId}')">
+    <div class="xcard-top">
+      <div class="xcard-emoji">${item.emoji}</div>
+      <div class="xcard-body">
+        <div class="xcard-catbadge">${ci.emoji} ${ci.label||catId}</div>
+        <div class="xcard-label">${escH(item.label)}</div>
+        <div class="xcard-desc">${escH(item.desc)}</div>
+        ${quote?`<div class="xcard-quote">"${escH(quote)}"</div>`:''}
+        <div class="xcard-foot">
+          <span class="xcard-count">💬 ${item.count} guests mentioned this</span>
+          <button class="xbtn">Post →</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── MODAL ───────────────────────────────────────────────────────────────────
+function openModal(itemId, catId){
+  const board=BOARDS[hostel]; if(!board)return;
+  const items=board.categories[catId]||[];
+  const item=items.find(i=>i.id===itemId); if(!item)return;
+  pending={...item, cat:catId};
+  const pills=(item.times||['6:00 PM']).map((t,i)=>`<button class="pill ${i===0?'on':''}" onclick="selPill(this,'${t}')">${t}</button>`).join('');
+  const msgsHTML=(item.msgs||[]).slice(0,4).map(m=>`<div class="past-item"><div class="past-dot"></div><div class="past-text">"${escH(m)}"</div></div>`).join('');
+  const ci=CATS.find(c=>c.id===catId)||{emoji:'',label:catId};
+  document.getElementById('mbody').innerHTML=`
+    <div class="mhandle"></div>
+    <div style="font-size:38px;margin-bottom:8px">${item.emoji}</div>
+    <div class="mtitle">${escH(item.label)}</div>
+    <div style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;background:var(--bg);color:var(--text2);padding:3px 9px;border-radius:10px;margin-bottom:10px">${ci.emoji} ${ci.label}</div>
+    <div class="msub">${escH(item.desc)}</div>
+    ${msgsHTML?`<div class="past-msgs"><div class="past-label">💬 What guests said at this hostel</div>${msgsHTML}</div>`:''}
+    <div class="fgroup"><label class="flabel">When?</label><div class="pills" id="pills">${pills}</div><input class="tinput" id="ctime" type="time" placeholder="Or pick a custom time" oninput="clearPills()"></div>
+    <div class="fgroup"><label class="flabel">Add a note (optional)</label><textarea class="ninput" id="note" placeholder="e.g. meeting at reception, all levels welcome…" maxlength="120"></textarea></div>
+    <button class="pbtn" onclick="post()">Post to Board</button>
+    <button class="xbtn-modal" onclick="closeModal()">Cancel</button>
+  `;
+  document.getElementById('overlay').classList.add('on');
+}
+
+function selPill(btn,t){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));btn.classList.add('on');document.getElementById('ctime').value='';}
+function clearPills(){document.querySelectorAll('.pill').forEach(p=>p.classList.remove('on'));}
+function overlayClick(e){if(e.target===document.getElementById('overlay'))closeModal();}
+function closeModal(){document.getElementById('overlay').classList.remove('on');pending=null;}
+
+function getTime(){const p=document.querySelector('.pill.on');if(p)return p.textContent;const v=document.getElementById('ctime').value;if(v){const[h,m]=v.split(':');const hr=parseInt(h);return `${hr%12||12}:${m} ${hr>=12?'PM':'AM'}`;}return null;}
+
+function post(){
+  const t=getTime();if(!t){toast('Pick a time ⏰');return;}
+  const note=document.getElementById('note').value.trim();
+  const tpl=pending;
+  const ev={
+    id:Date.now()+'_'+Math.random().toString(36).slice(2,5),
+    cat:tpl.cat, label:tpl.label, emoji:tpl.emoji, desc:tpl.desc,
+    time:t, note:note||null, slots:tpl.slots||null,
+    host:me(), attendees:[me()],
+    sourceMsgs:(tpl.msgs||[]).slice(0,3), comments:[], _cmtOpen:true,
+    createdAt:Date.now()
+  };
+  const s=gs();if(!s[hostel])s[hostel]={events:[]};
+  s[hostel].events.unshift(ev);ss(s);
+  closeModal();switchTab('board');
+  toast(`${tpl.emoji} Posted! You're going.`);
+}
+
+// ─── JOIN ────────────────────────────────────────────────────────────────────
+function toggleJoin(id){
+  const s=gs();const hs=s[hostel];if(!hs)return;
+  const ev=hs.events.find(e=>e.id===id);if(!ev)return;
+  const i=ev.attendees.indexOf(me());
+  if(i===-1){if(ev.slots&&ev.attendees.length>=ev.slots){toast('No spots left!');return;}ev.attendees.push(me());ss(s);toast(`${ev.emoji} You're in!`);}
+  else{ev.attendees.splice(i,1);ss(s);toast('Left the event');}
+  render();
+}
+
+// ─── COMMENTS ────────────────────────────────────────────────────────────────
+function toggleCmts(id){const s=gs();const ev=(s[hostel]?.events||[]).find(e=>e.id===id);if(!ev)return;ev._cmtOpen=!ev._cmtOpen;ss(s);render();}
+function cmtKey(e,id){if(e.key==='Enter')addCmt(id);}
+function addCmt(id){const inp=document.getElementById('ci_'+id);if(!inp)return;const txt=inp.value.trim();if(!txt)return;const s=gs();const ev=(s[hostel]?.events||[]).find(e=>e.id===id);if(!ev)return;if(!ev.comments)ev.comments=[];ev.comments.push({name:me(),text:txt});ss(s);inp.value='';render();}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+let tt;
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),2200);}
+
+// ─── SEED DEMO ───────────────────────────────────────────────────────────────
+function seedDemo(){
+  const s=gs();if(s._v4)return;
+  const names=['Priya','Rohan','Sam','Neha','Arjun','Isha'];
+  Object.keys(BOARDS).forEach(hk=>{
+    const board=BOARDS[hk];if(!s[hk])s[hk]={events:[]};
+    // Seed 2 events per hostel from different categories
+    let seeded=0;
+    Object.entries(board.categories).forEach(([catId,items])=>{
+      if(seeded>=2||!items.length)return;
+      const item=items[0];
+      const cnt=Math.floor(Math.random()*3)+1;
+      const ats=names.slice(0,cnt);
+      s[hk].events.push({
+        id:hk+'_'+item.id+'_d',cat:catId,label:item.label,emoji:item.emoji,desc:item.desc,
+        time:(item.times||['6:00 PM'])[0],note:null,slots:item.slots||null,
+        host:ats[0],attendees:ats,sourceMsgs:(item.msgs||[]).slice(0,2),comments:[],_cmtOpen:false,
+        createdAt:Date.now()-Math.floor(Math.random()*7200000)
+      });
+      seeded++;
+    });
+  });
+  s._v4=true;ss(s);
+}
+
+init();
+</script>
+</body>
+</html>
